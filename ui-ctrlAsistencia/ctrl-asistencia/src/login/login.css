@@ -1,0 +1,10 @@
+/* Estilos básicos para el componente Login */
+.login {
+  text-align: center;
+  padding: 2rem;
+}
+
+.login h1 {
+  font-size: 2rem;
+  color: #333;
+}
