@@ -1,1 +1,7 @@
 .vscode/
+
+#Sonarqube 
+.env
+.scannerwork/
+target/
+analyze.bat
