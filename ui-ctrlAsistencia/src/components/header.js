@@ -1,12 +1,12 @@
 import React from 'react';
 import './header.css';
-import logo from '../assets/images/logoUfroVertical.svg';
+import logo from '../assets/images/logoUfroHorizontal.svg';
 
 function Header() {
   return (
     <header className="header">
       <img src={logo} alt="Logo" className="header-logo" />
-      <h1 className="header-title">Control de Asistencia</h1>
+      <h1 className="header-title"></h1>
     </header>
   );
 }
