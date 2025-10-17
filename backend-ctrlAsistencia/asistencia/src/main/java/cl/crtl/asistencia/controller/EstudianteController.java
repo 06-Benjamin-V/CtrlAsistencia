@@ -1,26 +1,30 @@
 package cl.crtl.asistencia.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import cl.crtl.asistencia.dto.LoginResponse;
+import cl.crtl.asistencia.model.Estudiante;
 import cl.crtl.asistencia.service.EstudianteService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/estudiante")
-@CrossOrigin(origins = "*")// NOSONAR: CORS abierto solo en entorno de desarrollo
+@CrossOrigin(origins = "*") // NOSONAR: CORS abierto solo en dev; restringir en prod
+@RequiredArgsConstructor
 public class EstudianteController {
-    @Autowired
-    private EstudianteService estudianteService;
+
+    private final EstudianteService estudianteService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String correo, @RequestParam String contrasenia) {
+    public ResponseEntity<LoginResponse> login(@RequestParam String correo, @RequestParam String contrasenia) {
         return estudianteService.login(correo, contrasenia)
-                .<ResponseEntity<?>>map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(401).body("Credenciales inválidas"));
+                .map((Estudiante e) -> {
+                    LoginResponse resp = new LoginResponse("OK", "Login exitoso", e.getNombre(), null, "Estudiante");
+                    return ResponseEntity.ok(resp);
+                })
+                .orElseGet(() -> {
+                    LoginResponse resp = new LoginResponse("UNAUTHORIZED", "Credenciales inválidas", null, null,null);
+                    return ResponseEntity.status(401).body(resp);
+                });
     }
 }
