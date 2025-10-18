@@ -1,0 +1,137 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 79.9dvh;
+  max-height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.login-container-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 110%;
+  background-position: -100px -360px;
+  filter: blur(5px);
+  z-index: -1;
+}
+
+.login-box {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(5px);
+  border-radius: 15px;
+  padding: 40px;
+  width: 820px;
+  height: auto;
+  color: white;
+  text-align: center;
+  font-size: 2.2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.bandurria-icon {
+  position: absolute;
+  top: -50px;
+  right: -85px;
+  width: 240px;
+  height: 240px;
+  pointer-events: none;
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: black;
+  pointer-events: none;
+}
+
+.input-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 2rem;
+  margin-bottom: 6px;
+  color: #000000;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 2rem;
+  color: #000000;
+}
+
+.login-button {
+  background-color: #61dafb;
+  color: #003865;
+  border: none;
+  padding: 10px 0;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 30px;
+  transition: 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #4ec1e0;
+}
+
+/*Cambiar tamaños para pantallas bajo los 1000px*/
+@media (max-width: 1000px) {
+  .login-container-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: 300%;
+    background-position: -500px -200px;
+    filter: blur(5px);
+    z-index: -1;
+}
+
+  .login-container {
+    min-height: 85vh;
+  }
+  
+  .login-box {
+    width: 820px;
+    height: auto;
+    padding: 30px;
+    font-size: 2.5rem;
+  }
+  
+  .bandurria-icon {
+    top: -70px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+  }
+  
+  .input-group label {
+    font-size: 2rem;
+  }
+  
+  .input-group input {
+    font-size: 2rem;
+  }
+  
+  .login-button {
+    font-size: 3rem;
+  }
+}

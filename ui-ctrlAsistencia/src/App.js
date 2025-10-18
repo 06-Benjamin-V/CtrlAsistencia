@@ -2,28 +2,55 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Login from './logIn/login';
 import Header from './components/header';
+import Footer from './components/footer';
 
 function App() {
   return (
     <>
       <Header />
-      <Routes>
-        <Route path="/" element={
-          <div className="App">
-            <header className="App-header">
-              <p>
-                Bienvenido al control de asistencia.
-              </p>
-              <button className="App-link" onClick={() => window.location.href = '/login'}>
-                Iniciar Sesión
-              </button>
-            </header>
-          </div>
-        } />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+      <main className="App-main">
+        <Login />
+      </main>
+      <Footer />
     </>
   );
 }
 
 export default App;
+
+// Pantalla inicial comentada, se mantiene por si se desea recuperar
+/*
+function App() {
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div className="App">
+              <header className="App-header">
+                <p className="text-5xl font-semibold mb-4">
+                  Bienvenido al control de asistencia.
+                </p>
+
+                <button
+                  className="App-link custom-button"
+                  onClick={() => (window.location.href = '/login')}
+                >
+                  Iniciar Sesión
+                </button>
+              </header>
+            </div>
+          }
+        />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+
+      <Footer />
+    </>
+  );
+}
+
+export default App;
+*/
