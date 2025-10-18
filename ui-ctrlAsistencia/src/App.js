@@ -1,5 +1,5 @@
+// App.js
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
 import Login from './logIn/login';
 import Header from './components/header';
 import Footer from './components/footer';
