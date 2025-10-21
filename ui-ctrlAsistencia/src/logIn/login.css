@@ -1,0 +1,122 @@
+/* login.css */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 79.9vh;
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+}
+
+.login-container-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 110%;
+  background-position: -100px -360px;
+  filter: blur(5px);
+  z-index: -1;
+}
+
+.login-box {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(5px);
+  border-radius: 15px;
+  padding: 40px;
+  width: 820px;
+  max-width: 90%;
+  height: auto;
+  color: white;
+  text-align: center;
+  font-size: 2.2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+  margin: 20px;
+}
+
+.bandurria-icon {
+  position: absolute;
+  top: -50px;
+  right: -85px;
+  width: 240px;
+  height: 240px;
+  pointer-events: none;
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: black;
+  pointer-events: none;
+}
+
+.input-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 2rem;
+  margin-bottom: 6px;
+  color: #000000;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 2rem;
+  color: #000000;
+  box-sizing: border-box;
+}
+
+/*Cambiar tamaños para pantallas bajo los 1000px*/
+@media (max-width: 1000px) {
+  .login-container-bg {
+    background-size: 300%;
+    background-position: -500px -200px;
+  }
+
+  .login-container {
+    min-height: 85vh;
+  }
+  
+  .login-box {
+    width: 90%;
+    padding: 25px 20px;
+    font-size: 2rem;
+    margin: 15px;
+  }
+  
+  .bandurria-icon {
+    top: -100px;
+    right: -44px;
+    width: 300px;
+    height: 300px;
+    transform: rotate(2deg);
+    overflow: hidden;
+    }
+
+  .login-box h2 {
+    font-size: 3rem;
+    margin: 20px;
+  }
+  
+  .input-group label {
+    font-size: 2.4rem;
+  }
+  
+  .input-group input {
+    font-size: 2.4rem;
+    padding: 20px;
+  }
+  .button {
+    font-size: 3rem;
+  }
+}
