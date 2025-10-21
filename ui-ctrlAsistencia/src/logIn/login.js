@@ -31,7 +31,6 @@ function Login() {
       const data = JSON.parse(text);
       console.log('Login exitoso:', data);
 
-      // Guardar token y rol en localStorage
       if (data.token) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('rol', data.rol);
@@ -39,7 +38,6 @@ function Login() {
       }
 
       alert(`¡Bienvenido ${data.nombreCompleto}!`);
-      // Redirige a otra página (puedes ajustar esto)
       window.location.href = '/home';
 
     } catch (error) {
