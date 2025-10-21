@@ -22,10 +22,17 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> {})
             .authorizeHttpRequests(auth -> auth
+                // Permite todos los endpoints de login sin autenticación
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/estudiante/login").permitAll()
+                .requestMatchers("/api/docente/login").permitAll()
+                .requestMatchers("/api/administrativo/login").permitAll()
+                
+                // Protege el resto de endpoints por roles
                 .requestMatchers("/api/estudiante/**").hasAnyRole("ESTUDIANTE", "DOCENTE", "ADMINISTRATIVO")
                 .requestMatchers("/api/docente/**").hasAnyRole("DOCENTE", "ADMINISTRATIVO")
                 .requestMatchers("/api/administrativo/**").hasRole("ADMINISTRATIVO")
+                
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
