@@ -296,3 +296,83 @@ Identify and stop the process that's listening on port 8080 or configure this ap
 2025-10-17T15:49:08.180-03:00  INFO 22764 --- [asistencia] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2025-10-17T15:49:08.180-03:00  INFO 22764 --- [asistencia] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2025-10-17T15:49:08.182-03:00  INFO 22764 --- [asistencia] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-10-20T17:25:03.748-03:00  INFO 23916 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : Starting AsistenciaApplication using Java 17.0.16 with PID 23916 (D:\proyectoPedorro\CtrlAsistencia\backend-ctrlAsistencia\asistencia\target\classes started by benja in D:\proyectoPedorro\CtrlAsistencia\backend-ctrlAsistencia\asistencia)
+2025-10-20T17:25:03.803-03:00  INFO 23916 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-10-20T17:25:04.656-03:00  INFO 23916 --- [asistencia] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-10-20T17:25:04.738-03:00  INFO 23916 --- [asistencia] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 71 ms. Found 3 JPA repository interfaces.
+2025-10-20T17:25:05.387-03:00  INFO 23916 --- [asistencia] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-10-20T17:25:05.399-03:00  INFO 23916 --- [asistencia] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-10-20T17:25:05.401-03:00  INFO 23916 --- [asistencia] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-10-20T17:25:05.461-03:00  INFO 23916 --- [asistencia] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-10-20T17:25:05.461-03:00  INFO 23916 --- [asistencia] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1593 ms
+2025-10-20T17:25:05.684-03:00  INFO 23916 --- [asistencia] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-10-20T17:25:05.755-03:00  INFO 23916 --- [asistencia] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-10-20T17:25:05.793-03:00  INFO 23916 --- [asistencia] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-10-20T17:25:06.092-03:00  INFO 23916 --- [asistencia] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-10-20T17:25:06.126-03:00  INFO 23916 --- [asistencia] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-10-20T17:25:06.532-03:00  INFO 23916 --- [asistencia] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@b788dc2
+2025-10-20T17:25:06.535-03:00  INFO 23916 --- [asistencia] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-10-20T17:25:06.592-03:00  WARN 23916 --- [asistencia] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-10-20T17:25:06.610-03:00  INFO 23916 --- [asistencia] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.43
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-10-20T17:25:07.520-03:00  INFO 23916 --- [asistencia] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-10-20T17:25:07.634-03:00  INFO 23916 --- [asistencia] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-10-20T17:25:08.039-03:00  WARN 23916 --- [asistencia] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-10-20T17:25:08.229-03:00  WARN 23916 --- [asistencia] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 3427258c-8f44-4ac3-afb1-56e07aefb07a
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-10-20T17:25:08.235-03:00  INFO 23916 --- [asistencia] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-10-20T17:25:08.578-03:00  INFO 23916 --- [asistencia] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-10-20T17:25:08.587-03:00  INFO 23916 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : Started AsistenciaApplication in 5.299 seconds (process running for 5.715)
+2025-10-20T17:25:13.064-03:00  INFO 23916 --- [asistencia] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-10-20T17:25:13.065-03:00  INFO 23916 --- [asistencia] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-10-20T17:25:13.067-03:00  INFO 23916 --- [asistencia] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-10-20T17:30:19.069-03:00  INFO 7864 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : Starting AsistenciaApplication using Java 17.0.16 with PID 7864 (D:\proyectoPedorro\CtrlAsistencia\backend-ctrlAsistencia\asistencia\target\classes started by benja in D:\proyectoPedorro\CtrlAsistencia\backend-ctrlAsistencia\asistencia)
+2025-10-20T17:30:19.074-03:00  INFO 7864 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-10-20T17:30:19.803-03:00  INFO 7864 --- [asistencia] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-10-20T17:30:19.903-03:00  INFO 7864 --- [asistencia] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 80 ms. Found 3 JPA repository interfaces.
+2025-10-20T17:30:20.823-03:00  INFO 7864 --- [asistencia] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-10-20T17:30:20.850-03:00  INFO 7864 --- [asistencia] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-10-20T17:30:20.855-03:00  INFO 7864 --- [asistencia] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-10-20T17:30:20.921-03:00  INFO 7864 --- [asistencia] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-10-20T17:30:20.922-03:00  INFO 7864 --- [asistencia] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1795 ms
+2025-10-20T17:30:21.134-03:00  INFO 7864 --- [asistencia] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-10-20T17:30:21.180-03:00  INFO 7864 --- [asistencia] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-10-20T17:30:21.209-03:00  INFO 7864 --- [asistencia] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-10-20T17:30:21.524-03:00  INFO 7864 --- [asistencia] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-10-20T17:30:21.558-03:00  INFO 7864 --- [asistencia] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-10-20T17:30:21.851-03:00  INFO 7864 --- [asistencia] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2b6b487c
+2025-10-20T17:30:21.853-03:00  INFO 7864 --- [asistencia] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-10-20T17:30:21.915-03:00  WARN 7864 --- [asistencia] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-10-20T17:30:21.935-03:00  INFO 7864 --- [asistencia] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.43
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-10-20T17:30:22.891-03:00  INFO 7864 --- [asistencia] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-10-20T17:30:22.996-03:00  INFO 7864 --- [asistencia] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-10-20T17:30:23.440-03:00  WARN 7864 --- [asistencia] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-10-20T17:30:23.628-03:00  WARN 7864 --- [asistencia] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: abfee751-ef3e-491f-ae27-ee3599ef9d95
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-10-20T17:30:23.636-03:00  INFO 7864 --- [asistencia] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-10-20T17:30:23.963-03:00  INFO 7864 --- [asistencia] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-10-20T17:30:23.974-03:00  INFO 7864 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : Started AsistenciaApplication in 5.356 seconds (process running for 5.81)
+2025-10-20T17:30:52.264-03:00  INFO 7864 --- [asistencia] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-10-20T17:30:52.264-03:00  INFO 7864 --- [asistencia] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-10-20T17:30:52.265-03:00  INFO 7864 --- [asistencia] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
