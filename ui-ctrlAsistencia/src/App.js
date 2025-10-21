@@ -1,6 +1,8 @@
-// App.js
+// src/App.js
 import './App.css';
+import { Routes, Route } from 'react-router-dom';
 import Login from './logIn/login';
+import Home from './home/home';
 import Header from './components/header';
 import Footer from './components/footer';
 
@@ -9,7 +11,10 @@ function App() {
     <>
       <Header />
       <main className="App-main">
-        <Login />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+        </Routes>
       </main>
       <Footer />
     </>
@@ -17,6 +22,7 @@ function App() {
 }
 
 export default App;
+
 
 // Pantalla inicial comentada, se mantiene por si se desea recuperar
 /*
