@@ -8,7 +8,7 @@ function Home() {
       return;
     }
 
-    const EXPIRATION_TIME = 5000;
+    const EXPIRATION_TIME = 60*60*1000; // 1 hour in milliseconds
 
     setTimeout(() => {
       localStorage.removeItem('token');

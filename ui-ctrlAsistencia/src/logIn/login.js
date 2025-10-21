@@ -6,30 +6,29 @@ import bandurria from '../assets/images/bandurriaFun.svg';
 function Login() {
   const [correo, setCorreo] = useState('');
   const [contrasenia, setContrasenia] = useState('');
+  const [error, setError] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError('');
 
     try {
       const loginData = { correo, contrasenia };
-      console.log('Intento de inicio de sesión:', loginData);
 
       const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loginData)
       });
 
       const text = await response.text();
 
       if (!response.ok) {
-        throw new Error(`Error en el login: ${response.status} - ${text}`);
+        setError('Credenciales incorrectas reintenta');
+        return;
       }
 
       const data = JSON.parse(text);
-      console.log('Login exitoso:', data);
 
       if (data.token) {
         localStorage.setItem('token', data.token);
@@ -37,12 +36,11 @@ function Login() {
         localStorage.setItem('nombre', data.nombreCompleto);
       }
 
-      alert(`¡Bienvenido ${data.nombreCompleto}!`);
       window.location.href = '/home';
 
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
-      alert('Error al iniciar sesión. Verifica tus credenciales.');
+    } catch (err) {
+      console.error(err);
+      setError('Error al iniciar sesión. Verifica tus credenciales.');
     }
   };
 
@@ -79,6 +77,8 @@ function Login() {
               required
             />
           </div>
+
+          {error && <div style={{ color: 'red', textAlign: 'center', margin: '10px 0' }}>{error}</div>}
 
           <div className="button flex items-center justify-center">
             <button
