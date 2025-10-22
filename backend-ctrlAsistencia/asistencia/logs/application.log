@@ -4542,3 +4542,43 @@ This generated password is for development use only. Your security configuration
 2025-10-22T05:05:01.128-03:00  INFO 5620 --- [asistencia] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2025-10-22T05:05:01.128-03:00  INFO 5620 --- [asistencia] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2025-10-22T05:05:01.130-03:00  INFO 5620 --- [asistencia] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-10-22T10:45:30.605-03:00  INFO 16724 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : Starting AsistenciaApplication using Java 17.0.16 with PID 16724 (D:\proyectoPedorro\CtrlAsistencia\backend-ctrlAsistencia\asistencia\target\classes started by benja in D:\proyectoPedorro\CtrlAsistencia\backend-ctrlAsistencia\asistencia)
+2025-10-22T10:45:30.643-03:00  INFO 16724 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-10-22T10:45:32.302-03:00  INFO 16724 --- [asistencia] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-10-22T10:45:32.482-03:00  INFO 16724 --- [asistencia] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 103 ms. Found 4 JPA repository interfaces.
+2025-10-22T10:45:33.516-03:00  INFO 16724 --- [asistencia] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-10-22T10:45:33.549-03:00  INFO 16724 --- [asistencia] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-10-22T10:45:33.550-03:00  INFO 16724 --- [asistencia] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-10-22T10:45:33.734-03:00  INFO 16724 --- [asistencia] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-10-22T10:45:33.735-03:00  INFO 16724 --- [asistencia] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2985 ms
+2025-10-22T10:45:34.158-03:00  INFO 16724 --- [asistencia] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-10-22T10:45:34.348-03:00  INFO 16724 --- [asistencia] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-10-22T10:45:34.439-03:00  INFO 16724 --- [asistencia] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-10-22T10:45:34.951-03:00  INFO 16724 --- [asistencia] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-10-22T10:45:34.993-03:00  INFO 16724 --- [asistencia] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-10-22T10:45:35.404-03:00  INFO 16724 --- [asistencia] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@fd5689d
+2025-10-22T10:45:35.407-03:00  INFO 16724 --- [asistencia] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-10-22T10:45:35.477-03:00  WARN 16724 --- [asistencia] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-10-22T10:45:35.504-03:00  INFO 16724 --- [asistencia] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.43
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-10-22T10:45:36.479-03:00  INFO 16724 --- [asistencia] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-10-22T10:45:36.598-03:00  INFO 16724 --- [asistencia] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-10-22T10:45:37.158-03:00  WARN 16724 --- [asistencia] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-10-22T10:45:37.379-03:00  WARN 16724 --- [asistencia] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: c73d4391-8f11-4e92-9c87-fcb22c995943
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-10-22T10:45:37.390-03:00  INFO 16724 --- [asistencia] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-10-22T10:45:37.819-03:00  INFO 16724 --- [asistencia] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-10-22T10:45:37.831-03:00  INFO 16724 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : Started AsistenciaApplication in 7.783 seconds (process running for 8.275)
+2025-10-22T10:48:15.587-03:00  INFO 16724 --- [asistencia] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-10-22T10:48:15.588-03:00  INFO 16724 --- [asistencia] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-10-22T10:48:15.590-03:00  INFO 16724 --- [asistencia] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
