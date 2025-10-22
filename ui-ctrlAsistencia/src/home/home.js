@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import AdminMenu from '../components/AdminMenu';
+import './home.css';
 
 function Home() {
   const [usuario, setUsuario] = useState(null);
+  const [menuSeleccionado, setMenuSeleccionado] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -16,8 +17,7 @@ function Home() {
       localStorage.removeItem('token');
       window.location.href = '/login';
     }, EXPIRATION_TIME);
-//----------------------------------------------------------
-    // Obtener info del usuario
+
     fetch('http://localhost:8080/api/usuario/home', {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -39,17 +39,49 @@ function Home() {
     window.location.href = '/login';
   };
 
+  const handleVolver = () => setMenuSeleccionado(null);
+
   if (!usuario) return <p>Cargando...</p>;
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Bienvenido, {usuario.nombreCompleto}</h1>
-      <p>Rol: {usuario.rol}</p>
+    <div className="home-container">
+      {/* Sección izquierda */}
+      <div className="home-left">
+        <h1>Bienvenido, {usuario.nombreCompleto}</h1>
+        <p>Rol: {usuario.rol}</p>
+      </div>
 
-      {/* Solo aparece si el rol es ADMINISTRATIVO */}
-      {usuario.rol === 'ADMINISTRATIVO' && <AdminMenu />}
-
-      <button onClick={handleLogout}>Cerrar Sesión</button>
+      {/* Sección derecha: menú */}
+      {usuario.rol === 'ADMINISTRATIVO' && (
+        <div className="admin-menu-box">
+          {!menuSeleccionado ? (
+            <ul>
+              <li><button onClick={() => setMenuSeleccionado('asignaturas')}>Asignaturas</button></li>
+              <li><button onClick={() => setMenuSeleccionado('clases')}>Clases</button></li>
+              <li><button onClick={() => setMenuSeleccionado('docentes')}>Docentes</button></li>
+              <li><button onClick={() => setMenuSeleccionado('estudiantes')}>Estudiantes</button></li>
+              <hr />
+              <li><button className="logout-btn" onClick={handleLogout}>Cerrar sesión</button></li>
+            </ul>
+          ) : (
+            <div className="submenu">
+              <button className="volver" onClick={handleVolver}>⬅ Volver</button>
+              <h4 className="submenu-titulo">{menuSeleccionado.toUpperCase()}</h4>
+              <ul>
+                {menuSeleccionado === 'asignaturas' ? (
+                  <li><a href="/admin/asignaturas/crear">Crear Asignatura</a></li>
+                ) : (
+                  <>
+                    <li><a href={`/admin/${menuSeleccionado}/crear`}>Crear {menuSeleccionado}</a></li>
+                    <li><a href={`/admin/${menuSeleccionado}/editar`}>Editar {menuSeleccionado}</a></li>
+                    <li><a href={`/admin/${menuSeleccionado}/eliminar`}>Eliminar {menuSeleccionado}</a></li>
+                  </>
+                )}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

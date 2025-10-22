@@ -1,8 +1,75 @@
+/* Contenedor principal: texto izquierda, menú derecha */
 .home-container {
   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   height: 100vh;
-  justify-content: center;
-  align-items: center;
   background-color: #f0f4ff;
-  flex-direction: column;
+  padding: 60px 80px;
+  gap: 40px;
+}
+
+/* Texto a la izquierda */
+.home-left {
+  flex: 1;
+  text-align: center;
+}
+
+.admin-menu-box {
+  position: static;
+  height: auto;
+  width:fit-content;
+  color: #000000;
+  margin: 32px auto;
+  padding: 2px;
+  border-radius: 16px;
+  background: #005092;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  text-align: center;
+}
+
+.admin-menu-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-menu-box li {
+  margin: 12px 0;
+}
+
+.admin-menu-box button,
+.admin-menu-box a {
+  background: #005092;
+  color: #000000;
+  padding: 10px 16px; 
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform .04s ease, background-color .2s ease;
+}
+
+.admin-menu-box button:hover,
+.admin-menu-box a:hover {
+  background: #0b5ed7;
+}
+
+.admin-menu-box button:active,
+.admin-menu-box a:active {
+  transform: scale(0.98);
+}
+
+.submenu .volver {
+  margin-bottom: 12px;
+  background: #6c757d;
+}
+.submenu .volver:hover {
+  background: #5c636a;
+}
+
+.submenu-titulo {
+  margin: 8px 0 16px;
+  letter-spacing: 0.5px;
 }

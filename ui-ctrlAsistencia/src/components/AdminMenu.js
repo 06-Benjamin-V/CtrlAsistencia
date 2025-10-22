@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import "./AdminMenu.css";
-//--------------------------------------------------------
 
 function AdminMenu() {
   const [menuSeleccionado, setMenuSeleccionado] = useState(null);
 
   const handleVolver = () => setMenuSeleccionado(null);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
+    window.location.href = "/login";
+  };
 
   return (
     <div className="admin-menu">
@@ -18,26 +23,55 @@ function AdminMenu() {
 
       <div className="menu">
         {!menuSeleccionado ? (
-          // Menú principal
           <ul>
-            <li><button onClick={() => setMenuSeleccionado("asignaturas")}>Asignaturas</button></li>
-            <li><button onClick={() => setMenuSeleccionado("clases")}>Clases</button></li>
-            <li><button onClick={() => setMenuSeleccionado("docentes")}>Docentes</button></li>
-            <li><button onClick={() => setMenuSeleccionado("estudiantes")}>Estudiantes</button></li>
+            <li>
+              <button onClick={() => setMenuSeleccionado("asignaturas")}>Asignaturas</button>
+            </li>
+            <li>
+              <button onClick={() => setMenuSeleccionado("clases")}>Clases</button>
+            </li>
+            <li>
+              <button onClick={() => setMenuSeleccionado("docentes")}>Docentes</button>
+            </li>
+            <li>
+              <button onClick={() => setMenuSeleccionado("estudiantes")}>Estudiantes</button>
+            </li>
+            <hr />
+            <li>
+              <button className="logout-btn" onClick={handleLogout}>Cerrar sesión</button>
+            </li>
           </ul>
         ) : (
-          // Submenú CRUD
+
           <div>
-            <button className="volver" onClick={handleVolver}>⬅ Volver</button>
-            <h4 className="submenu-titulo">{menuSeleccionado.toUpperCase()}</h4>
+            <button className="volver" onClick={handleVolver}>
+              ⬅ Volver
+            </button>
+            <h4 className="submenu-titulo">
+              {menuSeleccionado.toUpperCase()}
+            </h4>
             <ul>
               {menuSeleccionado === "asignaturas" ? (
-                <li><a href="/admin/asignaturas/crear">Crear Asignatura</a></li>
+                <li>
+                  <a href="/admin/asignaturas/crear">Crear Asignatura</a>
+                </li>
               ) : (
                 <>
-                  <li><a href={`/admin/${menuSeleccionado}/crear`}>Crear {menuSeleccionado}</a></li>
-                  <li><a href={`/admin/${menuSeleccionado}/editar`}>Editar {menuSeleccionado}</a></li>
-                  <li><a href={`/admin/${menuSeleccionado}/eliminar`}>Eliminar {menuSeleccionado}</a></li>
+                  <li>
+                    <a href={`/admin/${menuSeleccionado}/crear`}>
+                      Crear {menuSeleccionado}
+                    </a>
+                  </li>
+                  <li>
+                    <a href={`/admin/${menuSeleccionado}/editar`}>
+                      Editar {menuSeleccionado}
+                    </a>
+                  </li>
+                  <li>
+                    <a href={`/admin/${menuSeleccionado}/eliminar`}>
+                      Eliminar {menuSeleccionado}
+                    </a>
+                  </li>
                 </>
               )}
             </ul>
