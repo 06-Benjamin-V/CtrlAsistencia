@@ -10,9 +10,8 @@ import cl.crtl.asistencia.repository.AdministrativoRepository;
 import cl.crtl.asistencia.repository.DocenteRepository;
 import cl.crtl.asistencia.repository.EstudianteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,72 +21,49 @@ public class AuthService {
     private final DocenteRepository docenteRepository;
     private final AdministrativoRepository administrativoRepository;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
     public LoginResponse unifiedLogin(LoginRequest request) {
-        // Buscar en Estudiante
-        Optional<Estudiante> estudiante = estudianteRepository.findByCorreo(request.getCorreo());
-        if (estudiante.isPresent()) {
-            if (estudiante.get().getContrasenia().equals(request.getContrasenia())) {
-                String token = jwtUtil.generateToken(
-                    estudiante.get().getCorreo(),
-                    "ESTUDIANTE",
-                    estudiante.get().getIdEstudiante()
-                );
-                return new LoginResponse(
-                    "success",
-                    "Login exitoso",
-                    estudiante.get().getNombre() + " " + estudiante.get().getApellido(),
-                    token,
-                    "ESTUDIANTE"
-                );
-            } else {
-                return new LoginResponse("error", "Contraseña incorrecta", null, null, null);
+        final String correo = request.getCorreo().trim();
+        final String plain = request.getContrasenia();
+
+        // 1) Estudiante
+        var est = estudianteRepository.findByCorreo(correo);
+        if (est.isPresent()) {
+            Estudiante e = est.get();
+            if (!passwordEncoder.matches(plain, e.getContrasenia())) {
+                throw new IllegalArgumentException("Credenciales inválidas");
             }
+            String token = jwtUtil.generateToken(e.getCorreo(), "ESTUDIANTE", e.getIdEstudiante());
+            return new LoginResponse("success", "Login exitoso",
+                    e.getNombre() + " " + e.getApellido(), token, "ESTUDIANTE");
         }
 
-        // Buscar en Docente
-        Optional<Docente> docente = docenteRepository.findByCorreo(request.getCorreo());
-        if (docente.isPresent()) {
-            if (docente.get().getContrasenia().equals(request.getContrasenia())) {
-                String token = jwtUtil.generateToken(
-                    docente.get().getCorreo(),
-                    "DOCENTE",
-                    docente.get().getIdDocente()
-                );
-                return new LoginResponse(
-                    "success",
-                    "Login exitoso",
-                    docente.get().getNombre() + " " + docente.get().getApellido(),
-                    token,
-                    "DOCENTE"
-                );
-            } else {
-                return new LoginResponse("error", "Contraseña incorrecta", null, null, null);
+        // 2) Docente
+        var doc = docenteRepository.findByCorreo(correo);
+        if (doc.isPresent()) {
+            Docente d = doc.get();
+            if (!passwordEncoder.matches(plain, d.getContrasenia())) {
+                throw new IllegalArgumentException("Credenciales inválidas");
             }
+            String token = jwtUtil.generateToken(d.getCorreo(), "DOCENTE", d.getIdDocente());
+            return new LoginResponse("success", "Login exitoso",
+                    d.getNombre() + " " + d.getApellido(), token, "DOCENTE");
         }
 
-        // Buscar en Administrativo
-        Optional<Administrativo> administrativo = administrativoRepository.findByCorreo(request.getCorreo());
-        if (administrativo.isPresent()) {
-            if (administrativo.get().getContrasenia().equals(request.getContrasenia())) {
-                String token = jwtUtil.generateToken(
-                    administrativo.get().getCorreo(),
-                    "ADMINISTRATIVO",
-                    administrativo.get().getIdAdministrativo()
-                );
-                return new LoginResponse(
-                    "success",
-                    "Login exitoso",
-                    administrativo.get().getNombre() + " " + administrativo.get().getApellido(),
-                    token,
-                    "ADMINISTRATIVO"
-                );
-            } else {
-                return new LoginResponse("error", "Contraseña incorrecta", null, null, null);
+        // 3) Administrativo
+        var adm = administrativoRepository.findByCorreo(correo);
+        if (adm.isPresent()) {
+            Administrativo a = adm.get();
+            if (!passwordEncoder.matches(plain, a.getContrasenia())) {
+                throw new IllegalArgumentException("Credenciales inválidas");
             }
+            String token = jwtUtil.generateToken(a.getCorreo(), "ADMINISTRATIVO", a.getIdAdministrativo());
+            return new LoginResponse("success", "Login exitoso",
+                    a.getNombre() + " " + a.getApellido(), token, "ADMINISTRATIVO");
         }
 
-        // Usuario no encontrado
-        return new LoginResponse("error", "Usuario no encontrado", null, null, null);
+        // No encontrado → misma respuesta para no filtrar info
+        throw new IllegalArgumentException("Credenciales inválidas");
     }
 }
