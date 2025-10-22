@@ -7,6 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface AdministrativoRepository extends JpaRepository<Administrativo, Long> {
-    Optional<Administrativo> findByCorreoAndContrasenia(String correo, String contrasenia);
     Optional<Administrativo> findByCorreo(String correo);
 }

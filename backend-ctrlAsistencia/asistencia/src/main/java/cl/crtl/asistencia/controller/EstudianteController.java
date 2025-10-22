@@ -1,30 +1,34 @@
 package cl.crtl.asistencia.controller;
 
-import cl.crtl.asistencia.dto.LoginResponse;
-import cl.crtl.asistencia.model.Estudiante;
+import cl.crtl.asistencia.config.JwtUtil;
+import cl.crtl.asistencia.dto.AsignaturaDTO;
 import cl.crtl.asistencia.service.EstudianteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/estudiante")
-@CrossOrigin(origins = "*") // NOSONAR: CORS abierto solo en dev; restringir en prod
 @RequiredArgsConstructor
 public class EstudianteController {
 
     private final EstudianteService estudianteService;
+    private final JwtUtil jwtUtil;
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestParam String correo, @RequestParam String contrasenia) {
-        return estudianteService.login(correo, contrasenia)
-                .map((Estudiante e) -> {
-                    LoginResponse resp = new LoginResponse("OK", "Login exitoso", e.getNombre(), null, "Estudiante");
-                    return ResponseEntity.ok(resp);
-                })
-                .orElseGet(() -> {
-                    LoginResponse resp = new LoginResponse("UNAUTHORIZED", "Credenciales inválidas", null, null,null);
-                    return ResponseEntity.status(401).body(resp);
-                });
+    @GetMapping("/asignaturas")
+    public ResponseEntity<List<AsignaturaDTO>> obtenerAsignaturas(HttpServletRequest request) {
+        final String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).build();
+        }
+
+        String token = authHeader.substring(7);
+        Long idEstudiante = jwtUtil.extractUserId(token);
+
+        List<AsignaturaDTO> asignaturas = estudianteService.obtenerAsignaturasPorEstudiante(idEstudiante);
+        return ResponseEntity.ok(asignaturas);
     }
 }

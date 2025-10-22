@@ -5,6 +5,7 @@ import Header from './components/header';
 import Footer from './components/footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
+import CrearAsignatura from './forms/CrearAsignatura';
 
 function App() {
   return (
@@ -12,8 +13,10 @@ function App() {
       <Header />
       <main className="App-main">
         <Routes>
+          {/* Redirigir a login por defecto */}
           <Route path="/" element={<Navigate to="/login" replace />} />
 
+          {/* Login público */}
           <Route 
             path="/login" 
             element={
@@ -23,11 +26,22 @@ function App() {
             } 
           />
 
+          {/* Home protegido para cualquier usuario logueado */}
           <Route 
             path="/home" 
             element={
               <ProtectedRoute>
                 <Home />
+              </ProtectedRoute>
+            } 
+          />
+
+          {/* Crear asignatura protegido SOLO para ADMINISTRATIVO */}
+          <Route 
+            path="/admin/asignaturas/crear" 
+            element={
+              <ProtectedRoute role="ADMINISTRATIVO">
+                <CrearAsignatura />
               </ProtectedRoute>
             } 
           />
@@ -39,40 +53,3 @@ function App() {
 }
 
 export default App;
-
-// Pantalla inicial comentada, se mantiene por si se desea recuperar
-/*
-function App() {
-  return (
-    <>
-      <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="App">
-              <header className="App-header">
-                <p className="text-5xl font-semibold mb-4">
-                  Bienvenido al control de asistencia.
-                </p>
-
-                <button
-                  className="App-link custom-button"
-                  onClick={() => (window.location.href = '/login')}
-                >
-                  Iniciar Sesión
-                </button>
-              </header>
-            </div>
-          }
-        />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-
-      <Footer />
-    </>
-  );
-}
-
-export default App;
-*/

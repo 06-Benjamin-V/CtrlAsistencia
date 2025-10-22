@@ -15,13 +15,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        LoginResponse response = authService.unifiedLogin(request);
-        
-        if ("success".equals(response.getStatus())) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        try {
+            LoginResponse response = authService.unifiedLogin(request);
             return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.badRequest().body(response);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(401).body("Credenciales inválidas");
         }
     }
 }

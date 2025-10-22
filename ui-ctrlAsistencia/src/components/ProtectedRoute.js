@@ -17,18 +17,22 @@ function parseJwt(token) {
   }
 }
 
-function ProtectedRoute({ children }) {
+function ProtectedRoute({ children, role }) {
   const token = localStorage.getItem('token');
-
   if (!token) return <Navigate to="/login" replace />;
 
   const payload = parseJwt(token);
-  const now = Date.now() / 10000;
+  const now = Date.now() / 1000;
+
   if (!payload || payload.exp < now) {
     localStorage.removeItem('token');
     localStorage.removeItem('rol');
     localStorage.removeItem('nombre');
     return <Navigate to="/login" replace />;
+  }
+
+  if (role && payload.rol !== role) {
+    return <Navigate to="/home" replace />;
   }
 
   return children;

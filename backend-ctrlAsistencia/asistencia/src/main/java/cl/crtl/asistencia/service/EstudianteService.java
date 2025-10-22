@@ -1,22 +1,33 @@
 package cl.crtl.asistencia.service;
 
-import cl.crtl.asistencia.model.Estudiante;
-import cl.crtl.asistencia.repository.EstudianteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import cl.crtl.asistencia.dto.AsignaturaDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
+
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class EstudianteService {
 
-    @Autowired
-    private EstudianteRepository estudianteRepository;
+    private final JdbcTemplate jdbcTemplate;
 
-    public Optional<Estudiante> login(String correo, String contrasenia) {
-        return estudianteRepository.findByCorreoAndContrasenia(correo, contrasenia);
-    }
+    public List<AsignaturaDTO> obtenerAsignaturasPorEstudiante(Long idEstudiante) {
+        String sql = """
+                    SELECT DISTINCT a.id_asignatura, a.nombre
+                    FROM asignatura a
+                    JOIN curso c ON c.id_asignatura = a.id_asignatura
+                    JOIN matricula m ON m.id_curso = c.id
+                    WHERE m.id_estudiante = ?
+                """;
 
-    public Optional<Estudiante> buscarPorCorreo(String correo) {
-        return estudianteRepository.findByCorreo(correo);
+        return jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> new AsignaturaDTO(
+                        rs.getLong("id_asignatura"),
+                        rs.getString("nombre"),
+                        null, null, null, null, null),
+                idEstudiante);
     }
 }
