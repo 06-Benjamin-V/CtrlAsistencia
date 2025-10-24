@@ -10,4 +10,6 @@ import java.util.List;
 public interface ClaseRepository extends JpaRepository<Clase, Long> {
     // Buscar clases por curso
     List<Clase> findByCurso_IdCurso(Long idCurso);
+    List<Clase> findByCurso_Docente_IdDocente(Long idDocente);
+
 }

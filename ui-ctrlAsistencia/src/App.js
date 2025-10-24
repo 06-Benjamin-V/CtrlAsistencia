@@ -5,10 +5,14 @@ import Header from './components/header';
 import Footer from './components/footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
+
+// Formularios
 import CrearAsignatura from './forms/CrearAsignatura';
 import CrearEstudiante from './forms/CrearEstudiante';
 import CrearDocente from './forms/CrearDocente';
 import CrearCurso from './forms/CrearCurso';
+import CrearMatricula from './forms/CrearMatricula';
+import CrearClase from './forms/CrearClase';
 
 function App() {
   return (
@@ -39,7 +43,7 @@ function App() {
             } 
           />
 
-          {/* Crear asignatura protegido SOLO para ADMINISTRATIVO */}
+          {/* Crear asignatura → SOLO ADMIN */}
           <Route 
             path="/admin/asignaturas/crear" 
             element={
@@ -48,7 +52,8 @@ function App() {
               </ProtectedRoute>
             } 
           />
-          {/* Crear docente */}
+
+          {/* Crear docente → SOLO ADMIN */}
           <Route 
             path="/admin/docentes/crear" 
             element={
@@ -57,7 +62,8 @@ function App() {
               </ProtectedRoute>
             } 
           />
-          {/* Crear estudiante */}
+
+          {/* Crear estudiante → SOLO ADMIN */}
           <Route
             path="/admin/estudiantes/crear"
             element={
@@ -67,8 +73,9 @@ function App() {
             }
           />
 
+          {/* Crear curso → SOLO ADMIN */}
           <Route 
-            path="/admin/clases/crear" 
+            path="/admin/cursos/crear" 
             element={
               <ProtectedRoute role="ADMINISTRATIVO">
                  <CrearCurso />
@@ -76,6 +83,25 @@ function App() {
             }
           />
 
+          {/* Matricular estudiante → SOLO ADMIN */}
+          <Route 
+            path="/admin/matriculas/crear" 
+            element={
+              <ProtectedRoute role="ADMINISTRATIVO">
+                 <CrearMatricula />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Crear clase → SOLO DOCENTE */}
+          <Route 
+            path="/docente/clases/crear" 
+            element={
+              <ProtectedRoute role="DOCENTE">
+                 <CrearClase />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
       <Footer />

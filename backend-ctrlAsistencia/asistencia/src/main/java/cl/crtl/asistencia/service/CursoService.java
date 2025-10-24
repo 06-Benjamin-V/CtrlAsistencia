@@ -28,4 +28,9 @@ public class CursoService {
     public void eliminar(Long id) {
         cursoRepository.deleteById(id);
     }
+
+    public List<Curso> listarPorDocente(Long idDocente) {
+        return cursoRepository.findByDocente_IdDocente(idDocente);
+    }
+
 }

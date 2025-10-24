@@ -25,6 +25,10 @@ public class ClaseService {
         return claseRepository.findByCurso_IdCurso(idCurso);
     }
 
+    public List<Clase> listarPorDocente(Long idDocente) {
+        return claseRepository.findByCurso_Docente_IdDocente(idDocente);
+    }
+
     public Clase guardar(Clase clase) {
         return claseRepository.save(clase);
     }

@@ -13,4 +13,5 @@ public class HomeResponse {
     private String nombreCompleto;
     private String rol;
     private List<AsignaturaDTO> asignaturas;
+    private Long id;
 }

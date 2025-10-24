@@ -11,19 +11,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/clase")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class ClaseController {
 
     private final ClaseService claseService;
 
     @GetMapping("/lista")
-    public ResponseEntity<List<Clase>> listar() {
+    public ResponseEntity<List<Clase>> listarTodas() {
         return ResponseEntity.ok(claseService.listarTodas());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Clase> obtenerPorId(@PathVariable Long id) {
-        var clase = claseService.obtenerPorId(id);
-        return (clase != null) ? ResponseEntity.ok(clase) : ResponseEntity.notFound().build();
+        Clase clase = claseService.obtenerPorId(id);
+        return clase != null ? ResponseEntity.ok(clase) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/curso/{idCurso}")
+    public ResponseEntity<List<Clase>> listarPorCurso(@PathVariable Long idCurso) {
+        return ResponseEntity.ok(claseService.listarPorCurso(idCurso));
+    }
+
+    @GetMapping("/docente/{idDocente}")
+    public ResponseEntity<List<Clase>> listarPorDocente(@PathVariable Long idDocente) {
+        return ResponseEntity.ok(claseService.listarPorDocente(idDocente));
     }
 
     @PostMapping("/crear")
@@ -31,20 +42,9 @@ public class ClaseController {
         return ResponseEntity.ok(claseService.guardar(clase));
     }
 
-    @PutMapping("/actualizar/{id}")
-    public ResponseEntity<Clase> actualizar(@PathVariable Long id, @RequestBody Clase clase) {
-        clase.setIdClase(id);
-        return ResponseEntity.ok(claseService.guardar(clase));
-    }
-
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         claseService.eliminar(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/curso/{idCurso}")
-    public ResponseEntity<List<Clase>> listarPorCurso(@PathVariable Long idCurso) {
-        return ResponseEntity.ok(claseService.listarPorCurso(idCurso));
     }
 }

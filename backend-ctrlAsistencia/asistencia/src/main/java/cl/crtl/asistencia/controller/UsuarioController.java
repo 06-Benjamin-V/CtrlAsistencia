@@ -42,6 +42,7 @@ public class UsuarioController {
         if ("ADMINISTRATIVO".equalsIgnoreCase(rol)) {
             var admin = adminRepo.findByCorreo(correo).orElseThrow();
             response.setNombreCompleto(admin.getNombre() + " " + admin.getApellido());
+            response.setId(admin.getIdAdministrativo());
 
             String sql = "SELECT a.id_asignatura, a.nombre FROM asignatura a";
             List<AsignaturaDTO> asignaturas = jdbcTemplate.query(
@@ -59,6 +60,7 @@ public class UsuarioController {
         if ("DOCENTE".equalsIgnoreCase(rol)) {
             var docente = docenteRepo.findByCorreo(correo).orElseThrow();
             response.setNombreCompleto(docente.getNombre() + " " + docente.getApellido());
+             response.setId(docente.getIdDocente());
 
             String sql = """
                         SELECT a.id_asignatura, a.nombre
@@ -83,12 +85,13 @@ public class UsuarioController {
         if ("ESTUDIANTE".equalsIgnoreCase(rol)) {
             var estudiante = estudianteRepo.findByCorreo(correo).orElseThrow();
             response.setNombreCompleto(estudiante.getNombre() + " " + estudiante.getApellido());
+            response.setId(estudiante.getIdEstudiante());
 
             String sql = """
                         SELECT DISTINCT a.id_asignatura, a.nombre
                         FROM asignatura a
                         JOIN curso c ON c.id_asignatura = a.id_asignatura
-                        JOIN matricula m ON m.id_curso = c.id
+                        JOIN matricula m ON m.id_curso = c.id_curso
                         WHERE m.id_estudiante = ?
                     """;
             List<AsignaturaDTO> asignaturas = jdbcTemplate.query(

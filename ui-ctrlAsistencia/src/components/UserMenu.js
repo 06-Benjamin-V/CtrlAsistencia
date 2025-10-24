@@ -1,26 +1,44 @@
 import React, { useState } from "react";
 import "./UserMenu.css";
 
-function UserMenu({ rol, onLogout }) {
+function UserMenu({ rol, onLogout, onSelectSection }) {
   const [menuSeleccionado, setMenuSeleccionado] = useState(null);
 
   const handleVolver = () => setMenuSeleccionado(null);
 
-  // Opciones dinámicas según rol
   const opciones = {
-    ADMINISTRATIVO: ["asignaturas", "clases", "docentes", "estudiantes"],
-    DOCENTE: ["asistencia"],
-    ESTUDIANTE: ["asignaturas"]
-  };
+  ADMINISTRATIVO: [
+    { key: "asignaturas", label: "Asignaturas", crear: "/admin/asignaturas/crear" },
+    { key: "docentes", label: "Docentes", crear: "/admin/docentes/crear" },
+    { key: "estudiantes", label: "Estudiantes", crear: "/admin/estudiantes/crear" },
+    { key: "cursos", label: "Cursos", crear: "/admin/cursos/crear" },
+    { key: "matriculas", label: "Matrículas", crear: "/admin/matriculas/crear" },
+  ],
+  DOCENTE: [
+    { key: "asignaturas", label: "Mis Asignaturas" },
+    { key: "clases", label: "Clases", crear: "/docente/clases/crear" }
+  ],
+  ESTUDIANTE: [
+    { key: "asignaturas", label: "Mis Asignaturas" }
+  ]
+};
+
+
+  const opcionSeleccionada = opciones[rol]?.find((o) => o.key === menuSeleccionado);
 
   return (
     <div className="user-menu">
       {!menuSeleccionado ? (
         <ul>
           {opciones[rol]?.map((item) => (
-            <li key={item}>
-              <button onClick={() => setMenuSeleccionado(item)}>
-                {item.charAt(0).toUpperCase() + item.slice(1)}
+            <li key={item.key}>
+              <button
+                onClick={() => {
+                  setMenuSeleccionado(item.key);
+                  onSelectSection(item.key);
+                }}
+              >
+                {item.label}
               </button>
             </li>
           ))}
@@ -36,36 +54,36 @@ function UserMenu({ rol, onLogout }) {
           <button className="volver" onClick={handleVolver}>
             ⬅ Volver
           </button>
-          <h4 className="submenu-titulo">
-            {menuSeleccionado === "clases"
-              ? "CURSOS"
-              : menuSeleccionado.toUpperCase()}
-          </h4>
+          <h4 className="submenu-titulo">{opcionSeleccionada.label}</h4>
           <ul>
-            <li>
-              <a href={`/admin/${menuSeleccionado}/crear`}>
-                {menuSeleccionado === "clases"
-                  ? "Crear Curso"
-                  : `Crear ${menuSeleccionado}`}
-              </a>
-            </li>
-            {rol === "ADMINISTRATIVO" && (
-              <>
-                <li>
-                  <a href={`/admin/${menuSeleccionado}/editar`}>
-                    {menuSeleccionado === "clases"
-                      ? "Editar Curso"
-                      : `Editar ${menuSeleccionado}`}
-                  </a>
-                </li>
-                <li>
-                  <a href={`/admin/${menuSeleccionado}/eliminar`}>
-                    {menuSeleccionado === "clases"
-                      ? "Eliminar Curso"
-                      : `Eliminar ${menuSeleccionado}`}
-                  </a>
-                </li>
-              </>
+            {opcionSeleccionada?.crear && (
+              <li>
+                <a href={opcionSeleccionada.crear}>
+                  Crear {menuSeleccionado}
+                </a>
+              </li>
+            )}
+
+            {rol === "ADMINISTRATIVO" &&
+              ["asignaturas", "docentes", "estudiantes", "cursos"].includes(menuSeleccionado) && (
+                <>
+                  <li>
+                    <a href={`/admin/${menuSeleccionado}/editar`}>
+                      Editar {menuSeleccionado}
+                    </a>
+                  </li>
+                  <li>
+                    <a href={`/admin/${menuSeleccionado}/eliminar`}>
+                      Eliminar {menuSeleccionado}
+                    </a>
+                  </li>
+                </>
+              )}
+
+            {rol === "ADMINISTRATIVO" && menuSeleccionado === "matriculas" && (
+              <li>
+                <a href="/admin/matriculas/eliminar">Eliminar Matrícula</a>
+              </li>
             )}
           </ul>
         </div>

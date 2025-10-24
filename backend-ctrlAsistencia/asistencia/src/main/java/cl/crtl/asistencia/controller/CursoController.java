@@ -43,4 +43,10 @@ public class CursoController {
         cursoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/docente/{idDocente}")
+    public ResponseEntity<List<Curso>> listarPorDocente(@PathVariable Long idDocente) {
+        return ResponseEntity.ok(cursoService.listarPorDocente(idDocente));
+    }
+
 }
