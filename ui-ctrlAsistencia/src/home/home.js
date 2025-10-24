@@ -1,87 +1,73 @@
-import React, { useEffect, useState } from 'react';
-import './home.css';
+import React, { useEffect, useState } from "react";
+import UserMenu from "../components/UserMenu";
+import AsignaturaCard from "../components/AsignaturaCard";
+import SearchBar from "../components/SearchBar";
+import "./home.css";
 
 function Home() {
   const [usuario, setUsuario] = useState(null);
-  const [menuSeleccionado, setMenuSeleccionado] = useState(null);
+  const [asignaturas, setAsignaturas] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      window.location.href = '/login';
+      window.location.href = "/login";
       return;
     }
 
-    const EXPIRATION_TIME = 60 * 60 * 1000;
-    const timer = setTimeout(() => {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
-    }, EXPIRATION_TIME);
-
-    fetch('http://localhost:8080/api/usuario/home', {
+    fetch("http://localhost:8080/api/usuario/home", {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then(res => {
-        if (!res.ok) throw new Error('Error al obtener usuario');
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al obtener usuario");
         return res.json();
       })
-      .then(data => setUsuario(data))
+      .then((data) => {
+        setUsuario(data);
+        setAsignaturas(data.asignaturas || []);
+      })
       .catch(() => {
-        localStorage.removeItem('token');
-        window.location.href = '/login';
+        localStorage.removeItem("token");
+        window.location.href = "/login";
       });
-
-    return () => clearTimeout(timer);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    window.location.href = '/login';
+    localStorage.removeItem("token");
+    window.location.href = "/login";
   };
-
-  const handleVolver = () => setMenuSeleccionado(null);
 
   if (!usuario) return <p>Cargando...</p>;
 
+  const filteredAsignaturas = asignaturas.filter((a) =>
+    a.nombre.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="home-container">
-      {/* Sección izquierda */}
       <div className="home-left">
         <h1>Bienvenido, {usuario.nombreCompleto}</h1>
         <p>Rol: {usuario.rol}</p>
-      </div>
 
-      {/* Sección derecha: menú */}
-      {usuario.rol === 'ADMINISTRATIVO' && (
-        <div className="admin-menu-box">
-          {!menuSeleccionado ? (
-            <ul>
-              <li><button onClick={() => setMenuSeleccionado('asignaturas')}>Asignaturas</button></li>
-              <li><button onClick={() => setMenuSeleccionado('clases')}>Clases</button></li>
-              <li><button onClick={() => setMenuSeleccionado('docentes')}>Docentes</button></li>
-              <li><button onClick={() => setMenuSeleccionado('estudiantes')}>Estudiantes</button></li>
-              <hr />
-              <li><button className="logout-btn" onClick={handleLogout}>Cerrar sesión</button></li>
-            </ul>
+        {/* Barra de búsqueda */}
+        <SearchBar value={search} onChange={setSearch} />
+
+        {/* Grid de asignaturas */}
+        <div className="asignaturas-grid">
+          {filteredAsignaturas.length > 0 ? (
+            filteredAsignaturas.map((asig) => (
+              <AsignaturaCard key={asig.id} asignatura={asig} />
+            ))
           ) : (
-            <div className="submenu">
-              <button className="volver" onClick={handleVolver}>⬅ Volver</button>
-              <h4 className="submenu-titulo">{menuSeleccionado.toUpperCase()}</h4>
-              <ul>
-                {menuSeleccionado === 'asignaturas' ? (
-                  <li><a href="/admin/asignaturas/crear">Crear Asignatura</a></li>
-                ) : (
-                  <>
-                    <li><a href={`/admin/${menuSeleccionado}/crear`}>Crear {menuSeleccionado}</a></li>
-                    <li><a href={`/admin/${menuSeleccionado}/editar`}>Editar {menuSeleccionado}</a></li>
-                    <li><a href={`/admin/${menuSeleccionado}/eliminar`}>Eliminar {menuSeleccionado}</a></li>
-                  </>
-                )}
-              </ul>
-            </div>
+            <p>No se encontraron asignaturas.</p>
           )}
         </div>
-      )}
+      </div>
+
+      <div className="admin-menu-box">
+        <UserMenu rol={usuario.rol} onLogout={handleLogout} />
+      </div>
     </div>
   );
 }

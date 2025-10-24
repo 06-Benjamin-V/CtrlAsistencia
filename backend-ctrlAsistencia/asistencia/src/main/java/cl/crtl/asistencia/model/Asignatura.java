@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,4 +33,11 @@ public class Asignatura {
 
     @Column(nullable = false)
     private Integer creditos;
+
+    @ManyToOne
+    @JoinColumn(name = "id_departamento")
+    private Departamento departamento;
+
+    @Column(name = "porcentaje_min_asistencia", nullable = false)
+    private Integer porcentajeMinAsistencia;
 }

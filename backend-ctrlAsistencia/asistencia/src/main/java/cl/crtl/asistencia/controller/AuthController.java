@@ -20,7 +20,9 @@ public class AuthController {
             LoginResponse response = authService.unifiedLogin(request);
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(401).body("Credenciales inválidas");
+            return ResponseEntity.status(401).body(
+                    new LoginResponse("error", "Credenciales inválidas", null, null, null)
+            );
         }
     }
 }

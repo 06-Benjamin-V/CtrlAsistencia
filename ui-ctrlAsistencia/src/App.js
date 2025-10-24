@@ -6,6 +6,9 @@ import Footer from './components/footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
 import CrearAsignatura from './forms/CrearAsignatura';
+import CrearEstudiante from './forms/CrearEstudiante';
+import CrearDocente from './forms/CrearDocente';
+import CrearCurso from './forms/CrearCurso';
 
 function App() {
   return (
@@ -45,6 +48,34 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          {/* Crear docente */}
+          <Route 
+            path="/admin/docentes/crear" 
+            element={
+              <ProtectedRoute role="ADMINISTRATIVO">
+                <CrearDocente />
+              </ProtectedRoute>
+            } 
+          />
+          {/* Crear estudiante */}
+          <Route
+            path="/admin/estudiantes/crear"
+            element={
+              <ProtectedRoute role="ADMINISTRATIVO">
+                <CrearEstudiante />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route 
+            path="/admin/clases/crear" 
+            element={
+              <ProtectedRoute role="ADMINISTRATIVO">
+                 <CrearCurso />
+              </ProtectedRoute>
+            }
+          />
+
         </Routes>
       </main>
       <Footer />

@@ -3,7 +3,6 @@ package cl.crtl.asistencia.controller;
 import cl.crtl.asistencia.config.JwtUtil;
 import cl.crtl.asistencia.dto.AsignaturaDTO;
 import cl.crtl.asistencia.dto.HomeResponse;
-import cl.crtl.asistencia.model.*;
 import cl.crtl.asistencia.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

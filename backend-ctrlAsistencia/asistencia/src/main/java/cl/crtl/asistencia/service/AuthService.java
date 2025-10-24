@@ -24,46 +24,60 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public LoginResponse unifiedLogin(LoginRequest request) {
-        final String correo = request.getCorreo().trim();
+final String correo = request.getCorreo().trim();
         final String plain = request.getContrasenia();
 
         // 1) Estudiante
-        var est = estudianteRepository.findByCorreo(correo);
-        if (est.isPresent()) {
-            Estudiante e = est.get();
-            if (!passwordEncoder.matches(plain, e.getContrasenia())) {
-                throw new IllegalArgumentException("Credenciales inválidas");
-            }
-            String token = jwtUtil.generateToken(e.getCorreo(), "ESTUDIANTE", e.getIdEstudiante());
-            return new LoginResponse("success", "Login exitoso",
-                    e.getNombre() + " " + e.getApellido(), token, "ESTUDIANTE");
+        var estudianteOpt = estudianteRepository.findByCorreo(correo);
+        if (estudianteOpt.isPresent()) {
+            return loginGeneric(estudianteOpt.get(), plain, "ESTUDIANTE",
+                    estudianteOpt.get().getIdEstudiante());
         }
 
         // 2) Docente
-        var doc = docenteRepository.findByCorreo(correo);
-        if (doc.isPresent()) {
-            Docente d = doc.get();
-            if (!passwordEncoder.matches(plain, d.getContrasenia())) {
-                throw new IllegalArgumentException("Credenciales inválidas");
-            }
-            String token = jwtUtil.generateToken(d.getCorreo(), "DOCENTE", d.getIdDocente());
-            return new LoginResponse("success", "Login exitoso",
-                    d.getNombre() + " " + d.getApellido(), token, "DOCENTE");
+        var docenteOpt = docenteRepository.findByCorreo(correo);
+        if (docenteOpt.isPresent()) {
+            return loginGeneric(docenteOpt.get(), plain, "DOCENTE",
+                    docenteOpt.get().getIdDocente());
         }
 
         // 3) Administrativo
-        var adm = administrativoRepository.findByCorreo(correo);
-        if (adm.isPresent()) {
-            Administrativo a = adm.get();
-            if (!passwordEncoder.matches(plain, a.getContrasenia())) {
-                throw new IllegalArgumentException("Credenciales inválidas");
-            }
-            String token = jwtUtil.generateToken(a.getCorreo(), "ADMINISTRATIVO", a.getIdAdministrativo());
-            return new LoginResponse("success", "Login exitoso",
-                    a.getNombre() + " " + a.getApellido(), token, "ADMINISTRATIVO");
+        var adminOpt = administrativoRepository.findByCorreo(correo);
+        if (adminOpt.isPresent()) {
+            return loginGeneric(adminOpt.get(), plain, "ADMINISTRATIVO",
+                    adminOpt.get().getIdAdministrativo());
         }
 
-        // No encontrado → misma respuesta para no filtrar info
+        // No encontrado → misma respuesta
         throw new IllegalArgumentException("Credenciales inválidas");
+    }
+
+    private LoginResponse loginGeneric(Object user, String plainPassword, String role, Long userId) {
+        String correo;
+        String contrasenia;
+        String nombreCompleto;
+
+        if (user instanceof Estudiante e) {
+            correo = e.getCorreo();
+            contrasenia = e.getContrasenia();
+            nombreCompleto = e.getNombre() + " " + e.getApellido();
+        } else if (user instanceof Docente d) {
+            correo = d.getCorreo();
+            contrasenia = d.getContrasenia();
+            nombreCompleto = d.getNombre() + " " + d.getApellido();
+        } else if (user instanceof Administrativo a) {
+            correo = a.getCorreo();
+            contrasenia = a.getContrasenia();
+            nombreCompleto = a.getNombre() + " " + a.getApellido();
+        } else {
+            throw new IllegalArgumentException("Usuario inválido");
+        }
+
+        if (!passwordEncoder.matches(plainPassword, contrasenia)) {
+            throw new IllegalArgumentException("Credenciales inválidas");
+        }
+
+        String token = jwtUtil.generateToken(correo, role, userId);
+        return new LoginResponse("success", "Login exitoso", nombreCompleto, token, role);
     }
 }
