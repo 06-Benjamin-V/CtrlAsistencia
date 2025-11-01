@@ -4,4 +4,4 @@
 .env
 .scannerwork/
 target/
-analyze.bat
+backend-ctrlAsistencia/asistencia/analize.bat
