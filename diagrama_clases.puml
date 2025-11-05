@@ -1,0 +1,49 @@
+@startuml
+title Diagrama de Clases - Proyecto Ctrl+A
+
+package config {
+  class CorsConfig
+  class SecurityConfig
+  class JwtUtil
+  class JwtAuthenticationFilter
+}
+
+package controller {
+  class AuthController
+  class AdministrativoController
+  class DocenteController
+  class EstudianteController
+}
+
+package service {
+  class AuthService
+  class AdministrativoService
+  class DocenteService
+  class EstudianteService
+}
+
+package repository {
+  class AdministrativoRepository
+  class DocenteRepository
+  class EstudianteRepository
+}
+
+' Relaciones típicas
+AuthController --> AuthService
+AdministrativoController --> AdministrativoService
+DocenteController --> DocenteService
+EstudianteController --> EstudianteService
+
+AuthService --> JwtUtil
+AuthService --> AdministrativoRepository
+AuthService --> DocenteRepository
+AuthService --> EstudianteRepository
+
+AdministrativoService --> AdministrativoRepository
+DocenteService --> DocenteRepository
+EstudianteService --> EstudianteRepository
+
+JwtAuthenticationFilter --> JwtUtil
+SecurityConfig --> JwtAuthenticationFilter
+
+@enduml

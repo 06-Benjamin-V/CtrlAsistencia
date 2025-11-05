@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link id="favicon" rel="icon" href="/favicon-dark.ico" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Web site created to manage the attendance control of the University of La Frontera"/>
+
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>Control de Asistencia</title>
+    <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const favicon = document.getElementById("favicon");
+      const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const setFavicon = () => {
+        
+        if (darkQuery.matches) {
+          favicon.setAttribute("href", "favicon-dark.ico");
+        } else {
+          favicon.setAttribute("href", "favicon-light.ico");
+        }};
+
+    setFavicon();
+    darkQuery.addEventListener("change", setFavicon);
+  });
+    </script>
+
+  </head>
+
+  <body>
+    <noscript></noscript>
+    <div id="root"></div>
+  </body>
+</html>
