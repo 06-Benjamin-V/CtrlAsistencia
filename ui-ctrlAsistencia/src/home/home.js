@@ -7,17 +7,20 @@ import SearchBar from "../components/SearchBar";
 import "./home.css";
 
 function Home() {
+  // ----------------------------------------------------------
+  // ✅ Estados
+  // ----------------------------------------------------------
   const [usuario, setUsuario] = useState(null);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [seccion, setSeccion] = useState("asignaturas");
 
+  // ----------------------------------------------------------
+  // ✅ Cargar usuario al iniciar
+  // ----------------------------------------------------------
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "/login";
-      return;
-    }
+    if (!token) return (window.location.href = "/login");
 
     fetch("http://localhost:8080/api/usuario/home", {
       headers: { Authorization: `Bearer ${token}` },
@@ -36,70 +39,63 @@ function Home() {
       });
   }, []);
 
+  // ----------------------------------------------------------
+  // ✅ Cerrar sesión
+  // ----------------------------------------------------------
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
   };
 
+  // ----------------------------------------------------------
+  // ✅ Cambiar sección (fetch dinámico)
+  // ----------------------------------------------------------
   const handleSelectSection = (section) => {
-  setSeccion(section);
-  const token = localStorage.getItem("token");
-  let url = "";
+    setSeccion(section);
+    const token = localStorage.getItem("token");
+    let url = "";
 
+    if (section === "docentes") url = "http://localhost:8080/api/docente/lista";
+    if (section === "estudiantes") url = "http://localhost:8080/api/estudiante/lista";
+    if (section === "asignaturas") url = "http://localhost:8080/api/asignatura/lista";
+    if (section === "cursos") url = "http://localhost:8080/api/curso/lista";
 
-  if (section === "docentes") url = "http://localhost:8080/api/docente/lista";
-  if (section === "estudiantes") url = "http://localhost:8080/api/estudiante/lista";
-  if (section === "asignaturas") url = "http://localhost:8080/api/asignatura/lista";
-  if (section === "cursos") url = "http://localhost:8080/api/curso/lista";
+    if (section === "clases" && usuario?.rol === "DOCENTE") {
+      url = `http://localhost:8080/api/clase/docente/${usuario.idDocente}`;
+    }
 
-  if (section === "clases" && usuario.rol === "DOCENTE") {
-    url = `http://localhost:8080/api/clase/docente/${usuario.idDocente}`;
-  }
+    if (url) {
+      fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+        .then((res) => res.json())
+        .then((data) => setData(data))
+        .catch((err) => console.error(err));
+    } else {
+      setData([]);
+    }
+  };
 
-  if (url) {
-    fetch(url, { headers: { Authorization: `Bearer ${token}` } })
-      .then((res) => res.json())
-      .then((data) => setData(data))
-      .catch((err) => console.error(err));
-  } else {
-    setData([]);
-  }
-};
-
-
-  if (!usuario) return <p>Cargando...</p>;
-
+  // ----------------------------------------------------------
+  // ✅ Función para búsqueda / filtrado
+  // ----------------------------------------------------------
   const matchesSearch = (item) => {
     const q = search.toLowerCase();
 
-    if (seccion === "asignaturas") {
-      return (
-        (item.nombre || "").toLowerCase().includes(q) ||
-        (item.codigo || "").toLowerCase().includes(q)
-      );
-    }
+    const fields = {
+      asignaturas: ["nombre", "codigo"],
+      docentes: ["nombre", "apellido", "rut"],
+      estudiantes: ["nombre", "apellido", "rut"],
+    }[seccion];
 
-    if (seccion === "docentes") {
-      return (
-        (item.nombre || "").toLowerCase().includes(q) ||
-        (item.apellido || "").toLowerCase().includes(q) ||
-        (item.rut || "").toLowerCase().includes(q)
-      );
-    }
+    if (!fields) return true;
 
-    if (seccion === "estudiantes") {
-      return (
-        (item.nombre || "").toLowerCase().includes(q) ||
-        (item.apellido || "").toLowerCase().includes(q) ||
-        (item.rut || "").toLowerCase().includes(q)
-      );
-    }
-
-    return true;
+    return fields.some((f) => (item[f] || "").toLowerCase().includes(q));
   };
 
   const filtered = data.filter(matchesSearch);
 
+  // ----------------------------------------------------------
+  // ✅ Render dinámico de tarjetas
+  // ----------------------------------------------------------
   const renderCard = (item) => {
     switch (seccion) {
       case "asignaturas":
@@ -113,18 +109,25 @@ function Home() {
     }
   };
 
+  // ----------------------------------------------------------
+  // ✅ Render principal
+  // ----------------------------------------------------------
+  if (!usuario) return <p>Cargando...</p>;
+
   return (
     <div className="home-container">
       <div className="home-left">
         <h1>Bienvenido, {usuario.nombreCompleto}</h1>
         <p>Rol: {usuario.rol}</p>
 
-        {/* Barra de búsqueda solo si aplica */}
         {["asignaturas", "docentes", "estudiantes"].includes(seccion) && (
-          <SearchBar value={search} onChange={setSearch} placeholder={`Buscar ${seccion}...`} />
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder={`Buscar ${seccion}...`}
+          />
         )}
 
-        {/* Grid de resultados */}
         <div className="asignaturas-grid">
           {["cursos", "matriculas"].includes(seccion) ? (
             <p>Usa el menú de la derecha para gestionar {seccion}.</p>

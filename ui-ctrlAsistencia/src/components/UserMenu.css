@@ -1,116 +1,102 @@
 /* Contenedor general del menú */
 .user-menu {
-  position: relative;
-  display: inline-block;
-}
-
-/* Botón hamburguesa (si quieres mantenerlo en UserMenu) */
-.user-menu .hamburger {
-  width: 36px;
-  height: 28px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 5px;
-}
-
-.user-menu .hamburger div {
-  width: 100%;
-  height: 3px;
-  background-color: #333;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-/* Estado activo (X) */
-.user-menu input:checked ~ .hamburger .line1 {
-  transform: rotate(-45deg) translate(-5px, 6px);
-}
-
-.user-menu input:checked ~ .hamburger .line2 {
-  opacity: 0;
-}
-
-.user-menu input:checked ~ .hamburger .line3 {
-  transform: rotate(45deg) translate(-5px, -6px);
-}
-
-/* Menú desplegable */
-.user-menu .menu {
-  display: none;
-  position: absolute;
-  top: 40px;
+  position: fixed;
+  top: 0;
   right: 0;
-  background: #fff;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  border-radius: 8px;
-  padding: 10px 15px;
-  min-width: 180px;
-  z-index: 10;
+  width: 260px;
+  height: 100%;
+  background: linear-gradient(to bottom, #282c34, #003865);
+  color: white;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  z-index: 1000;
 }
 
-/* Mostrar cuando está activo */
-.user-menu input:checked ~ .menu {
-  display: block;
+/* Ocultamos estilos antiguos del menú desplegable */
+.user-menu .hamburger,
+.user-menu input {
+  display: none;
 }
 
-/* Items del menú */
-.user-menu .menu ul {
+/* Lista de opciones */
+.user-menu ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  padding-top: 80px;  /* 🔹 AQUÍ controlas la distancia desde arriba (ej: 80px, 100px, 50%, etc.) */
 }
 
-.user-menu .menu ul li {
-  margin: 8px 0;
+.user-menu li {
+  margin-bottom: 0;  /* 🔹 Sin espacio entre botones */
+  padding: 0;        /* 🔹 Sin padding adicional */
 }
 
-.user-menu .menu ul li button,
-.user-menu .menu ul li a {
+/* Botones y enlaces del menú - PEGADOS */
+.user-menu button,
+.user-menu a {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   background: none;
   border: none;
-  font-size: 15px;
-  color: #333;
-  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  text-align: left;
   cursor: pointer;
-  font-weight: 500;
-  transition: color 0.2s ease;
+  padding: 15px 20px;
+  margin: 0;  /* 🔹 Sin margen entre botones */
+  border-radius: 0 !important;
+  transition: background 0.3s;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.user-menu .menu ul li button:hover,
-.user-menu .menu ul li a:hover {
-  color: #007bff;
+.user-menu button:hover,
+.user-menu a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Submenú */
-.submenu-titulo {
-  margin: 10px 0;
-  font-size: 14px;
-  font-weight: bold;
-  color: #444;
-  text-align: center;
+.submenu {
+  margin-top: 0;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .volver {
-  background: none;
+  display: block;
+  width: calc(100% - 40px);
+  background-color: #005092;
+  padding: 12px 15px;
+  border-radius: 0 !important;
+  color: white;
   border: none;
-  font-size: 13px;
-  color: #007bff;
   cursor: pointer;
-  margin-bottom: 8px;
+  margin: 0 0 10px 0;
 }
 
 .volver:hover {
-  text-decoration: underline;
+  background-color: #0073b6;
+}
+
+.submenu-titulo {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 /* Botón logout */
 .logout-btn {
-  color: #d9534f;
   font-weight: bold;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 0 !important;
 }
 
-.logout-btn:hover {
-  color: #c9302c;
+/* --- Ajuste para el contenido principal --- */
+.main-content {
+  margin-right: 270px;
+  padding: 20px;
 }
