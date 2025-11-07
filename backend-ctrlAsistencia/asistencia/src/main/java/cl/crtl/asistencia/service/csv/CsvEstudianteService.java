@@ -4,13 +4,13 @@ import cl.crtl.asistencia.dto.csv.EstudianteImportDTO;
 import cl.crtl.asistencia.dto.csv.ImportRowResult;
 import cl.crtl.asistencia.model.Carrera;
 import cl.crtl.asistencia.model.Estudiante;
-import cl.crtl.asistencia.repository.EstudianteRepository;
 import cl.crtl.asistencia.repository.CarreraRepository;
+import cl.crtl.asistencia.repository.EstudianteRepository;
+import com.opencsv.CSVReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.opencsv.CSVReader;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -24,81 +24,69 @@ public class CsvEstudianteService {
     private final CarreraRepository carreraRepo;
     private final PasswordEncoder encoder;
 
-    // ---------------- PREVIEW CSV ----------------
+    // =============== PREVIEW ===============
     public List<ImportRowResult<EstudianteImportDTO>> previewCsv(MultipartFile file) {
-        List<ImportRowResult<EstudianteImportDTO>> list = new ArrayList<>();
+        List<ImportRowResult<EstudianteImportDTO>> results = new ArrayList<>();
+        Set<String> rutsVistos = new HashSet<>();
+        Set<String> correosVistos = new HashSet<>();
 
         try (CSVReader csv = new CSVReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-            csv.readNext(); // saltar cabecera
+            csv.readNext();
             String[] row;
 
             while ((row = csv.readNext()) != null) {
+                Long idCarrera = null;
+                try {
+                    idCarrera = Long.parseLong(col(row, 4));
+                } catch (Exception ignored) {
+                }
+
                 EstudianteImportDTO dto = new EstudianteImportDTO(
                         col(row, 0),
                         col(row, 1),
-                        col(row, 2),
+                        col(row, 2), // ahora NO normalizamos ni validamos formato
                         col(row, 3),
-                        null);
+                        idCarrera);
 
-                String validation = validar(dto);
-                list.add(new ImportRowResult<>(dto, validation == null, validation == null ? "OK" : validation));
+                String error = validar(dto, rutsVistos, correosVistos);
+
+                if (error == null) {
+                    if (dto.getRut() != null)
+                        rutsVistos.add(dto.getRut());
+                    if (dto.getCorreo() != null)
+                        correosVistos.add(dto.getCorreo());
+                }
+
+                String carreraNombre = carreraNombre(dto.getIdCarrera());
+
+                results.add(new ImportRowResult<>(
+                        dto,
+                        error == null,
+                        error == null ? "✅ OK" : error,
+                        carreraNombre));
             }
-
         } catch (Exception e) {
-            throw new RuntimeException("Error procesando CSV: " + e.getMessage());
+            throw new RuntimeException("Error leyendo CSV: " + e.getMessage());
         }
 
-        return list;
+        return results;
     }
 
-    // ---------------- VALIDACIONES ----------------
     public String validarEdicion(EstudianteImportDTO dto) {
-        return validar(dto);
+        return validar(dto, new HashSet<>(), new HashSet<>());
     }
 
-    private String validar(EstudianteImportDTO dto) {
-
-        if (dto.getNombre().isBlank() || dto.getApellido().isBlank() ||
-                dto.getRut().isBlank() || dto.getCorreo().isBlank())
-            return "Campos obligatorios vacíos";
-
-        if (!dto.getCorreo().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"))
-            return "Correo inválido";
-
-        if (!dto.getRut().matches("^[0-9]+-[0-9kK]$"))
-            return "RUT inválido";
-
-        return null;
-    }
-
-    private String col(String[] row, int i) {
-        return row.length > i ? row[i].trim() : "";
-    }
-
-    // ---------------- CONFIRM IMPORT ----------------
+    // =============== CONFIRM IMPORTACIÓN ===============
     public void confirmImport(List<EstudianteImportDTO> lista) {
-
         for (EstudianteImportDTO dto : lista) {
-
-            // Validar carrera seleccionada
-            if (dto.getIdCarrera() == null) {
-                throw new RuntimeException("Debe seleccionar una carrera para " + dto.getNombre());
-            }
+            String err = validar(dto, new HashSet<>(), new HashSet<>());
+            if (err != null)
+                throw new RuntimeException(err);
 
             Carrera carrera = carreraRepo.findById(dto.getIdCarrera())
                     .orElseThrow(() -> new RuntimeException("Carrera no válida para " + dto.getNombre()));
 
-            // Validar duplicado por RUT
-            if (estudianteRepo.findByRut(dto.getRut()).isPresent()) {
-                throw new RuntimeException("El estudiante con RUT " + dto.getRut() + " ya existe");
-            }
-
-            // Validar duplicado por Correo
-            if (estudianteRepo.findByCorreo(dto.getCorreo()).isPresent()) {
-                throw new RuntimeException("El estudiante con correo " + dto.getCorreo() + " ya existe");
-            }
-
-            Estudiante estudiante = Estudiante.builder()
+            Estudiante e = Estudiante.builder()
                     .nombre(dto.getNombre())
                     .apellido(dto.getApellido())
                     .rut(dto.getRut())
@@ -108,8 +96,54 @@ public class CsvEstudianteService {
                     .activo(true)
                     .build();
 
-            estudianteRepo.save(estudiante);
+            estudianteRepo.save(e);
         }
     }
 
+    // =============== VALIDACIONES ===============
+    private String validar(EstudianteImportDTO dto, Set<String> rutsVistos, Set<String> correosVistos) {
+        if (isBlank(dto.getNombre()) || isBlank(dto.getApellido()) ||
+                isBlank(dto.getRut()) || isBlank(dto.getCorreo())) {
+            return "❌ Campos obligatorios vacíos";
+        }
+
+        if (!dto.getCorreo().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"))
+            return "❌ Correo inválido";
+
+        if (dto.getIdCarrera() == null)
+            return "❌ Carrera no indicada";
+
+        if (carreraRepo.findById(dto.getIdCarrera()).isEmpty())
+            return "❌ Carrera no existe";
+
+        // Duplicados dentro del CSV
+        if (rutsVistos.contains(dto.getRut()))
+            return "❌ RUT duplicado en archivo";
+
+        if (correosVistos.contains(dto.getCorreo()))
+            return "❌ Correo duplicado en archivo";
+
+        // Duplicados en BD
+        if (estudianteRepo.findByRut(dto.getRut()).isPresent())
+            return "❌ RUT ya existe en sistema";
+
+        if (estudianteRepo.findByCorreo(dto.getCorreo()).isPresent())
+            return "❌ Correo ya existe en sistema";
+
+        return null;
+    }
+
+    private String carreraNombre(Long id) {
+        if (id == null)
+            return "—";
+        return carreraRepo.findById(id).map(Carrera::getNombre).orElse("No encontrada");
+    }
+
+    private String col(String[] row, int i) {
+        return row.length > i ? row[i].trim() : "";
+    }
+
+    private boolean isBlank(String s) {
+        return s == null || s.isBlank();
+    }
 }

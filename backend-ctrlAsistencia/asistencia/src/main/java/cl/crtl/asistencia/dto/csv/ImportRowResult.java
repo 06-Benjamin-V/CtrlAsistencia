@@ -11,4 +11,5 @@ public class ImportRowResult<T> {
     private T data;
     private boolean valido;
     private String mensaje;
+    private String carreraNombre; // ✅ debe existir
 }

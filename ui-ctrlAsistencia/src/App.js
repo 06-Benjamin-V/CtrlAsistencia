@@ -15,6 +15,8 @@ import CrearDocente from './forms/CrearDocente';
 import CrearCurso from './forms/CrearCurso';
 import CrearMatricula from './forms/CrearMatricula';
 import CrearClase from './forms/CrearClase';
+import SubirCsvEstudiantes from './forms/subirCsvEstudiante';
+
 
 function App() {
   const [usuario, setUsuario] = useState(null);
@@ -67,6 +69,15 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/admin/estudiantes/csv"
+            element={
+              <ProtectedRoute role="ADMINISTRATIVO">
+                <SubirCsvEstudiantes />
+              </ProtectedRoute>
+            }
+          />
+
           <Route 
             path="/admin/asignaturas/crear" 
             element={

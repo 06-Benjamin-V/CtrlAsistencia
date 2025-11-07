@@ -8,42 +8,46 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/csv/estudiantes")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:5173" })
 public class CsvEstudianteController {
 
     private final CsvEstudianteService csvEstudianteService;
 
+    // 📤 Subir CSV y obtener vista previa (valida + devuelve nombres carrera)
     @PostMapping("/preview")
-    public ResponseEntity<?> preview(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<List<ImportRowResult<EstudianteImportDTO>>> preview(
+            @RequestParam("file") MultipartFile file) {
         return ResponseEntity.ok(csvEstudianteService.previewCsv(file));
     }
 
+    // ✅ Validar edición de una fila desde el front
     @PostMapping("/validate")
     public ResponseEntity<?> validate(@RequestBody EstudianteImportDTO dto) {
         String val = csvEstudianteService.validarEdicion(dto);
-
-        Map<String, Object> r = new HashMap<>();
-        r.put("valido", val == null);
-        r.put("mensaje", val == null ? "OK" : val);
-
-        return ResponseEntity.ok(r);
+        return ResponseEntity.ok(
+                Map.of(
+                        "valido", val == null,
+                        "mensaje", val == null ? "OK ✅" : val));
     }
 
+    // 💾 Confirmar importación (solo válidos)
     @PostMapping("/confirm")
     public ResponseEntity<?> confirm(@RequestBody List<EstudianteImportDTO> lista) {
         try {
             csvEstudianteService.confirmImport(lista);
-            return ResponseEntity.ok(Map.of("ok", true, "mensaje", "Importación exitosa"));
+            return ResponseEntity.ok(Map.of(
+                    "ok", true,
+                    "mensaje", "Importación exitosa ✅"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of(
                     "ok", false,
                     "error", e.getMessage()));
         }
     }
-
 }

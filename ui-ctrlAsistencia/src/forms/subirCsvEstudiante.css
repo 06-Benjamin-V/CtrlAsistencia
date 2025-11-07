@@ -1,0 +1,81 @@
+.csv-page {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.csv-card {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  width: 95%;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.csv-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.csv-upload {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.csv-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.csv-table th {
+  background: #eef4ff;
+  padding: 10px;
+  text-align: left;
+}
+
+.csv-table td {
+  padding: 8px;
+}
+
+.csv-table input, select {
+  width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+}
+
+.ok {
+  background: #e7ffe7;
+}
+
+.bad {
+  background: #ffeaea;
+}
+
+.btn-primary, .btn-secondary, .btn-success {
+  padding: 8px 14px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.btn-primary { background: #2d63ff; }
+.btn-secondary { background: #6c63ff; }
+.btn-success { background: #0a8f34; width: 100%; margin-top: 15px; }
+
+.btn-mini {
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-red {
+  background: #c60000;
+  color: white;
+}
