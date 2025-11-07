@@ -42,6 +42,8 @@
   border-radius: 8px;
   font-size: 15px;
   transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-card input:focus,
@@ -73,6 +75,7 @@
 .form-card button.danger:hover {
   background: #b02a37;
 }
+
 .form-buttons {
   display: flex;
   justify-content: space-between;
@@ -97,24 +100,23 @@
 .password-field {
   display: flex;
   align-items: center;
-  position: relative;
+  gap: 6px; /* ← separación minimalista entre input y botón */
+  margin-bottom: 18px;
 }
 
 .password-field input {
   flex: 1;
-  padding-right: 40px; /* espacio para el botón */
+  margin-bottom: 0;
 }
 
 .toggle-password {
-  position: absolute;
-  right: 12px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-  color: #333;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .toggle-password:hover {
-  color: #0056b3;
+  background: #004099;
 }

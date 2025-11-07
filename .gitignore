@@ -1,6 +1,8 @@
 .vscode/
 
 #Sonarqube 
+aplication/
+aplication-reports/
 aplication-logs/
 .env
 .scannerwork/
