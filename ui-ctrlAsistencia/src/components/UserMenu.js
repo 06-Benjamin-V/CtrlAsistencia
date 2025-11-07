@@ -7,29 +7,28 @@ function UserMenu({ rol, onLogout, onSelectSection }) {
   const handleVolver = () => setMenuSeleccionado(null);
 
   const opciones = {
-  ADMINISTRATIVO: [
-    { key: "asignaturas", label: "Asignaturas", crear: "/admin/asignaturas/crear" },
-    { key: "docentes", label: "Docentes", crear: "/admin/docentes/crear" },
-    { key: "estudiantes", label: "Estudiantes", crear: "/admin/estudiantes/crear" },
-    { key: "cursos", label: "Cursos", crear: "/admin/cursos/crear" },
-    { key: "matriculas", label: "Matrículas", crear: "/admin/matriculas/crear" },
-  ],
-  DOCENTE: [
-    { key: "asignaturas", label: "Mis Asignaturas" },
-    { key: "clases", label: "Clases", crear: "/docente/clases/crear" }
-  ],
-  ESTUDIANTE: [
-    { key: "asignaturas", label: "Mis Asignaturas" }
-  ]
-};
-
+    ADMINISTRATIVO: [
+      { key: "asignaturas", label: "Asignaturas", crear: "/admin/asignaturas/crear" },
+      { key: "docentes", label: "Docentes", crear: "/admin/docentes/crear" },
+      { key: "estudiantes", label: "Estudiantes", crear: "/admin/estudiantes/crear" },
+      { key: "cursos", label: "Cursos", crear: "/admin/cursos/crear" },
+      { key: "matriculas", label: "Matrículas", crear: "/admin/matriculas/crear" },
+    ],
+    DOCENTE: [
+      { key: "asignaturas", label: "Mis Asignaturas" },
+      { key: "clases", label: "Clases", crear: "/docente/clases/crear" }
+    ],
+    ESTUDIANTE: [
+      { key: "asignaturas", label: "Mis Asignaturas" }
+    ]
+  };
 
   const opcionSeleccionada = opciones[rol]?.find((o) => o.key === menuSeleccionado);
 
   return (
-    <div className="user-menu">
+    <div className="user-menu-horizontal">
       {!menuSeleccionado ? (
-        <ul>
+        <ul className="menu-principal">
           {opciones[rol]?.map((item) => (
             <li key={item.key}>
               <button
@@ -42,7 +41,6 @@ function UserMenu({ rol, onLogout, onSelectSection }) {
               </button>
             </li>
           ))}
-          <hr />
           <li>
             <button className="logout-btn" onClick={onLogout}>
               Cerrar sesión
@@ -50,11 +48,10 @@ function UserMenu({ rol, onLogout, onSelectSection }) {
           </li>
         </ul>
       ) : (
-        <div className="submenu">
+        <div className="submenu-horizontal">
           <button className="volver" onClick={handleVolver}>
             ⬅ Volver
           </button>
-          <h4 className="submenu-titulo">{opcionSeleccionada.label}</h4>
           <ul>
             {opcionSeleccionada?.crear && (
               <li>

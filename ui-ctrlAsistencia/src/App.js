@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import './App.css';
+import { useState, useEffect } from 'react';
 import Login from './logIn/login';
+import './App.css';
 import Home from './home/home';
 import Header from './components/header';
 import Footer from './components/footer';
@@ -16,25 +17,48 @@ import CrearMatricula from './forms/CrearMatricula';
 import CrearClase from './forms/CrearClase';
 
 function App() {
+  const [usuario, setUsuario] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetch("http://localhost:8080/api/usuario/home", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => res.ok ? res.json() : null)
+        .then((data) => setUsuario(data))
+        .catch(() => setUsuario(null));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setUsuario(null);
+    window.location.href = "/login";
+  };
+
+  const handleSelectSection = (section) => {
+    // Lógica de selección de sección si es necesaria
+  };
+
   return (
     <>
-      <Header />
+      <Header 
+        usuario={usuario} 
+        onLogout={handleLogout}
+        onSelectSection={handleSelectSection}
+      />
       <main className="App-main">
         <Routes>
-          {/* Redirigir a login por defecto */}
           <Route path="/" element={<Navigate to="/login" replace />} />
-
-          {/* Login público */}
           <Route 
             path="/login" 
             element={
               <PublicRoute>
-                <Login />
+                <Login onLoginSuccess={setUsuario} />
               </PublicRoute>
             } 
           />
-
-          {/* Home protegido para cualquier usuario logueado */}
           <Route 
             path="/home" 
             element={
@@ -43,8 +67,6 @@ function App() {
               </ProtectedRoute>
             } 
           />
-
-          {/* Crear asignatura → SOLO ADMIN */}
           <Route 
             path="/admin/asignaturas/crear" 
             element={
@@ -53,8 +75,6 @@ function App() {
               </ProtectedRoute>
             } 
           />
-
-          {/* Crear docente → SOLO ADMIN */}
           <Route 
             path="/admin/docentes/crear" 
             element={
@@ -63,8 +83,6 @@ function App() {
               </ProtectedRoute>
             } 
           />
-
-          {/* Crear estudiante → SOLO ADMIN */}
           <Route
             path="/admin/estudiantes/crear"
             element={
@@ -73,8 +91,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
-          {/* Crear curso → SOLO ADMIN */}
           <Route 
             path="/admin/cursos/crear" 
             element={
@@ -83,8 +99,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
-          {/* Matricular estudiante → SOLO ADMIN */}
           <Route 
             path="/admin/matriculas/crear" 
             element={
@@ -93,8 +107,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
-          {/* Crear clase → SOLO DOCENTE */}
           <Route 
             path="/docente/clases/crear" 
             element={

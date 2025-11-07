@@ -138,14 +138,6 @@ function Home() {
           )}
         </div>
       </div>
-
-      <div className="admin-menu-box">
-        <UserMenu
-          rol={usuario.rol}
-          onLogout={handleLogout}
-          onSelectSection={handleSelectSection}
-        />
-      </div>
     </div>
   );
 }
