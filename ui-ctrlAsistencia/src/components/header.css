@@ -3,11 +3,17 @@
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 20px;
   height: 140px;
   background-color: #282c34;
   color: white;
   font-family: 'Montserrat', sans-serif;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
 }
 
 .header-logo {
@@ -17,4 +23,10 @@
 
 .header-title {
   font-size: 30px;
+}
+
+.header-menu {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
