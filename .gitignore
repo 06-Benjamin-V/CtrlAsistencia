@@ -1,6 +1,7 @@
 .vscode/
 
 #Sonarqube 
+aplication-logs/
 .env
 .scannerwork/
 target/
