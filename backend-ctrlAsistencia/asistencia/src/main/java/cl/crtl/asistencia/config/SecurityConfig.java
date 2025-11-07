@@ -3,6 +3,7 @@ package cl.crtl.asistencia.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,30 +27,38 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> {}) // CORS ya lo manejas en CorsConfig
-            .authorizeHttpRequests(auth -> auth
-                // único login público
-                .requestMatchers("/api/auth/**").permitAll()
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> {
+                })
+                .authorizeHttpRequests(auth -> auth
+                        // login público
+                        .requestMatchers("/api/auth/**").permitAll()
 
-                // solo ADMINISTRATIVO puede crear/gestionar asignaturas
-                .requestMatchers("/api/asignatura/**").hasRole("ADMINISTRATIVO")
+                        // CSV estudiantes (import)
+                        .requestMatchers("/api/csv/estudiantes/**").hasRole("ADMINISTRATIVO")
+                        .requestMatchers(HttpMethod.OPTIONS, "/api/csv/estudiantes/**").permitAll()
 
-                // solo ADMINISTRATIVO puede ver/gestionar administrativos
-                .requestMatchers("/api/administrativo/**").hasRole("ADMINISTRATIVO")
+                        // Carreras
+                        .requestMatchers("/api/carrera/**").hasAnyRole("ADMINISTRATIVO", "DOCENTE")
 
-                // docentes y administrativos
-                .requestMatchers("/api/docente/**").hasAnyRole("DOCENTE", "ADMINISTRATIVO")
+                        // Administración
+                        .requestMatchers("/api/asignatura/**").hasRole("ADMINISTRATIVO")
+                        .requestMatchers("/api/administrativo/**").hasRole("ADMINISTRATIVO")
 
-                // estudiantes, docentes y administrativos
-                .requestMatchers("/api/estudiante/**").hasAnyRole("ESTUDIANTE", "DOCENTE", "ADMINISTRATIVO")
+                        // Docentes
+                        .requestMatchers("/api/docente/**").hasAnyRole("DOCENTE", "ADMINISTRATIVO")
 
-                // cualquier otra request debe estar autenticada
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                        // Estudiantes
+                        .requestMatchers("/api/estudiante/**").hasAnyRole("ESTUDIANTE", "DOCENTE", "ADMINISTRATIVO")
+
+                        // 🔥 QUITAMOS ESTA BASURA GENERAL
+                        // .requestMatchers("/api/csv/**").hasRole("ADMINISTRATIVO")
+
+                        .anyRequest().authenticated())
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 }
