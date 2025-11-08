@@ -51,14 +51,14 @@ function CrearDocente() {
       });
 
       if (res.ok) {
-        alert("✅ Docente creado con éxito");
+        alert("Docente creado con éxito");
         navigate("/home");
       } else {
-        alert("❌ Error al crear docente");
+        alert("Error al crear docente");
       }
     } catch (err) {
       console.error(err);
-      alert("⚠️ Error de conexión con el servidor");
+      alert("Error de conexión con el servidor");
     }
   };
 

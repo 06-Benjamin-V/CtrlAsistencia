@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // 👁️ importamos íconos
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Form.css";
 
 function CrearEstudiante() {
@@ -50,14 +50,14 @@ function CrearEstudiante() {
       });
 
       if (res.ok) {
-        alert("✅ Estudiante creado con éxito");
+        alert("Estudiante creado con éxito");
         navigate("/home");
       } else {
-        alert("❌ Error al crear estudiante");
+        alert("Error al crear estudiante");
       }
     } catch (err) {
       console.error(err);
-      alert("⚠️ Error de conexión con el servidor");
+      alert("Error de conexión con el servidor");
     }
   };
 

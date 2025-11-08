@@ -24,31 +24,31 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public LoginResponse unifiedLogin(LoginRequest request) {
-final String correo = request.getCorreo().trim();
+        final String correo = request.getCorreo().trim();
         final String plain = request.getContrasenia();
 
-        // 1) Estudiante
+        // Estudiante
         var estudianteOpt = estudianteRepository.findByCorreo(correo);
         if (estudianteOpt.isPresent()) {
             return loginGeneric(estudianteOpt.get(), plain, "ESTUDIANTE",
                     estudianteOpt.get().getIdEstudiante());
         }
 
-        // 2) Docente
+        // Docente
         var docenteOpt = docenteRepository.findByCorreo(correo);
         if (docenteOpt.isPresent()) {
             return loginGeneric(docenteOpt.get(), plain, "DOCENTE",
                     docenteOpt.get().getIdDocente());
         }
 
-        // 3) Administrativo
+        // Administrativo
         var adminOpt = administrativoRepository.findByCorreo(correo);
         if (adminOpt.isPresent()) {
             return loginGeneric(adminOpt.get(), plain, "ADMINISTRATIVO",
                     adminOpt.get().getIdAdministrativo());
         }
 
-        // No encontrado → misma respuesta
+        // No encontrado
         throw new IllegalArgumentException("Credenciales inválidas");
     }
 

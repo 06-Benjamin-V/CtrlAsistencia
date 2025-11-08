@@ -51,9 +51,6 @@ public class SecurityConfig {
                         // Estudiantes
                         .requestMatchers("/api/estudiante/**").hasAnyRole("ESTUDIANTE", "DOCENTE", "ADMINISTRATIVO")
 
-                        // 🔥 QUITAMOS ESTA BASURA GENERAL
-                        // .requestMatchers("/api/csv/**").hasRole("ADMINISTRATIVO")
-
                         .anyRequest().authenticated())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

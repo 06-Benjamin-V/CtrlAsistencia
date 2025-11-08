@@ -24,7 +24,6 @@ public class CsvEstudianteService {
     private final CarreraRepository carreraRepo;
     private final PasswordEncoder encoder;
 
-    // =============== PREVIEW ===============
     public List<ImportRowResult<EstudianteImportDTO>> previewCsv(MultipartFile file) {
         List<ImportRowResult<EstudianteImportDTO>> results = new ArrayList<>();
         Set<String> rutsVistos = new HashSet<>();
@@ -35,26 +34,23 @@ public class CsvEstudianteService {
             String[] row;
 
             while ((row = csv.readNext()) != null) {
+
                 Long idCarrera = null;
-                try {
-                    idCarrera = Long.parseLong(col(row, 4));
-                } catch (Exception ignored) {
-                }
+                try { idCarrera = Long.parseLong(col(row, 4)); } catch (Exception ignored) {}
 
                 EstudianteImportDTO dto = new EstudianteImportDTO(
                         col(row, 0),
                         col(row, 1),
-                        col(row, 2), // ahora NO normalizamos ni validamos formato
+                        col(row, 2),
                         col(row, 3),
-                        idCarrera);
+                        idCarrera
+                );
 
                 String error = validar(dto, rutsVistos, correosVistos);
 
                 if (error == null) {
-                    if (dto.getRut() != null)
-                        rutsVistos.add(dto.getRut());
-                    if (dto.getCorreo() != null)
-                        correosVistos.add(dto.getCorreo());
+                    rutsVistos.add(dto.getRut());
+                    correosVistos.add(dto.getCorreo());
                 }
 
                 String carreraNombre = carreraNombre(dto.getIdCarrera());
@@ -62,13 +58,13 @@ public class CsvEstudianteService {
                 results.add(new ImportRowResult<>(
                         dto,
                         error == null,
-                        error == null ? "✅ OK" : error,
-                        carreraNombre));
+                        error == null ? "OK" : error,
+                        carreraNombre
+                ));
             }
         } catch (Exception e) {
             throw new RuntimeException("Error leyendo CSV: " + e.getMessage());
         }
-
         return results;
     }
 
@@ -76,15 +72,13 @@ public class CsvEstudianteService {
         return validar(dto, new HashSet<>(), new HashSet<>());
     }
 
-    // =============== CONFIRM IMPORTACIÓN ===============
     public void confirmImport(List<EstudianteImportDTO> lista) {
         for (EstudianteImportDTO dto : lista) {
             String err = validar(dto, new HashSet<>(), new HashSet<>());
-            if (err != null)
-                throw new RuntimeException(err);
+            if (err != null) throw new RuntimeException(err);
 
             Carrera carrera = carreraRepo.findById(dto.getIdCarrera())
-                    .orElseThrow(() -> new RuntimeException("Carrera no válida para " + dto.getNombre()));
+                    .orElseThrow(() -> new RuntimeException("Carrera no valida"));
 
             Estudiante e = Estudiante.builder()
                     .nombre(dto.getNombre())
@@ -100,50 +94,49 @@ public class CsvEstudianteService {
         }
     }
 
-    // =============== VALIDACIONES ===============
     private String validar(EstudianteImportDTO dto, Set<String> rutsVistos, Set<String> correosVistos) {
-        if (isBlank(dto.getNombre()) || isBlank(dto.getApellido()) ||
-                isBlank(dto.getRut()) || isBlank(dto.getCorreo())) {
-            return "❌ Campos obligatorios vacíos";
+
+        if (blank(dto.getNombre()) || blank(dto.getApellido()) ||
+                blank(dto.getRut()) || blank(dto.getCorreo())) {
+            return "Campos obligatorios vacios";
         }
 
-        if (!dto.getCorreo().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"))
-            return "❌ Correo inválido";
+        if (!dto.getCorreo().matches("^[A-Za-z0-9+_.-]+@(ufromail|ufrontera)\\.(cl|com)$"))
+            return "Correo no permitido";
 
-        if (dto.getIdCarrera() == null)
-            return "❌ Carrera no indicada";
+        if (!dto.getRut().contains("-")) return "Formato RUT incorrecto";
 
-        if (carreraRepo.findById(dto.getIdCarrera()).isEmpty())
-            return "❌ Carrera no existe";
+        String[] partes = dto.getRut().split("-");
+        if (partes.length != 2) return "Formato RUT incorrecto";
 
-        // Duplicados dentro del CSV
-        if (rutsVistos.contains(dto.getRut()))
-            return "❌ RUT duplicado en archivo";
+        if (!partes[0].matches("^[0-9]{8}$"))
+            return "RUT debe tener 8 numeros";
 
-        if (correosVistos.contains(dto.getCorreo()))
-            return "❌ Correo duplicado en archivo";
+        if (!partes[1].matches("^[0-9Kk]$"))
+            return "DV debe ser numero o K";
 
-        // Duplicados en BD
-        if (estudianteRepo.findByRut(dto.getRut()).isPresent())
-            return "❌ RUT ya existe en sistema";
+        if (dto.getIdCarrera() == null) return "Carrera requerida";
+        if (carreraRepo.findById(dto.getIdCarrera()).isEmpty()) return "Carrera no existe";
 
-        if (estudianteRepo.findByCorreo(dto.getCorreo()).isPresent())
-            return "❌ Correo ya existe en sistema";
+        if (rutsVistos.contains(dto.getRut())) return "RUT repetido en archivo";
+        if (correosVistos.contains(dto.getCorreo())) return "Correo repetido en archivo";
+
+        if (estudianteRepo.findByRut(dto.getRut()).isPresent()) return "RUT ya existe";
+        if (estudianteRepo.findByCorreo(dto.getCorreo()).isPresent()) return "Correo ya existe";
 
         return null;
     }
 
     private String carreraNombre(Long id) {
-        if (id == null)
-            return "—";
-        return carreraRepo.findById(id).map(Carrera::getNombre).orElse("No encontrada");
+        if (id == null) return "";
+        return carreraRepo.findById(id).map(Carrera::getNombre).orElse("");
     }
 
     private String col(String[] row, int i) {
         return row.length > i ? row[i].trim() : "";
     }
 
-    private boolean isBlank(String s) {
+    private boolean blank(String s) {
         return s == null || s.isBlank();
     }
 }

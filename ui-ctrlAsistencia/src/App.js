@@ -16,6 +16,8 @@ import CrearCurso from './forms/CrearCurso';
 import CrearMatricula from './forms/CrearMatricula';
 import CrearClase from './forms/CrearClase';
 import SubirCsvEstudiantes from './forms/subirCsvEstudiante';
+import EditarAsignatura from './forms/EditarAsignatura';
+import EliminarAsignatura from './forms/EliminarAsignatura';
 
 
 function App() {
@@ -40,7 +42,6 @@ function App() {
   };
 
   const handleSelectSection = (section) => {
-    // Lógica de selección de sección si es necesaria
   };
 
   return (
@@ -86,6 +87,25 @@ function App() {
               </ProtectedRoute>
             } 
           />
+
+            <Route 
+            path="/admin/asignaturas/eliminar" 
+            element={
+              <ProtectedRoute role="ADMINISTRATIVO">
+                <EliminarAsignatura />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/admin/asignaturas/editar" 
+            element={
+              <ProtectedRoute role="ADMINISTRATIVO">
+                <EditarAsignatura />
+              </ProtectedRoute>
+            } 
+          />
+
           <Route 
             path="/admin/docentes/crear" 
             element={

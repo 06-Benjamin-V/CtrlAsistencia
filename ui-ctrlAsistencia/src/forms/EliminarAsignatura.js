@@ -1,4 +1,3 @@
-// forms/EliminarAsignatura.js
 import React, { useEffect, useState } from "react";
 import "./Form.css";
 
@@ -29,15 +28,15 @@ function EliminarAsignatura() {
       );
 
       if (res.ok) {
-        alert("✅ Asignatura eliminada");
+        alert("Asignatura eliminada");
         setAsignaturas(asignaturas.filter((a) => a.idAsignatura !== seleccionada.idAsignatura));
         setSeleccionada(null);
       } else {
-        alert("❌ Error al eliminar");
+        alert("Error al eliminar");
       }
     } catch (err) {
       console.error(err);
-      alert("⚠️ Error de conexión");
+      alert("Error de conexión");
     }
   };
 

@@ -49,14 +49,14 @@ function CrearAsignatura() {
       });
 
       if (res.ok) {
-        alert("✅ Asignatura creada con éxito");
-        navigate("/home"); // 👈 Redirige al home
+        alert("Asignatura creada con éxito");
+        navigate("/home"); //Redirige al home
       } else {
-        alert("❌ Error al crear asignatura");
+        alert("Error al crear asignatura");
       }
     } catch (err) {
       console.error(err);
-      alert("⚠️ Error de conexión con el servidor");
+      alert("Error de conexión con el servidor");
     }
   };
 

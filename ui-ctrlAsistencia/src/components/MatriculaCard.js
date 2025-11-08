@@ -4,7 +4,7 @@ import "./Card.css";
 function MatriculaCard({ matricula }) {
   return (
     <div className="card">
-      <h3>📌 Matrícula</h3>
+      <h3> Matrícula</h3>
       <p><strong>Estudiante:</strong> {matricula.estudiante?.nombre} {matricula.estudiante?.apellido}</p>
       <p><strong>Curso:</strong> {matricula.curso?.asignatura?.nombre} - Sección {matricula.curso?.seccion}</p>
       <p><strong>Estado:</strong> {matricula.estado}</p>

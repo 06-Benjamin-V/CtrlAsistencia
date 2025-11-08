@@ -96,11 +96,10 @@
   background: #5a6268;
 }
 
-/* Campo de contraseña con botón de mostrar/ocultar */
 .password-field {
   display: flex;
   align-items: center;
-  gap: 6px; /* ← separación minimalista entre input y botón */
+  gap: 6px;
   margin-bottom: 18px;
 }
 

@@ -49,14 +49,14 @@ function CrearMatricula() {
       });
 
       if (res.ok) {
-        alert("✅ Estudiante matriculado con éxito");
+        alert("Estudiante matriculado con éxito");
         navigate("/home");
       } else {
-        alert("❌ Error al matricular estudiante");
+        alert("Error al matricular estudiante");
       }
     } catch (err) {
       console.error(err);
-      alert("⚠️ Error de conexión con el servidor");
+      alert("Error de conexión con el servidor");
     }
   };
 

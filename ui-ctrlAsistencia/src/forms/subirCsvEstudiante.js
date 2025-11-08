@@ -18,15 +18,15 @@ function SubirCsvEstudiantes() {
 
   const nombreCarrera = (idCarrera) => {
     const found = carreras.find(c => c.idCarrera === idCarrera);
-    return found ? found.nombre : "—";
+    return found ? found.nombre : "";
   };
 
   const updateRow = (idx, patch) => {
-    setRows(prev => prev.map((r, i) => i === idx ? { ...r, ...patch } : r));
+    setRows(prev => prev.map((r, i) => (i === idx ? { ...r, ...patch } : r)));
   };
 
   const handleUpload = async () => {
-    if (!file) return alert("Selecciona un CSV!");
+    if (!file) return alert("Seleccione un archivo CSV");
 
     const fd = new FormData();
     fd.append("file", file);
@@ -39,12 +39,18 @@ function SubirCsvEstudiantes() {
 
     const data = await r.json();
 
-    const flat = data.map(item => ({
-      ...item.data,
-      valido: item.valido,
-      mensaje: item.mensaje,
-      carreraNombre: nombreCarrera(item.data.idCarrera)
-    }));
+    const flat = data.map(item => {
+      const [cuerpo, dv] = item.data.rut ? item.data.rut.split("-") : ["", ""];
+      return {
+        ...item.data,
+        rutCuerpo: cuerpo,
+        rutDV: dv,
+        rut: item.data.rut,
+        valido: item.valido,
+        mensaje: item.mensaje,
+        carreraNombre: nombreCarrera(item.data.idCarrera)
+      };
+    });
 
     setRows(flat);
   };
@@ -54,7 +60,7 @@ function SubirCsvEstudiantes() {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         nombre: fila.nombre,
@@ -69,26 +75,25 @@ function SubirCsvEstudiantes() {
 
     updateRow(idx, {
       valido: res.valido,
-      mensaje: res.valido ? "✅" : res.mensaje,
+      mensaje: res.mensaje || "",
       carreraNombre: nombreCarrera(fila.idCarrera)
     });
   };
 
-  // ✅ Fix react sync bug: validate AFTER updating state
   const handleEdit = (idx, field, value) => {
     setRows(prev => {
-      const updated = prev.map((r, i) => 
+      const updated = prev.map((r, i) =>
         i === idx ? { ...r, [field]: value } : r
       );
 
-      // actualizar nombre carrera
+      const fila = updated[idx];
+
+      fila.rut = `${fila.rutCuerpo || ""}-${fila.rutDV || ""}`;
       if (field === "idCarrera") {
-        updated[idx].carreraNombre = nombreCarrera(value);
+        fila.carreraNombre = nombreCarrera(value);
       }
 
-      // validar usando valores nuevos
-      setTimeout(() => validarFila(idx, updated[idx]), 0);
-
+      setTimeout(() => validarFila(idx, fila), 0);
       return updated;
     });
   };
@@ -103,7 +108,7 @@ function SubirCsvEstudiantes() {
         nombre, apellido, rut, correo, idCarrera
       }));
 
-    if (payload.length === 0) return alert("No hay filas válidas!");
+    if (payload.length === 0) return alert("No hay filas válidas");
 
     const r = await fetch("http://localhost:8080/api/csv/estudiantes/confirm", {
       method: "POST",
@@ -114,32 +119,14 @@ function SubirCsvEstudiantes() {
       body: JSON.stringify(payload)
     });
 
-    let res;
-    try { res = await r.json(); }
-    catch { return alert("⚠️ Error JSON backend"); }
+    const res = await r.json();
 
     if (res.ok) {
-      alert("✅ Importación exitosa!");
+      alert("Importación realizada");
       setRows([]);
     } else {
-      alert("❌ Error: " + res.error);
+      alert(res.error);
     }
-  };
-
-  const descargarPlantilla = () => {
-    const csv = [
-      "nombre,apellido,rut,correo,idCarrera",
-      "Juan,Perez,12345678-5,juan.perez@ufromail.cl,1",
-      "Ana,Gonzalez,23456789-K,ana.gonzalez@ufromail.cl,2"
-    ].join("\n");
-
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "plantilla_estudiantes.csv";
-    a.click();
-    URL.revokeObjectURL(url);
   };
 
   return (
@@ -147,15 +134,12 @@ function SubirCsvEstudiantes() {
       <div className="csv-card">
 
         <div className="csv-head">
-          <h2>Importar Estudiantes (CSV)</h2>
-          <button className="btn-secondary" onClick={descargarPlantilla}>
-            Descargar plantilla
-          </button>
+          <h2>Importar estudiantes</h2>
         </div>
 
         <div className="csv-upload">
           <input type="file" accept=".csv" onChange={e => setFile(e.target.files[0])} />
-          <button className="btn-primary" onClick={handleUpload}>Subir y verificar</button>
+          <button className="btn-primary" onClick={handleUpload}>Subir y validar</button>
         </div>
 
         {rows.length > 0 && (
@@ -171,13 +155,32 @@ function SubirCsvEstudiantes() {
                 <th></th>
               </tr>
             </thead>
+
             <tbody>
               {rows.map((row, idx) => (
                 <tr key={idx} className={row.valido ? "ok" : "bad"}>
-                  
+
                   <td><input value={row.nombre} onChange={e => handleEdit(idx, "nombre", e.target.value)} /></td>
                   <td><input value={row.apellido} onChange={e => handleEdit(idx, "apellido", e.target.value)} /></td>
-                  <td><input value={row.rut} onChange={e => handleEdit(idx, "rut", e.target.value)} /></td>
+
+                  <td className="rut-group">
+                    <input
+                      className="rut-input"
+                      placeholder="12345678"
+                      value={row.rutCuerpo || ""}
+                      maxLength={8}
+                      onChange={e => handleEdit(idx, "rutCuerpo", e.target.value.replace(/[^0-9]/g, ""))}
+                    />
+                    <span>-</span>
+                    <input
+                      className="dv-input"
+                      placeholder="K"
+                      value={row.rutDV || ""}
+                      maxLength={1}
+                      onChange={e => handleEdit(idx, "rutDV", e.target.value.toUpperCase().replace(/[^0-9K]/g, ""))}
+                    />
+                  </td>
+
                   <td><input value={row.correo} onChange={e => handleEdit(idx, "correo", e.target.value)} /></td>
 
                   <td>
@@ -185,15 +188,14 @@ function SubirCsvEstudiantes() {
                       value={row.idCarrera ?? ""}
                       onChange={e => handleEdit(idx, "idCarrera", Number(e.target.value))}
                     >
-                      <option value="" disabled>Seleccionar…</option>
+                      <option value="">Seleccionar</option>
                       {carreras.map(c => (
                         <option key={c.idCarrera} value={c.idCarrera}>{c.nombre}</option>
                       ))}
                     </select>
-                    <div className="hint">{row.carreraNombre}</div>
                   </td>
 
-                  <td>{row.valido ? "✅" : row.mensaje}</td>
+                  <td>{row.mensaje}</td>
 
                   <td><button className="btn-mini btn-red" onClick={() => removeRow(idx)}>X</button></td>
                 </tr>
@@ -208,7 +210,7 @@ function SubirCsvEstudiantes() {
             onClick={handleConfirm}
             disabled={rows.some(r => !r.valido)}
           >
-            Confirmar importación
+            Confirmar
           </button>
         )}
       </div>

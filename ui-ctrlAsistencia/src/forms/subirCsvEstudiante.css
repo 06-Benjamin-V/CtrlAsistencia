@@ -79,3 +79,18 @@
   background: #c60000;
   color: white;
 }
+
+.rut-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rut-input {
+  width: 90px;
+}
+
+.dv-input {
+  width: 30px;
+  text-align: center;
+}

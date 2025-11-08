@@ -7,17 +7,13 @@ import SearchBar from "../components/SearchBar";
 import "./home.css";
 
 function Home() {
-  // ----------------------------------------------------------
-  // ✅ Estados
-  // ----------------------------------------------------------
+  //Estados
   const [usuario, setUsuario] = useState(null);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [seccion, setSeccion] = useState("asignaturas");
 
-  // ----------------------------------------------------------
-  // ✅ Cargar usuario al iniciar
-  // ----------------------------------------------------------
+  //Cargar usuario al iniciar
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return (window.location.href = "/login");
@@ -39,17 +35,14 @@ function Home() {
       });
   }, []);
 
-  // ----------------------------------------------------------
-  // ✅ Cerrar sesión
-  // ----------------------------------------------------------
+
+  // Cerrar sesión
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
   };
 
-  // ----------------------------------------------------------
-  // ✅ Cambiar sección (fetch dinámico)
-  // ----------------------------------------------------------
+  //Cambiar sección (fetch dinámico)
   const handleSelectSection = (section) => {
     setSeccion(section);
     const token = localStorage.getItem("token");
@@ -74,9 +67,7 @@ function Home() {
     }
   };
 
-  // ----------------------------------------------------------
-  // ✅ Función para búsqueda / filtrado
-  // ----------------------------------------------------------
+  // Función para búsqueda / filtrado
   const matchesSearch = (item) => {
     const q = search.toLowerCase();
 
@@ -93,9 +84,7 @@ function Home() {
 
   const filtered = data.filter(matchesSearch);
 
-  // ----------------------------------------------------------
-  // ✅ Render dinámico de tarjetas
-  // ----------------------------------------------------------
+  //  Render dinámico de tarjetas
   const renderCard = (item) => {
     switch (seccion) {
       case "asignaturas":
@@ -109,9 +98,7 @@ function Home() {
     }
   };
 
-  // ----------------------------------------------------------
-  // ✅ Render principal
-  // ----------------------------------------------------------
+  // Render principal
   if (!usuario) return <p>Cargando...</p>;
 
   return (

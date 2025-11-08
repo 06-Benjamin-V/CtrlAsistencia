@@ -38,7 +38,7 @@ public class UsuarioController {
         HomeResponse response = new HomeResponse();
         response.setRol(rol);
 
-        // ADMINISTRATIVO → todas las asignaturas
+        // ADMINISTRATIVO, todas las asignaturas
         if ("ADMINISTRATIVO".equalsIgnoreCase(rol)) {
             var admin = adminRepo.findByCorreo(correo).orElseThrow();
             response.setNombreCompleto(admin.getNombre() + " " + admin.getApellido());
@@ -56,11 +56,11 @@ public class UsuarioController {
             return ResponseEntity.ok(response);
         }
 
-        // DOCENTE → asignaturas que imparte
+        // DOCENTE, asignaturas que imparte
         if ("DOCENTE".equalsIgnoreCase(rol)) {
             var docente = docenteRepo.findByCorreo(correo).orElseThrow();
             response.setNombreCompleto(docente.getNombre() + " " + docente.getApellido());
-             response.setId(docente.getIdDocente());
+            response.setId(docente.getIdDocente());
 
             String sql = """
                         SELECT a.id_asignatura, a.nombre
@@ -81,7 +81,7 @@ public class UsuarioController {
             return ResponseEntity.ok(response);
         }
 
-        // ESTUDIANTE → asignaturas inscritas
+        // ESTUDIANTE, asignaturas inscritas
         if ("ESTUDIANTE".equalsIgnoreCase(rol)) {
             var estudiante = estudianteRepo.findByCorreo(correo).orElseThrow();
             response.setNombreCompleto(estudiante.getNombre() + " " + estudiante.getApellido());

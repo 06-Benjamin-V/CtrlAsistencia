@@ -56,14 +56,14 @@ function CrearCurso() {
       });
 
       if (res.ok) {
-        alert("✅ Curso creado con éxito");
+        alert("Curso creado con éxito");
         navigate("/home");
       } else {
-        alert("❌ Error al crear curso");
+        alert("Error al crear curso");
       }
     } catch (err) {
       console.error(err);
-      alert("⚠️ Error de conexión con el servidor");
+      alert("Error de conexión con el servidor");
     }
   };
 

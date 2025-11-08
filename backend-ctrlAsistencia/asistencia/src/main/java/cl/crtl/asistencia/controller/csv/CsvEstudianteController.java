@@ -19,31 +19,31 @@ public class CsvEstudianteController {
 
     private final CsvEstudianteService csvEstudianteService;
 
-    // 📤 Subir CSV y obtener vista previa (valida + devuelve nombres carrera)
+    // Subir CSV y obtener vista previa
     @PostMapping("/preview")
     public ResponseEntity<List<ImportRowResult<EstudianteImportDTO>>> preview(
             @RequestParam("file") MultipartFile file) {
         return ResponseEntity.ok(csvEstudianteService.previewCsv(file));
     }
 
-    // ✅ Validar edición de una fila desde el front
+    // Validar edicion
     @PostMapping("/validate")
     public ResponseEntity<?> validate(@RequestBody EstudianteImportDTO dto) {
         String val = csvEstudianteService.validarEdicion(dto);
         return ResponseEntity.ok(
                 Map.of(
                         "valido", val == null,
-                        "mensaje", val == null ? "OK ✅" : val));
+                        "mensaje", val == null ? "OK " : val));
     }
 
-    // 💾 Confirmar importación (solo válidos)
+    // Confirmar importacion
     @PostMapping("/confirm")
     public ResponseEntity<?> confirm(@RequestBody List<EstudianteImportDTO> lista) {
         try {
             csvEstudianteService.confirmImport(lista);
             return ResponseEntity.ok(Map.of(
                     "ok", true,
-                    "mensaje", "Importación exitosa ✅"));
+                    "mensaje", "Importación exitosa "));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of(
                     "ok", false,

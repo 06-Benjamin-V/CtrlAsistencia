@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------- */
-/* 🔹 CONTENEDOR PRINCIPAL                                    */
+/* CONTENEDOR PRINCIPAL                                    */
 /* ---------------------------------------------------------- */
 .user-menu-horizontal {
   display: flex;
@@ -11,7 +11,7 @@
 }
 
 /* ---------------------------------------------------------- */
-/* 🔹 MENÚ PRINCIPAL                                           */
+/*  MENÚ PRINCIPAL                                           */
 /* ---------------------------------------------------------- */
 .menu-principal {
   display: flex;
@@ -20,12 +20,12 @@
   padding: 0;
   flex-wrap: wrap;
   gap: 0;
-  justify-content: flex-end; /* 🔹 Botones a la derecha */
+  justify-content: flex-end;
   width: 100%;
 }
 
 /* ---------------------------------------------------------- */
-/* 🔹 BOTONES Y ENLACES                                        */
+/*  BOTONES Y ENLACES                                        */
 /* ---------------------------------------------------------- */
 .user-menu-horizontal button,
 .user-menu-horizontal a {
@@ -36,7 +36,7 @@
   background: rgba(255, 255, 255, 0.1);
   font-size: 1rem;
   cursor: pointer;
-  padding: 0 30px; /* 🔹 Ajusta aquí el ancho lateral de los botones */
+  padding: 0 30px;
   transition: background 0.3s;
   color: white;
   text-decoration: none;
@@ -45,12 +45,8 @@
   border: none;
 }
 
-/* 🔹 Puedes ajustar el ancho modificando solo esta línea:
-   padding: 0 30px;
-*/
-
 /* ---------------------------------------------------------- */
-/* 🔹 EFECTOS HOVER                                            */
+/* EFECTOS HOVER                                            */
 /* ---------------------------------------------------------- */
 .user-menu-horizontal button:not(.logout-btn):hover,
 .user-menu-horizontal a:hover {
@@ -58,7 +54,7 @@
 }
 
 /* ---------------------------------------------------------- */
-/* 🔹 BOTÓN CERRAR SESIÓN                                      */
+/* BOTÓN CERRAR SESIÓN                                      */
 /* ---------------------------------------------------------- */
 .logout-btn {
   background-color: #dc3545 !important;
@@ -69,7 +65,7 @@
 }
 
 /* ---------------------------------------------------------- */
-/* 🔹 SUBMENÚ                                                  */
+/* SUBMENÚ                                                  */
 /* ---------------------------------------------------------- */
 .submenu-horizontal {
   display: flex;
@@ -84,14 +80,13 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 0; /* 🔹 Sin espacio entre botones */
+  gap: 0;
 }
 
 .submenu-horizontal li {
   margin: 0;
 }
 
-/* 🔹 Eliminamos el título */
 .submenu-titulo {
   display: none;
 }

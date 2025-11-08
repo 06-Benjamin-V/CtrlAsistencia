@@ -53,14 +53,14 @@ function CrearClase() {
       });
 
       if (res.ok) {
-        alert("✅ Clase creada con éxito");
+        alert("Clase creada con éxito");
         navigate("/home");
       } else {
-        alert("❌ Error al crear clase");
+        alert("Error al crear clase");
       }
     } catch (err) {
       console.error(err);
-      alert("⚠️ Error de conexión con el servidor");
+      alert("Error de conexión con el servidor");
     }
   };
 

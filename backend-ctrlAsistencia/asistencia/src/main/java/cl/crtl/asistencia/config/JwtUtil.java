@@ -15,7 +15,7 @@ import java.util.Map;
 public class JwtUtil {
 
     private static final String SECRET_KEY = "MiClaveSecretaSuperSeguraParaAsistenciaUniversitaria2024";
-    private static final long EXPIRATION_TIME = 600000; // 10 mins en milisegundos
+    private static final long EXPIRATION_TIME = 600000;
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
@@ -25,7 +25,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put("rol", rol);
         claims.put("userId", userId);
-        
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(correo)

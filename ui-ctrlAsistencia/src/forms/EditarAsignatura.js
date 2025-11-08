@@ -1,4 +1,3 @@
-// forms/EditarAsignatura.js
 import React, { useEffect, useState } from "react";
 import "./Form.css";
 
@@ -71,13 +70,13 @@ function EditarAsignatura() {
       );
 
       if (res.ok) {
-        alert("✅ Asignatura actualizada");
+        alert("Asignatura actualizada");
       } else {
-        alert("❌ Error al actualizar");
+        alert("Error al actualizar");
       }
     } catch (err) {
       console.error(err);
-      alert("⚠️ Error de conexión");
+      alert("Error de conexión");
     }
   };
 
