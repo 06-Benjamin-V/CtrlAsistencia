@@ -92,10 +92,10 @@ function CrearClase() {
           <input type="datetime-local" name="codigoExpiraEn" value={form.codigoExpiraEn} onChange={handleChange} required />
 
           <div className="form-buttons">
-            <button type="submit">Crear</button>
             <button type="button" className="volver" onClick={() => navigate("/home")}>
               ⬅ Volver
             </button>
+            <button type="submit">Crear</button>
           </div>
         </form>
       </div>

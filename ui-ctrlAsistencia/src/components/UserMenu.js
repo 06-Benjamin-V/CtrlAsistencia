@@ -13,11 +13,10 @@ function UserMenu({ rol, onLogout, onSelectSection }) {
       { key: "estudiantes", label: "Estudiantes", crear: "/admin/estudiantes/crear" },
       { key: "cursos", label: "Cursos", crear: "/admin/cursos/crear" },
       { key: "matriculas", label: "Matrículas", crear: "/admin/matriculas/crear" },
-      { key: "estudiantesCsv", label: "Importar CSV", crear: "/admin/estudiantes/csv" },
     ],
     DOCENTE: [
       { key: "asignaturas", label: "Mis Asignaturas" },
-      { key: "clases", label: "Clases", crear: "/docente/clases/crear" }
+      { key: "clases", label: "Clases", crear: "/docente/clases/crear" },
     ],
     ESTUDIANTE: [
       { key: "asignaturas", label: "Mis Asignaturas" }

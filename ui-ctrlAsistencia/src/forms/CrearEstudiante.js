@@ -108,10 +108,13 @@ function CrearEstudiante() {
           </select>
 
           <div className="form-buttons">
-            <button type="submit">Crear</button>
             <button type="button" className="volver" onClick={() => navigate("/home")}>
               ⬅ Volver
             </button>
+            <button type="button" className="volver" onClick={() => navigate("/admin/estudiantes/csv")}>
+              Importar CSV
+            </button>
+            <button type="submit">Crear</button>
           </div>
         </form>
       </div>

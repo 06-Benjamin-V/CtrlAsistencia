@@ -86,10 +86,10 @@ function CrearMatricula() {
           </select>
 
           <div className="form-buttons">
-            <button type="submit">Matricular</button>
             <button type="button" className="volver" onClick={() => navigate("/home")}>
               ⬅ Volver
             </button>
+            <button type="submit">Matricular</button>
           </div>
         </form>
       </div>
