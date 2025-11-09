@@ -1,11 +1,11 @@
 package cl.crtl.asistencia.service.csv;
 
-import cl.crtl.asistencia.dto.csv.EstudianteImportDTO;
+import cl.crtl.asistencia.dto.csv.DocenteImportDTO;
 import cl.crtl.asistencia.dto.csv.ImportRowResult;
-import cl.crtl.asistencia.model.Carrera;
-import cl.crtl.asistencia.model.Estudiante;
-import cl.crtl.asistencia.repository.CarreraRepository;
-import cl.crtl.asistencia.repository.EstudianteRepository;
+import cl.crtl.asistencia.model.Departamento;
+import cl.crtl.asistencia.model.Docente;
+import cl.crtl.asistencia.repository.DepartamentoRepository;
+import cl.crtl.asistencia.repository.DocenteRepository;
 import com.opencsv.CSVReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,14 +18,14 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class CsvEstudianteService {
+public class CsvDocenteService {
 
-    private final EstudianteRepository estudianteRepo;
-    private final CarreraRepository carreraRepo;
+    private final DocenteRepository docenteRepo;
+    private final DepartamentoRepository departamentoRepo;
     private final PasswordEncoder encoder;
 
-    public List<ImportRowResult<EstudianteImportDTO>> previewCsv(MultipartFile file) {
-        List<ImportRowResult<EstudianteImportDTO>> results = new ArrayList<>();
+    public List<ImportRowResult<DocenteImportDTO>> previewCsv(MultipartFile file) {
+        List<ImportRowResult<DocenteImportDTO>> results = new ArrayList<>();
         Set<String> rutsVistos = new HashSet<>();
         Set<String> correosVistos = new HashSet<>();
 
@@ -35,20 +35,22 @@ public class CsvEstudianteService {
 
             while ((row = csv.readNext()) != null) {
 
-                Long idCarrera = null;
+                Long idDepartamento = null;
                 try {
-                    idCarrera = Long.parseLong(col(row, 4));
+                    idDepartamento = Long.parseLong(col(row, 4));
                 } catch (Exception ignored) {
                 }
 
-                EstudianteImportDTO dto = new EstudianteImportDTO(
+                // ✅ ahora leemos contraseña desde la columna 5
+                String contrasenia = row.length > 5 ? col(row, 5) : "";
+
+                DocenteImportDTO dto = new DocenteImportDTO(
                         col(row, 0),
                         col(row, 1),
                         col(row, 2),
                         col(row, 3),
-                        idCarrera,
-                        row.length > 5 ? col(row, 5) : "" // ✅ lectura contraseña
-                );
+                        idDepartamento,
+                        contrasenia);
 
                 String error = validar(dto, rutsVistos, correosVistos);
 
@@ -57,11 +59,13 @@ public class CsvEstudianteService {
                     correosVistos.add(dto.getCorreo());
                 }
 
+                String departamentoNombre = departamentoNombre(dto.getIdDepartamento());
+
                 results.add(new ImportRowResult<>(
                         dto,
                         error == null,
                         error == null ? "OK" : error,
-                        carreraNombre(dto.getIdCarrera())));
+                        departamentoNombre));
             }
         } catch (Exception e) {
             throw new RuntimeException("Error leyendo CSV: " + e.getMessage());
@@ -69,37 +73,39 @@ public class CsvEstudianteService {
         return results;
     }
 
-    public String validarEdicion(EstudianteImportDTO dto) {
+    public String validarEdicion(DocenteImportDTO dto) {
         return validar(dto, new HashSet<>(), new HashSet<>());
     }
 
-    public void confirmImport(List<EstudianteImportDTO> lista) {
-        for (EstudianteImportDTO dto : lista) {
+    public void confirmImport(List<DocenteImportDTO> lista) {
+        for (DocenteImportDTO dto : lista) {
             String err = validar(dto, new HashSet<>(), new HashSet<>());
             if (err != null)
                 throw new RuntimeException(err);
 
-            Carrera carrera = carreraRepo.findById(dto.getIdCarrera())
-                    .orElseThrow(() -> new RuntimeException("Carrera no valida"));
+            Departamento d = departamentoRepo.findById(dto.getIdDepartamento())
+                    .orElseThrow(() -> new RuntimeException("Departamento no válido"));
 
-            Estudiante e = Estudiante.builder()
+            // ✅ Guardar contraseña cifrada
+            Docente doc = Docente.builder()
                     .nombre(dto.getNombre())
                     .apellido(dto.getApellido())
                     .rut(dto.getRut())
                     .correo(dto.getCorreo())
-                    .contrasenia(encoder.encode(dto.getContrasenia())) // ✅ guardar cifrada
-                    .carrera(carrera)
+                    .contrasenia(encoder.encode(dto.getContrasenia()))
+                    .departamento(d)
                     .activo(true)
                     .build();
 
-            estudianteRepo.save(e);
+            docenteRepo.save(doc);
         }
     }
 
-    private String validar(EstudianteImportDTO dto, Set<String> rutsVistos, Set<String> correosVistos) {
+    private String validar(DocenteImportDTO dto, Set<String> rutsVistos, Set<String> correosVistos) {
 
         if (blank(dto.getNombre()) || blank(dto.getApellido()) ||
                 blank(dto.getRut()) || blank(dto.getCorreo()) || blank(dto.getContrasenia())) {
+
             return "Campos obligatorios vacíos";
         }
 
@@ -115,31 +121,32 @@ public class CsvEstudianteService {
 
         if (!partes[0].matches("^[0-9]{8}$"))
             return "RUT debe tener 8 números";
+
         if (!partes[1].matches("^[0-9Kk]$"))
             return "DV debe ser número o K";
 
-        if (dto.getIdCarrera() == null)
-            return "Carrera requerida";
-        if (carreraRepo.findById(dto.getIdCarrera()).isEmpty())
-            return "Carrera no existe";
+        if (dto.getIdDepartamento() == null)
+            return "Departamento requerido";
+        if (departamentoRepo.findById(dto.getIdDepartamento()).isEmpty())
+            return "Departamento no existe";
 
         if (rutsVistos.contains(dto.getRut()))
             return "RUT repetido en archivo";
         if (correosVistos.contains(dto.getCorreo()))
             return "Correo repetido en archivo";
 
-        if (estudianteRepo.findByRut(dto.getRut()).isPresent())
+        if (docenteRepo.findByRut(dto.getRut()).isPresent())
             return "RUT ya existe";
-        if (estudianteRepo.findByCorreo(dto.getCorreo()).isPresent())
+        if (docenteRepo.findByCorreo(dto.getCorreo()).isPresent())
             return "Correo ya existe";
 
         return null;
     }
 
-    private String carreraNombre(Long id) {
+    private String departamentoNombre(Long id) {
         if (id == null)
             return "";
-        return carreraRepo.findById(id).map(Carrera::getNombre).orElse("");
+        return departamentoRepo.findById(id).map(Departamento::getNombre).orElse("");
     }
 
     private String col(String[] row, int i) {

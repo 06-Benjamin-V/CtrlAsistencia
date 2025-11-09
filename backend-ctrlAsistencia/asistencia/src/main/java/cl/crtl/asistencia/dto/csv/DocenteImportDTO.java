@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EstudianteImportDTO {
+public class DocenteImportDTO {
     private String nombre;
     private String apellido;
     private String rut;
     private String correo;
-    private Long idCarrera;
+    private Long idDepartamento;
     private String contrasenia;
 }

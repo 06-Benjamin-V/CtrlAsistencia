@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "./subirCsv.css";
 
-function SubirCsvEstudiantes() {
+function SubirCsvDocentes() {
   const [file, setFile] = useState(null);
   const [rows, setRows] = useState([]);
-  const [carreras, setCarreras] = useState([]);
+  const [departamentos, setDepartamentos] = useState([]);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/carrera/lista", {
+    fetch("http://localhost:8080/api/departamento/lista", {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(r => r.json())
-      .then(setCarreras)
-      .catch(() => setCarreras([]));
+      .then(setDepartamentos)
+      .catch(() => setDepartamentos([]));
   }, []);
 
-  const nombreCarrera = (idCarrera) => {
-    const found = carreras.find(c => c.idCarrera === idCarrera);
+  const nombreDepartamento = (id) => {
+    const found = departamentos.find(d => d.idDepartamento === id);
     return found ? found.nombre : "";
   };
 
@@ -31,7 +31,7 @@ function SubirCsvEstudiantes() {
     const fd = new FormData();
     fd.append("file", file);
 
-    const r = await fetch("http://localhost:8080/api/csv/estudiantes/preview", {
+    const r = await fetch("http://localhost:8080/api/csv/docentes/preview", {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: fd
@@ -46,10 +46,9 @@ function SubirCsvEstudiantes() {
         rutCuerpo: cuerpo,
         rutDV: dv,
         rut: item.data.rut,
-        contrasenia: item.data.contrasenia || "", // ✅ incluye la contraseña
         valido: item.valido,
         mensaje: item.mensaje,
-        carreraNombre: nombreCarrera(item.data.idCarrera)
+        departamentoNombre: nombreDepartamento(item.data.idDepartamento)
       };
     });
 
@@ -57,7 +56,7 @@ function SubirCsvEstudiantes() {
   };
 
   const validarFila = async (idx, fila) => {
-    const r = await fetch("http://localhost:8080/api/csv/estudiantes/validate", {
+    const r = await fetch("http://localhost:8080/api/csv/docentes/validate", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -68,8 +67,8 @@ function SubirCsvEstudiantes() {
         apellido: fila.apellido,
         rut: fila.rut,
         correo: fila.correo,
-        idCarrera: fila.idCarrera,
-        contrasenia: fila.contrasenia // ✅ enviar contraseña al validar
+        idDepartamento: fila.idDepartamento,
+        contrasenia: fila.contrasenia   // ✅ validar password también
       })
     });
 
@@ -78,7 +77,7 @@ function SubirCsvEstudiantes() {
     updateRow(idx, {
       valido: res.valido,
       mensaje: res.mensaje || "",
-      carreraNombre: nombreCarrera(fila.idCarrera)
+      departamentoNombre: nombreDepartamento(fila.idDepartamento)
     });
   };
 
@@ -91,8 +90,8 @@ function SubirCsvEstudiantes() {
       const fila = updated[idx];
 
       fila.rut = `${fila.rutCuerpo || ""}-${fila.rutDV || ""}`;
-      if (field === "idCarrera") {
-        fila.carreraNombre = nombreCarrera(value);
+      if (field === "idDepartamento") {
+        fila.departamentoNombre = nombreDepartamento(value);
       }
 
       setTimeout(() => validarFila(idx, fila), 0);
@@ -106,13 +105,13 @@ function SubirCsvEstudiantes() {
 
   const handleConfirm = async () => {
     const payload = rows.filter(r => r.valido)
-      .map(({ nombre, apellido, rut, correo, idCarrera, contrasenia }) => ({
-        nombre, apellido, rut, correo, idCarrera, contrasenia // ✅ incluir contraseña
+      .map(({ nombre, apellido, rut, correo, idDepartamento, contrasenia }) => ({
+        nombre, apellido, rut, correo, idDepartamento, contrasenia // ✅ mandar contraseña
       }));
 
     if (payload.length === 0) return alert("No hay filas válidas");
 
-    const r = await fetch("http://localhost:8080/api/csv/estudiantes/confirm", {
+    const r = await fetch("http://localhost:8080/api/csv/docentes/confirm", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -124,7 +123,7 @@ function SubirCsvEstudiantes() {
     const res = await r.json();
 
     if (res.ok) {
-      alert("Importación realizada");
+      alert("Docentes importados correctamente");
       setRows([]);
     } else {
       alert(res.error);
@@ -136,7 +135,7 @@ function SubirCsvEstudiantes() {
       <div className="csv-card">
 
         <div className="csv-head">
-          <h2>Importar estudiantes</h2>
+          <h2>Importar docentes</h2>
         </div>
 
         <div className="csv-upload">
@@ -152,8 +151,8 @@ function SubirCsvEstudiantes() {
                 <th>Apellido</th>
                 <th>RUT</th>
                 <th>Correo</th>
-                <th>Carrera</th>
-                <th>Contraseña</th> {/* ✅ columna agregada */}
+                <th>Departamento</th>
+                <th>Contraseña</th> {/* ✅ Nuevo */}
                 <th>Estado</th>
                 <th></th>
               </tr>
@@ -186,17 +185,17 @@ function SubirCsvEstudiantes() {
 
                   <td>
                     <select
-                      value={row.idCarrera ?? ""}
-                      onChange={e => handleEdit(idx, "idCarrera", Number(e.target.value))}
+                      value={row.idDepartamento ?? ""}
+                      onChange={e => handleEdit(idx, "idDepartamento", Number(e.target.value))}
                     >
                       <option value="">Seleccionar</option>
-                      {carreras.map(c => (
-                        <option key={c.idCarrera} value={c.idCarrera}>{c.nombre}</option>
+                      {departamentos.map(d => (
+                        <option key={d.idDepartamento} value={d.idDepartamento}>{d.nombre}</option>
                       ))}
                     </select>
                   </td>
 
-                  {/* ✅ input contraseña */}
+                  {/* ✅ Campo contraseña editable */}
                   <td>
                     <input
                       type="text"
@@ -227,4 +226,4 @@ function SubirCsvEstudiantes() {
   );
 }
 
-export default SubirCsvEstudiantes;
+export default SubirCsvDocentes;

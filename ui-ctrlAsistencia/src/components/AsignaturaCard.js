@@ -2,9 +2,9 @@ import React from "react";
 import "./Card.css";
 import { FaBook } from "react-icons/fa";
 
-function AsignaturaCard({ asignatura }) {
+function AsignaturaCard({ asignatura, onClick }) {
   return (
-    <div className="asignatura-card">
+    <div className="asignatura-card" onClick={onClick} style={{cursor: "pointer"}}>
       <div className="asignatura-card-header">
         <FaBook />
       </div>
