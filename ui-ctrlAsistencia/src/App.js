@@ -22,6 +22,10 @@ import EditarDocente from './forms/EditarDocente';
 import EditarEstudiante from './forms/EditarEstudiante';
 import EditarCurso from './forms/EditarCurso';
 import EliminarAsignatura from './forms/EliminarAsignatura';
+import EliminarDocente from "./forms/EliminarDocente";
+import EliminarEstudiante from "./forms/EliminarEstudiante";
+import EliminarCurso from "./forms/EliminarCurso";
+import EliminarMatricula from "./forms/EliminarMatricula";
 
 
 function App() {
@@ -45,8 +49,7 @@ function App() {
     window.location.href = "/login";
   };
 
-  const handleSelectSection = (section) => {
-  };
+  const handleSelectSection = () => {};
 
   return (
     <>
@@ -55,9 +58,11 @@ function App() {
         onLogout={handleLogout}
         onSelectSection={handleSelectSection}
       />
+
       <main className="App-main">
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
+
           <Route 
             path="/login" 
             element={
@@ -66,6 +71,7 @@ function App() {
               </PublicRoute>
             } 
           />
+
           <Route 
             path="/home" 
             element={
@@ -74,51 +80,17 @@ function App() {
               </ProtectedRoute>
             } 
           />
-          <Route 
-            path="/admin/estudiantes/csv"
-            element={
-              <ProtectedRoute role="ADMINISTRATIVO">
-                <SubirCsvEstudiantes />
-              </ProtectedRoute>
-            }
-          />
-          <Route 
-            path="/admin/docentes/csv"
-            element={
-              <ProtectedRoute role="ADMINISTRATIVO">
-                <SubirCsvDocente />
-              </ProtectedRoute>
-            }
-          />
 
+          {/* CSV */}
+          <Route path="/admin/estudiantes/csv" element={<ProtectedRoute role="ADMINISTRATIVO"><SubirCsvEstudiantes /></ProtectedRoute>} />
+          <Route path="/admin/docentes/csv" element={<ProtectedRoute role="ADMINISTRATIVO"><SubirCsvDocente /></ProtectedRoute>} />
 
-          <Route 
-            path="/admin/asignaturas/crear" 
-            element={
-              <ProtectedRoute role="ADMINISTRATIVO">
-                <CrearAsignatura />
-              </ProtectedRoute>
-            } 
-          />
+          {/* Asignaturas */}
+          <Route path="/admin/asignaturas/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearAsignatura /></ProtectedRoute>} />
+          <Route path="/admin/asignaturas/editar" element={<ProtectedRoute role="ADMINISTRATIVO"><EditarAsignatura /></ProtectedRoute>} />
+          <Route path="/admin/asignaturas/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarAsignatura /></ProtectedRoute>} />
 
-            <Route 
-            path="/admin/asignaturas/eliminar" 
-            element={
-              <ProtectedRoute role="ADMINISTRATIVO">
-                <EliminarAsignatura />
-              </ProtectedRoute>
-            } 
-          />
-
-          <Route 
-            path="/admin/asignaturas/editar" 
-            element={
-              <ProtectedRoute role="ADMINISTRATIVO">
-                <EditarAsignatura />
-              </ProtectedRoute>
-            } 
-          />
-
+          {/* Docentes */}
           <Route 
             path="/admin/docentes/editar" 
             element={
@@ -146,48 +118,24 @@ function App() {
             } 
           />
 
-          <Route 
-            path="/admin/docentes/crear" 
-            element={
-              <ProtectedRoute role="ADMINISTRATIVO">
-                <CrearDocente />
-              </ProtectedRoute>
-            } 
-          />
-          <Route
-            path="/admin/estudiantes/crear"
-            element={
-              <ProtectedRoute role="ADMINISTRATIVO">
-                <CrearEstudiante />
-              </ProtectedRoute>
-            }
-          />
-          <Route 
-            path="/admin/cursos/crear" 
-            element={
-              <ProtectedRoute role="ADMINISTRATIVO">
-                 <CrearCurso />
-              </ProtectedRoute>
-            }
-          />
-          <Route 
-            path="/admin/matriculas/crear" 
-            element={
-              <ProtectedRoute role="ADMINISTRATIVO">
-                 <CrearMatricula />
-              </ProtectedRoute>
-            }
-          />
-          <Route 
-            path="/docente/clases/crear" 
-            element={
-              <ProtectedRoute role="DOCENTE">
-                 <CrearClase />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/admin/docentes/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearDocente /></ProtectedRoute>} />
+          <Route path="/admin/docentes/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarDocente /></ProtectedRoute>} />
+
+          {/* Estudiantes */}
+          <Route path="/admin/estudiantes/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearEstudiante /></ProtectedRoute>} />
+          <Route path="/admin/estudiantes/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarEstudiante /></ProtectedRoute>} />
+
+          {/* Cursos y matrículas */}
+          <Route path="/admin/cursos/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearCurso /></ProtectedRoute>} />
+          <Route path="/admin/matriculas/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearMatricula /></ProtectedRoute>} />
+          <Route path="/admin/cursos/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarCurso /></ProtectedRoute>} />
+          <Route path="/admin/matriculas/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarMatricula /></ProtectedRoute>} />
+
+          {/* Docente crea clases */}
+          <Route path="/docente/clases/crear" element={<ProtectedRoute role="DOCENTE"><CrearClase /></ProtectedRoute>} />
         </Routes>
       </main>
+
       <Footer />
     </>
   );
