@@ -3,11 +3,14 @@ import './login.css';
 import fondo from '../assets/images/ufro.png';
 import bandurria from '../assets/images/bandurriaFun.svg';
 
+// Componente de inicio de sesión que gestiona la autenticación del usuario
 function Login() {
+  // Estados para manejar los datos del formulario y mensajes de error
   const [correo, setCorreo] = useState('');
   const [contrasenia, setContrasenia] = useState('');
   const [error, setError] = useState('');
 
+  // Función que procesa el envío del formulario de login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -15,6 +18,7 @@ function Login() {
     try {
       const loginData = { correo, contrasenia };
 
+      // Petición POST al endpoint de autenticación
       const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -30,12 +34,14 @@ function Login() {
 
       const data = JSON.parse(text);
 
+      // Almacena el token y datos del usuario en localStorage
       if (data.token) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('rol', data.rol);
         localStorage.setItem('nombre', data.nombreCompleto);
       }
 
+      // Redirección a la página principal
       window.location.href = '/home';
 
     } catch (err) {
@@ -46,6 +52,7 @@ function Login() {
 
   return (
     <div className="login-container">
+      {/* Fondo con imagen de la universidad */}
       <div
         className="login-container-bg"
         style={{ backgroundImage: `url(${fondo})` }}
@@ -56,6 +63,7 @@ function Login() {
         <h2>Iniciar Sesión</h2>
 
         <form onSubmit={handleLogin}>
+          {/* Campos de entrada para correo y contraseña */}
           <div className="input-group">
             <label>Correo electrónico</label>
             <input
@@ -78,8 +86,10 @@ function Login() {
             />
           </div>
 
+          {/* Mensaje de error si las credenciales son incorrectas */}
           {error && <div style={{ color: 'red', textAlign: 'center', margin: '10px 0' }}>{error}</div>}
 
+          {/* Botón de envío con animación al hacer hover */}
           <div className="button flex items-center justify-center">
             <button
               type="submit"

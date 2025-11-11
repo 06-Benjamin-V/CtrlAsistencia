@@ -1,48 +1,25 @@
 html, body {
   margin: 0;
   padding: 0;
-  min-height: 79.9vh;
+  height: 100%;
 }
 
-#root, .App {
+#root {
   display: flex;
   flex-direction: column;
-  min-height: 79.9vh;
-  max-height: 100vh;
+  min-height: 100vh;
 }
 
-.header {
+.App {
   display: flex;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #282c34;
-  color: white;
-  font-family: 'Montserrat', sans-serif;
-  height: 80px;
-  flex-shrink: 0;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.header-logo {
-  height: 60px;
-  margin-right: 15px;
-}
-
-.header-title {
-  font-size: 30px;
-}
-
-.App-header {
+.App-main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-align: center;
-
-  background: linear-gradient(-45deg, #005092, #003865, #0073b6, #004a87);
-  background-size: 400% 400%;
-  animation: gradientShift 7s ease infinite;
 }
 
 @keyframes gradientShift {
@@ -56,7 +33,6 @@ html, body {
     background-position: 0% 50%;
   }
 }
-
 
 .App-link {
   background: none;
@@ -73,14 +49,4 @@ html, body {
 .App-link:hover {
   background: #61dafb;
   color: #282c34;
-}
-
-.footer {
-  background-color: #003865;
-  color: white;
-  text-align: center;
-  padding: 15px 0;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  flex-shrink: 0;
 }

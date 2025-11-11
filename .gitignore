@@ -1,7 +1,10 @@
 .vscode/
 
 #Sonarqube 
+aplication/
+aplication-reports/
+aplication-logs/
 .env
 .scannerwork/
 target/
-analyze.bat
+backend-ctrlAsistencia/asistencia/analize.bat

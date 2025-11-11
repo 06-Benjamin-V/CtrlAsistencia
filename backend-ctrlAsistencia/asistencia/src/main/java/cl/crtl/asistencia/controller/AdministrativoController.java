@@ -16,8 +16,6 @@ public class AdministrativoController {
 
     private final AdministrativoService administrativoService;
 
-    // ELIMINA el método login - ya no se usa, ahora es /api/auth/login
-
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("¡Token válido! Eres un administrador autenticado.");
@@ -25,35 +23,30 @@ public class AdministrativoController {
 
     @GetMapping("/lista")
     public ResponseEntity<List<Administrativo>> listar() {
-        List<Administrativo> lista = administrativoService.listarTodos();
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(administrativoService.listarTodos());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Administrativo> obtenerPorId(@PathVariable Long id) {
         Administrativo admin = administrativoService.obtenerPorId(id);
-        if (admin != null) {
-            return ResponseEntity.ok(admin);
-        }
-        return ResponseEntity.notFound().build();
+        return (admin != null) ? ResponseEntity.ok(admin) : ResponseEntity.notFound().build();
     }
 
     @PostMapping("/crear")
     public ResponseEntity<Administrativo> crear(@RequestBody Administrativo administrativo) {
-        Administrativo nuevo = administrativoService.guardar(administrativo);
-        return ResponseEntity.ok(nuevo);
+        return ResponseEntity.ok(administrativoService.guardar(administrativo));
     }
 
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<Administrativo> actualizar(@PathVariable Long id, @RequestBody Administrativo administrativo) {
-        administrativo.setIdAdministrativo(id);
-        Administrativo actualizado = administrativoService.guardar(administrativo);
-        return ResponseEntity.ok(actualizado);
+    public ResponseEntity<Administrativo> actualizar(@PathVariable Long id,
+            @RequestBody Administrativo administrativo) {
+        Administrativo actualizado = administrativoService.actualizar(id, administrativo);
+        return (actualizado != null) ? ResponseEntity.ok(actualizado) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        administrativoService.eliminar(id);
-        return ResponseEntity.noContent().build();
+        boolean eliminado = administrativoService.eliminar(id);
+        return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }

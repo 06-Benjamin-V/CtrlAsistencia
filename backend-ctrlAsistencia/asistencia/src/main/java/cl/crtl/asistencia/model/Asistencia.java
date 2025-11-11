@@ -14,19 +14,23 @@ public class Asistencia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_asistencia")
     private Long idAsistencia;
-
-    @ManyToOne
-    @JoinColumn(name = "id_estudiante", nullable = false)
-    private Estudiante estudiante;
 
     @ManyToOne
     @JoinColumn(name = "id_clase", nullable = false)
     private Clase clase;
 
-    @Column(nullable = false)
-    private LocalDateTime fechaRegistro;
+    @ManyToOne
+    @JoinColumn(name = "id_estudiante", nullable = false)
+    private Estudiante estudiante;
 
     @Column(nullable = false)
-    private boolean presente;
+    private Boolean presente = false;
+
+    @Column(nullable = false)
+    private Boolean justificado = false;
+
+    @Column(name = "marcada_en", insertable = false, updatable = false)
+    private LocalDateTime marcadaEn;
 }

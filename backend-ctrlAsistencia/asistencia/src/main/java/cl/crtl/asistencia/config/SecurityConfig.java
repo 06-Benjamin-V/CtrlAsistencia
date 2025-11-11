@@ -3,12 +3,16 @@ package cl.crtl.asistencia.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+// Configuración de seguridad de la aplicación con Spring Security
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -16,30 +20,47 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    // Bean para encriptar contraseñas usando BCrypt
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10);
+    }
+
+    // Configura la cadena de filtros de seguridad y las reglas de acceso por rol
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> {})
-            .authorizeHttpRequests(auth -> auth
-                // Permite todos los endpoints de login sin autenticación
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/estudiante/login").permitAll()
-                .requestMatchers("/api/docente/login").permitAll()
-                .requestMatchers("/api/administrativo/login").permitAll()
-                
-                // Protege el resto de endpoints por roles
-                .requestMatchers("/api/estudiante/**").hasAnyRole("ESTUDIANTE", "DOCENTE", "ADMINISTRATIVO")
-                .requestMatchers("/api/docente/**").hasAnyRole("DOCENTE", "ADMINISTRATIVO")
-                .requestMatchers("/api/administrativo/**").hasRole("ADMINISTRATIVO")
-                
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> {
+                })
+                .authorizeHttpRequests(auth -> auth
+                        // Endpoint de autenticación accesible públicamente
+                        .requestMatchers("/api/auth/**").permitAll()
+
+                        // Importación de CSV solo para administrativos
+                        .requestMatchers("/api/csv/estudiantes/**").hasRole("ADMINISTRATIVO")
+                        .requestMatchers(HttpMethod.OPTIONS, "/api/csv/estudiantes/**").permitAll()
+
+                        // Endpoints de carreras accesibles para administrativos y docentes
+                        .requestMatchers("/api/carrera/**").hasAnyRole("ADMINISTRATIVO", "DOCENTE")
+
+                        // Gestión de asignaturas y datos administrativos
+                        .requestMatchers("/api/asignatura/**").hasRole("ADMINISTRATIVO")
+                        .requestMatchers("/api/administrativo/**").hasRole("ADMINISTRATIVO")
+
+                        // Endpoints de docentes
+                        .requestMatchers("/api/docente/**").hasAnyRole("DOCENTE", "ADMINISTRATIVO")
+
+                        // Endpoints de estudiantes accesibles según rol
+                        .requestMatchers("/api/estudiante/**").hasAnyRole("ESTUDIANTE", "DOCENTE", "ADMINISTRATIVO")
+
+                        .anyRequest().authenticated())
+                // Configura sesiones stateless para usar JWT
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Agrega el filtro JWT antes del filtro de autenticación estándar
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 }

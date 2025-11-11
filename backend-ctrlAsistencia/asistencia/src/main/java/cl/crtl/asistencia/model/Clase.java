@@ -3,7 +3,7 @@ package cl.crtl.asistencia.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "clase")
@@ -15,20 +15,25 @@ public class Clase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_clase")
     private Long idClase;
 
     @ManyToOne
-    @JoinColumn(name = "id_docente", nullable = false)
-    private Docente docente;
-
-    @ManyToOne
-    @JoinColumn(name = "id_asignatura", nullable = false)
-    private Asignatura asignatura;
+    @JoinColumn(name = "id_curso", nullable = false)
+    private Curso curso;
 
     @Column(nullable = false)
     private LocalDate fecha;
 
-    @OneToMany(mappedBy = "clase", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Asistencia> asistencias;
+    @Column(length = 255)
+    private String tema;
+
+    @Column(name = "codigo_asistencia", length = 50, unique = true)
+    private String codigoAsistencia;
+
+    @Column(name = "codigo_expira_en")
+    private LocalDateTime codigoExpiraEn;
+
+    @Column(name = "creada_en", insertable = false, updatable = false)
+    private LocalDateTime creadaEn;
 }
