@@ -91,44 +91,22 @@ function App() {
           <Route path="/admin/asignaturas/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarAsignatura /></ProtectedRoute>} />
 
           {/* Docentes */}
-          <Route 
-            path="/admin/docentes/editar" 
-            element={
-              <ProtectedRoute role="ADMINISTRATIVO">
-                <EditarDocente/>
-              </ProtectedRoute>
-            } 
-          />
-
-          <Route 
-            path="/admin/estudiantes/editar" 
-            element={
-              <ProtectedRoute role="ADMINISTRATIVO">
-                <EditarEstudiante/>
-              </ProtectedRoute>
-            } 
-          />
-
-          <Route 
-            path="/admin/cursos/editar" 
-            element={
-              <ProtectedRoute role="ADMINISTRATIVO">
-                <EditarCurso/>
-              </ProtectedRoute>
-            } 
-          />
-
           <Route path="/admin/docentes/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearDocente /></ProtectedRoute>} />
+          <Route path="/admin/docentes/editar" element={<ProtectedRoute role="ADMINISTRATIVO"><EditarDocente/></ProtectedRoute>} />
           <Route path="/admin/docentes/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarDocente /></ProtectedRoute>} />
 
           {/* Estudiantes */}
           <Route path="/admin/estudiantes/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearEstudiante /></ProtectedRoute>} />
+          <Route path="/admin/estudiantes/editar" element={<ProtectedRoute role="ADMINISTRATIVO"><EditarEstudiante/></ProtectedRoute>} />
           <Route path="/admin/estudiantes/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarEstudiante /></ProtectedRoute>} />
 
-          {/* Cursos y matrículas */}
+          {/* Cursos */}
           <Route path="/admin/cursos/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearCurso /></ProtectedRoute>} />
-          <Route path="/admin/matriculas/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearMatricula /></ProtectedRoute>} />
+          <Route path="/admin/cursos/editar" element={<ProtectedRoute role="ADMINISTRATIVO"><EditarCurso/></ProtectedRoute>} />
           <Route path="/admin/cursos/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarCurso /></ProtectedRoute>} />
+
+          {/* Matrículas*/}
+          <Route path="/admin/matriculas/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearMatricula /></ProtectedRoute>} />
           <Route path="/admin/matriculas/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarMatricula /></ProtectedRoute>} />
 
           {/* Docente crea clases */}

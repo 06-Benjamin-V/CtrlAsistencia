@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
+// Decodifica un token JWT y retorna su payload
 function parseJwt(token) {
   try {
     const base64Url = token.split('.')[1];
@@ -17,6 +18,7 @@ function parseJwt(token) {
   }
 }
 
+// Componente que protege rutas privadas verificando autenticación y permisos por rol
 function ProtectedRoute({ children, role }) {
   const token = localStorage.getItem('token');
   if (!token) return <Navigate to="/login" replace />;
@@ -24,6 +26,7 @@ function ProtectedRoute({ children, role }) {
   const payload = parseJwt(token);
   const now = Date.now() / 1000;
 
+  // Redirige a login si el token expiró o es inválido
   if (!payload || payload.exp < now) {
     localStorage.removeItem('token');
     localStorage.removeItem('rol');
@@ -31,6 +34,7 @@ function ProtectedRoute({ children, role }) {
     return <Navigate to="/login" replace />;
   }
 
+  // Verifica que el rol del usuario coincida con el rol requerido para la ruta
   if (role && payload.rol !== role) {
     return <Navigate to="/home" replace />;
   }

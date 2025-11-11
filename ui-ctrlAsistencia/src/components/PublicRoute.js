@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
+// Función que decodifica un token JWT y extrae su payload
 function parseJwt(token) {
   try {
     const base64Url = token.split('.')[1];
@@ -17,15 +18,18 @@ function parseJwt(token) {
   }
 }
 
+// Componente que protege rutas públicas, redirigiendo usuarios autenticados a /home
 function PublicRoute({ children }) {
   const token = localStorage.getItem('token');
 
+  // Verifica si existe un token válido y no ha expirado
   if (token) {
     const payload = parseJwt(token);
     const now = Date.now() / 1000;
     if (payload && payload.exp >= now) {
       return <Navigate to="/home" replace />;
     } else {
+      // Limpia el localStorage si el token expiró
       localStorage.removeItem('token');
       localStorage.removeItem('rol');
       localStorage.removeItem('nombre');

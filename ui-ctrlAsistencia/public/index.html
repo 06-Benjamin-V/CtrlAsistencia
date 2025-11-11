@@ -15,9 +15,10 @@
       const setFavicon = () => {
         
         if (darkQuery.matches) {
-          favicon.setAttribute("href", "favicon-dark.ico");
+          // use absolute paths so routes nested under the app don't break the favicon URL
+          favicon.setAttribute("href", "/favicon-dark.ico");
         } else {
-          favicon.setAttribute("href", "favicon-light.ico");
+          favicon.setAttribute("href", "/favicon-light.ico");
         }};
 
     setFavicon();

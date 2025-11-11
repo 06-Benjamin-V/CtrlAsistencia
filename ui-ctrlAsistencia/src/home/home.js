@@ -6,14 +6,15 @@ import DocenteCard from "../components/DocenteCard";
 import SearchBar from "../components/SearchBar";
 import "./home.css";
 
+// Componente principal que muestra el dashboard con información según el rol del usuario
 function Home() {
-  //Estados
+  // Estados para gestionar usuario, datos mostrados, búsqueda y sección activa
   const [usuario, setUsuario] = useState(null);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [seccion, setSeccion] = useState("asignaturas");
 
-  //Cargar usuario al iniciar
+  // Carga los datos del usuario autenticado al montar el componente
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return (window.location.href = "/login");
@@ -35,24 +36,25 @@ function Home() {
       });
   }, []);
 
-
-  // Cerrar sesión
+  // Función para cerrar sesión y limpiar el token
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
   };
 
-  //Cambiar sección (fetch dinámico)
+  // Cambia la sección activa y carga los datos correspondientes desde el backend
   const handleSelectSection = (section) => {
     setSeccion(section);
     const token = localStorage.getItem("token");
     let url = "";
 
+    // Determina la URL según la sección seleccionada
     if (section === "docentes") url = "http://localhost:8080/api/docente/lista";
     if (section === "estudiantes") url = "http://localhost:8080/api/estudiante/lista";
     if (section === "asignaturas") url = "http://localhost:8080/api/asignatura/lista";
     if (section === "cursos") url = "http://localhost:8080/api/curso/lista";
 
+    // Si es la sección de clases y el usuario es docente, obtiene sus clases específicas
     if (section === "clases" && usuario?.rol === "DOCENTE") {
       url = `http://localhost:8080/api/clase/docente/${usuario.idDocente}`;
     }
@@ -67,10 +69,11 @@ function Home() {
     }
   };
 
-  // Función para búsqueda / filtrado
+  // Función que verifica si un elemento coincide con el término de búsqueda
   const matchesSearch = (item) => {
     const q = search.toLowerCase();
 
+    // Define qué campos buscar según la sección activa
     const fields = {
       asignaturas: ["nombre", "codigo"],
       docentes: ["nombre", "apellido", "rut"],
@@ -84,7 +87,7 @@ function Home() {
 
   const filtered = data.filter(matchesSearch);
 
-  //  Render dinámico de tarjetas
+  // Renderiza la tarjeta correspondiente según el tipo de dato
   const renderCard = (item) => {
     switch (seccion) {
       case "asignaturas":
@@ -98,7 +101,7 @@ function Home() {
     }
   };
 
-  // Render principal
+  // Muestra mensaje de carga mientras se obtienen los datos del usuario
   if (!usuario) return <p>Cargando...</p>;
 
   return (
@@ -107,6 +110,7 @@ function Home() {
         <h1>Bienvenido, {usuario.nombreCompleto}</h1>
         <p>Rol: {usuario.rol}</p>
 
+        {/* Barra de búsqueda visible solo en secciones con funcionalidad de filtrado */}
         {["asignaturas", "docentes", "estudiantes"].includes(seccion) && (
           <SearchBar
             value={search}
@@ -115,6 +119,7 @@ function Home() {
           />
         )}
 
+        {/* Área principal que muestra las tarjetas filtradas o mensajes informativos */}
         <div className="asignaturas-grid">
           {["cursos", "matriculas"].includes(seccion) ? (
             <p>Usa el menú de la derecha para gestionar {seccion}.</p>
