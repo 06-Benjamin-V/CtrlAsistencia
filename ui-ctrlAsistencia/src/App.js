@@ -18,6 +18,9 @@ import CrearClase from './forms/CrearClase';
 import SubirCsvEstudiantes from './forms/subirCsvEstudiante';
 import SubirCsvDocente from "./forms/subirCsvDocente";
 import EditarAsignatura from './forms/EditarAsignatura';
+import EditarDocente from './forms/EditarDocente';
+import EditarEstudiante from './forms/EditarEstudiante';
+import EditarCurso from './forms/EditarCurso';
 import EliminarAsignatura from './forms/EliminarAsignatura';
 
 
@@ -112,6 +115,33 @@ function App() {
             element={
               <ProtectedRoute role="ADMINISTRATIVO">
                 <EditarAsignatura />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/admin/docentes/editar" 
+            element={
+              <ProtectedRoute role="ADMINISTRATIVO">
+                <EditarDocente/>
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/admin/estudiantes/editar" 
+            element={
+              <ProtectedRoute role="ADMINISTRATIVO">
+                <EditarEstudiante/>
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/admin/cursos/editar" 
+            element={
+              <ProtectedRoute role="ADMINISTRATIVO">
+                <EditarCurso/>
               </ProtectedRoute>
             } 
           />
