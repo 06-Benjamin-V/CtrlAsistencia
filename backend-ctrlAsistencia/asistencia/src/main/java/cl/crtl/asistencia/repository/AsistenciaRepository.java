@@ -13,4 +13,6 @@ public interface AsistenciaRepository extends JpaRepository<Asistencia, Long> {
 
     // Buscar asistencias de un estudiante
     List<Asistencia> findByEstudiante_IdEstudiante(Long idEstudiante);
+
+    boolean existsByClase_IdClaseAndEstudiante_IdEstudiante(Long idClase, Long idEstudiante);
 }

@@ -11,20 +11,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/clase")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class ClaseController {
 
     private final ClaseService claseService;
 
     @GetMapping("/lista")
-    public ResponseEntity<List<Clase>> listarTodas() {
+    public ResponseEntity<List<Clase>> listar() {
         return ResponseEntity.ok(claseService.listarTodas());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Clase> obtenerPorId(@PathVariable Long id) {
-        Clase clase = claseService.obtenerPorId(id);
-        return clase != null ? ResponseEntity.ok(clase) : ResponseEntity.notFound().build();
+        var clase = claseService.obtenerPorId(id);
+        return (clase != null) ? ResponseEntity.ok(clase) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/curso/{idCurso}")
@@ -37,9 +36,11 @@ public class ClaseController {
         return ResponseEntity.ok(claseService.listarPorDocente(idDocente));
     }
 
-    @PostMapping("/crear")
-    public ResponseEntity<Clase> crear(@RequestBody Clase clase) {
-        return ResponseEntity.ok(claseService.guardar(clase));
+    @PostMapping("/crear-con-codigo")
+    public ResponseEntity<Clase> crearClase(@RequestBody Clase clase,
+            @RequestParam(defaultValue = "10") int duracionMinutos) {
+        Clase nueva = claseService.crearClaseConCodigo(clase, duracionMinutos);
+        return ResponseEntity.ok(nueva);
     }
 
     @DeleteMapping("/eliminar/{id}")

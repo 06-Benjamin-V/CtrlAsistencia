@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-// Configuración de seguridad de la aplicación con Spring Security
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -20,54 +19,62 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // Bean para encriptar contraseñas usando BCrypt
+    // 🔹 Encriptador de contraseñas
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
 
-    // Configura la cadena de filtros de seguridad y las reglas de acceso por rol
+    // 🔹 Configuración principal de seguridad
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> {
-                })
+                }) // mantiene configuración CORS externa
                 .authorizeHttpRequests(auth -> auth
-                        // Endpoint de autenticación accesible públicamente
+
+                        // 🔓 Endpoints públicos (login, registro, etc.)
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        // Importación de CSV solo para administrativos
+                        // 🔹 Endpoints de clase (solo docentes)
+                        .requestMatchers(HttpMethod.POST, "/api/clase/crear-con-codigo")
+                        .hasRole("DOCENTE")
+
+                        // 🔹 Endpoints de asistencia (solo estudiantes)
+                        .requestMatchers(HttpMethod.POST, "/api/asistencia/registrar-codigo/**")
+                        .hasRole("ESTUDIANTE")
+
+                        // 🔹 Importación CSV (solo administrativos)
                         .requestMatchers("/api/csv/estudiantes/**").hasRole("ADMINISTRATIVO")
                         .requestMatchers(HttpMethod.OPTIONS, "/api/csv/estudiantes/**").permitAll()
 
-                        // Endpoints de carreras accesibles para administrativos y docentes
-                        .requestMatchers("/api/carrera/**").hasAnyRole("ADMINISTRATIVO", "DOCENTE")
+                        // 🔹 Carreras (accesibles a administrativos y docentes)
+                        .requestMatchers("/api/carrera/**")
+                        .hasAnyRole("ADMINISTRATIVO", "DOCENTE")
 
-                        // Gestión completa de asignaturas solo para administrativos
+                        // 🔹 Gestión completa de asignaturas (solo administrativos)
                         .requestMatchers(HttpMethod.POST, "/api/asignatura/**").hasRole("ADMINISTRATIVO")
                         .requestMatchers(HttpMethod.PUT, "/api/asignatura/**").hasRole("ADMINISTRATIVO")
                         .requestMatchers(HttpMethod.DELETE, "/api/asignatura/**").hasRole("ADMINISTRATIVO")
 
-                        // Permitir consultar asignaturas a cualquier usuario autenticado
+                        // 🔹 Consultar asignaturas (todos los roles autenticados)
                         .requestMatchers(HttpMethod.GET, "/api/asignatura/**")
                         .hasAnyRole("ADMINISTRATIVO", "DOCENTE", "ESTUDIANTE")
 
-                        // Endpoints administrativos solo para administrativos
+                        // 🔹 Rutas específicas por rol
                         .requestMatchers("/api/administrativo/**").hasRole("ADMINISTRATIVO")
-
-                        // Endpoints de docentes accesibles para docentes y administrativos
                         .requestMatchers("/api/docente/**").hasAnyRole("DOCENTE", "ADMINISTRATIVO")
-
-                        // Endpoints de estudiantes accesibles según rol
                         .requestMatchers("/api/estudiante/**")
                         .hasAnyRole("ESTUDIANTE", "DOCENTE", "ADMINISTRATIVO")
 
-                        // Cualquier otro endpoint requiere autenticación
+                        // 🔒 Cualquier otra ruta requiere autenticación
                         .anyRequest().authenticated())
-                // Configura sesiones sin estado para usar JWT
-                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Agrega el filtro JWT antes del filtro estándar de autenticación
+
+                // 🔹 JWT sin sesiones de servidor
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                // 🔹 Filtro JWT antes del UsernamePasswordAuthenticationFilter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

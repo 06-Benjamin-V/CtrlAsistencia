@@ -26,9 +26,13 @@ import EliminarDocente from "./forms/EliminarDocente";
 import EliminarEstudiante from "./forms/EliminarEstudiante";
 import EliminarCurso from "./forms/EliminarCurso";
 import EliminarMatricula from "./forms/EliminarMatricula";
+import MarcarAsistencia from "./forms/MarcarAsistencia";
 
 // Página de detalle de asignatura
 import AsignaturaPage from "./asignatura/AsignaturaPage";
+
+// Docente
+import VerClasesDocente from "./forms/VerClasesDocente";
 
 function App() {
   const [usuario, setUsuario] = useState(null);
@@ -39,7 +43,7 @@ function App() {
       fetch("http://localhost:8080/api/usuario/home", {
         headers: { Authorization: `Bearer ${token}` },
       })
-        .then((res) => res.ok ? res.json() : null)
+        .then((res) => (res.ok ? res.json() : null))
         .then((data) => setUsuario(data))
         .catch(() => setUsuario(null));
     }
@@ -63,8 +67,10 @@ function App() {
 
       <main className="App-main">
         <Routes>
+          {/* Redirección inicial */}
           <Route path="/" element={<Navigate to="/login" replace />} />
 
+          {/* Login público */}
           <Route 
             path="/login" 
             element={
@@ -74,6 +80,7 @@ function App() {
             } 
           />
 
+          {/* Página principal */}
           <Route 
             path="/home" 
             element={
@@ -83,7 +90,7 @@ function App() {
             } 
           />
 
-          {/* Detalle de asignatura por ID */}
+          {/* Detalle de asignatura */}
           <Route 
             path="/asignatura/:id" 
             element={
@@ -104,25 +111,31 @@ function App() {
 
           {/* Docentes */}
           <Route path="/admin/docentes/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearDocente /></ProtectedRoute>} />
-          <Route path="/admin/docentes/editar" element={<ProtectedRoute role="ADMINISTRATIVO"><EditarDocente/></ProtectedRoute>} />
+          <Route path="/admin/docentes/editar" element={<ProtectedRoute role="ADMINISTRATIVO"><EditarDocente /></ProtectedRoute>} />
           <Route path="/admin/docentes/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarDocente /></ProtectedRoute>} />
 
           {/* Estudiantes */}
           <Route path="/admin/estudiantes/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearEstudiante /></ProtectedRoute>} />
-          <Route path="/admin/estudiantes/editar" element={<ProtectedRoute role="ADMINISTRATIVO"><EditarEstudiante/></ProtectedRoute>} />
+          <Route path="/admin/estudiantes/editar" element={<ProtectedRoute role="ADMINISTRATIVO"><EditarEstudiante /></ProtectedRoute>} />
           <Route path="/admin/estudiantes/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarEstudiante /></ProtectedRoute>} />
 
           {/* Cursos */}
           <Route path="/admin/cursos/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearCurso /></ProtectedRoute>} />
-          <Route path="/admin/cursos/editar" element={<ProtectedRoute role="ADMINISTRATIVO"><EditarCurso/></ProtectedRoute>} />
+          <Route path="/admin/cursos/editar" element={<ProtectedRoute role="ADMINISTRATIVO"><EditarCurso /></ProtectedRoute>} />
           <Route path="/admin/cursos/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarCurso /></ProtectedRoute>} />
 
           {/* Matrículas */}
           <Route path="/admin/matriculas/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearMatricula /></ProtectedRoute>} />
           <Route path="/admin/matriculas/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarMatricula /></ProtectedRoute>} />
 
-          {/* Docente crea clases */}
+          {/* 🧑‍🏫 Docente crea clases */}
           <Route path="/docente/clases/crear" element={<ProtectedRoute role="DOCENTE"><CrearClase /></ProtectedRoute>} />
+
+          {/* 👀 Docente ve sus clases y asistencias */}
+          <Route path="/docente/clases/ver" element={<ProtectedRoute role="DOCENTE"><VerClasesDocente /></ProtectedRoute>} />
+
+          {/* 🎓 Estudiante marca asistencia */}
+          <Route path="/estudiante/asistencia" element={<ProtectedRoute role="ESTUDIANTE"><MarcarAsistencia /></ProtectedRoute>} />
         </Routes>
       </main>
 

@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "asistencia")
+@Table(name = "asistencia", uniqueConstraints = @UniqueConstraint(columnNames = { "id_clase", "id_estudiante" }))
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,10 +27,9 @@ public class Asistencia {
 
     @Column(nullable = false)
     private Boolean presente = false;
-
     @Column(nullable = false)
     private Boolean justificado = false;
 
-    @Column(name = "marcada_en", insertable = false, updatable = false)
-    private LocalDateTime marcadaEn;
+    @Column(name = "fecha_registro", nullable = false)
+    private LocalDateTime fechaRegistro;
 }

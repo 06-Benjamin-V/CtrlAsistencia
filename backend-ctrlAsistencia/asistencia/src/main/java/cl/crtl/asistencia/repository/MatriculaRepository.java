@@ -22,4 +22,6 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
 
     // Ver si un estudiante ya está matriculado en un curso (versión Optional)
     Optional<Matricula> findByEstudiante_IdEstudianteAndCurso_IdCurso(Long idEstudiante, Long idCurso);
+
+    boolean existsByCurso_IdCursoAndEstudiante_IdEstudiante(Long idCurso, Long idEstudiante);
 }

@@ -119,3 +119,25 @@
 .toggle-password:hover {
   background: #004099;
 }
+.codigo-generado {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.codigo-box {
+  font-size: 2rem;
+  font-weight: bold;
+  background: #282c34;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: inline-block;
+  margin: 10px 0;
+  letter-spacing: 3px;
+}
+
+.mensaje {
+  margin-top: 15px;
+  font-weight: bold;
+  color: #1a1a1a;
+}
