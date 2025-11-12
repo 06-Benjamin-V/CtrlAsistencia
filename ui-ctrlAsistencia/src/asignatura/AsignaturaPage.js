@@ -5,7 +5,6 @@ function AsignaturaPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [asignatura, setAsignatura] = useState(null);
-  const [activeTab, setActiveTab] = useState("general");
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -27,107 +26,108 @@ function AsignaturaPage() {
   if (!asignatura) return <p>Cargando información...</p>;
 
   return (
-    <div className="asig-wrapper">
-      <aside className="asig-sidebar">
-        <button className="asig-back" onClick={() => navigate(-1)}>
-          Volver
-        </button>
+    <div className="min-h-screen bg-gray-100 p-10">
+      <div className="max-w-6xl mx-auto">
         <button
-          className={`asig-tab ${activeTab === "general" ? "active" : ""}`}
-          onClick={() => setActiveTab("general")}
+          onClick={() => navigate(-1)}
+          className="mb-8 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded"
         >
-          General
+          ← Volver
         </button>
-        <button
-          className={`asig-tab ${activeTab === "docentes" ? "active" : ""}`}
-          onClick={() => setActiveTab("docentes")}
-        >
-          Docentes
-        </button>
-        <button
-          className={`asig-tab ${activeTab === "estudiantes" ? "active" : ""}`}
-          onClick={() => setActiveTab("estudiantes")}
-        >
-          Estudiantes
-        </button>
-        <button
-          className={`asig-tab ${activeTab === "clases" ? "active" : ""}`}
-          onClick={() => setActiveTab("clases")}
-        >
-          Clases
-        </button>
-      </aside>
 
-      <main className="asig-content">
-        {activeTab === "general" && (
-          <div>
-            <h1 className="asig-title">{asignatura.nombre}</h1>
-            <div className="asig-meta">
+        {/* Grid principal: 2x2 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* === Tarjeta 1: General === */}
+          <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">General</h2>
+            <div className="text-gray-700 space-y-2">
               <p>
-                <span className="asig-label">Código:</span> {asignatura.codigo}
+                <span className="font-semibold">Nombre:</span>{" "}
+                {asignatura.nombre}
               </p>
               <p>
-                <span className="asig-label">Créditos:</span> {asignatura.creditos}
+                <span className="font-semibold">Código:</span>{" "}
+                {asignatura.codigo}
               </p>
               <p>
-                <span className="asig-label">Departamento:</span>{" "}
+                <span className="font-semibold">Créditos:</span>{" "}
+                {asignatura.creditos}
+              </p>
+              <p>
+                <span className="font-semibold">Departamento:</span>{" "}
                 {asignatura.departamento?.nombre}
               </p>
             </div>
           </div>
-        )}
 
-        {activeTab === "docentes" && (
-          <div>
-            <h3>Docentes</h3>
-            <ul className="asig-list">
-              {asignatura.docentes?.length > 0 ? (
-                asignatura.docentes.map((d) => (
-                  <li key={d.idDocente}>
-                    {d.nombre} {d.apellido}
+          {/* === Tarjeta 2: Docentes === */}
+          <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">Docentes</h2>
+            {asignatura.docentes?.length > 0 ? (
+              <ul className="space-y-2 text-gray-700">
+                {asignatura.docentes.map((d) => (
+                  <li key={d.idDocente} className="border-b pb-2 last:border-none">
+                    <p className="font-medium">
+                      {d.nombre} {d.apellido}
+                    </p>
+                    {d.correo && (
+                      <p className="text-gray-600 text-sm">{d.correo}</p>
+                    )}
                   </li>
-                ))
-              ) : (
-                <li>No hay docentes registrados.</li>
-              )}
-            </ul>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-600">No hay docentes registrados.</p>
+            )}
           </div>
-        )}
 
-        {activeTab === "estudiantes" && (
-          <div>
-            <h3>Estudiantes</h3>
-            <ul className="asig-list">
-              {asignatura.estudiantes?.length > 0 ? (
-                asignatura.estudiantes.map((e) => (
-                  <li key={e.idEstudiante}>
-                    {e.nombre} {e.apellido} — {e.rut}
+          {/* === Tarjeta 3: Estudiantes === */}
+          <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">Estudiantes</h2>
+            {asignatura.estudiantes?.length > 0 ? (
+              <ul className="space-y-2 text-gray-700">
+                {asignatura.estudiantes.slice(0, 5).map((e) => (
+                  <li key={e.idEstudiante} className="border-b pb-2 last:border-none">
+                    <p className="font-medium">
+                      {e.nombre} {e.apellido}
+                    </p>
+                    <p className="text-gray-600 text-sm">{e.rut}</p>
                   </li>
-                ))
-              ) : (
-                <li>No hay estudiantes registrados.</li>
-              )}
-            </ul>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-600">No hay estudiantes registrados.</p>
+            )}
+            {asignatura.estudiantes?.length > 5 && (
+              <p className="text-blue-500 text-sm mt-2">
+                +{asignatura.estudiantes.length - 5} más
+              </p>
+            )}
           </div>
-        )}
 
-        {activeTab === "clases" && (
-          <div>
-            <h3>Clases</h3>
-            <ul className="asig-list">
-              {asignatura.clases?.length > 0 ? (
-                asignatura.clases.map((c) => (
-                  <li key={c.idClase}>
-                    {c.tema} — {c.fecha}
+          {/* === Tarjeta 4: Clases === */}
+          <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">Clases</h2>
+            {asignatura.clases?.length > 0 ? (
+              <ul className="space-y-2 text-gray-700">
+                {asignatura.clases.slice(0, 4).map((c) => (
+                  <li key={c.idClase} className="border-b pb-2 last:border-none">
+                    <p className="font-medium">{c.tema}</p>
+                    <p className="text-gray-600 text-sm">📅 {c.fecha}</p>
                   </li>
-                ))
-              ) : (
-                <li>No hay clases registradas.</li>
-              )}
-            </ul>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-600">No hay clases registradas.</p>
+            )}
+            {asignatura.clases?.length > 4 && (
+              <p className="text-blue-500 text-sm mt-2">
+                +{asignatura.clases.length - 4} más
+              </p>
+            )}
           </div>
-        )}
-      </main>
+        </div>
+      </div>
     </div>
   );
 }
