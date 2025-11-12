@@ -16,10 +16,15 @@ function UserMenu({ rol, onLogout, onSelectSection }) {
     ],
     DOCENTE: [
       { key: "asignaturas", label: "Mis Asignaturas" },
-      { key: "clases", label: "Clases", crear: "/docente/clases/crear" },
+      { key: "clases", label: "Clases", sub: [
+          { label: "Ver clases", href: "/docente/clases/ver" },
+          { label: "Crear clase", href: "/docente/clases/crear" },
+        ],
+      },
     ],
     ESTUDIANTE: [
-      { key: "asignaturas", label: "Mis Asignaturas" }
+      { key: "asignaturas", label: "Mis Asignaturas" },
+      { key: "asistencia", label: "Registrar Asistencia", crear: "/estudiante/asistencia" }
     ]
   };
 
@@ -53,35 +58,35 @@ function UserMenu({ rol, onLogout, onSelectSection }) {
             ⬅ Volver
           </button>
           <ul>
-            {opcionSeleccionada?.crear && (
-              <li>
-                <a href={opcionSeleccionada.crear}>
-                  Crear {menuSeleccionado}
-                </a>
-              </li>
+            {/* 🔹 Submenú DOCENTE */}
+            {rol === "DOCENTE" && menuSeleccionado === "clases" && (
+              <>
+                <li><a href="/docente/clases/ver">Ver clases</a></li>
+                <li><a href="/docente/clases/crear">Crear clase</a></li>
+              </>
             )}
 
+            {/* 🔹 Submenú ESTUDIANTE */}
+            {rol === "ESTUDIANTE" && menuSeleccionado === "asistencia" && (
+              <li><a href="/estudiante/asistencia">Registrar asistencia</a></li>
+            )}
+
+            {/* 🔹 Submenú ADMIN */}
             {rol === "ADMINISTRATIVO" &&
-              ["asignaturas", "docentes", "estudiantes", "cursos"].includes(menuSeleccionado) && (
+              opcionSeleccionada?.crear && (
                 <>
-                  <li>
-                    <a href={`/admin/${menuSeleccionado}/editar`}>
-                      Editar {menuSeleccionado}
-                    </a>
-                  </li>
-                  <li>
-                    <a href={`/admin/${menuSeleccionado}/eliminar`}>
-                      Eliminar {menuSeleccionado}
-                    </a>
-                  </li>
+                  <li><a href={opcionSeleccionada.crear}>Crear {menuSeleccionado}</a></li>
+                  {["asignaturas", "docentes", "estudiantes", "cursos"].includes(menuSeleccionado) && (
+                    <>
+                      <li><a href={`/admin/${menuSeleccionado}/editar`}>Editar {menuSeleccionado}</a></li>
+                      <li><a href={`/admin/${menuSeleccionado}/eliminar`}>Eliminar {menuSeleccionado}</a></li>
+                    </>
+                  )}
+                  {menuSeleccionado === "matriculas" && (
+                    <li><a href="/admin/matriculas/eliminar">Eliminar Matrícula</a></li>
+                  )}
                 </>
               )}
-
-            {rol === "ADMINISTRATIVO" && menuSeleccionado === "matriculas" && (
-              <li>
-                <a href="/admin/matriculas/eliminar">Eliminar Matrícula</a>
-              </li>
-            )}
           </ul>
         </div>
       )}

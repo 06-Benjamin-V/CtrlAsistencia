@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 function VerClasesDocente() {
   const [clases, setClases] = useState([]);
   const [claseSeleccionada, setClaseSeleccionada] = useState(null);
   const [resumen, setResumen] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [eliminando, setEliminando] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -27,7 +27,7 @@ function VerClasesDocente() {
     fetchClases();
   }, [token]);
 
-  // Obtener resumen de clase (presentes/ausentes)
+  // Obtener resumen de asistencia
   const verResumen = async (idClase) => {
     setLoading(true);
     setResumen(null);
@@ -44,6 +44,32 @@ function VerClasesDocente() {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Eliminar una clase
+  const eliminarClase = async (idClase) => {
+    const confirmar = window.confirm("¿Seguro que deseas eliminar esta clase?");
+    if (!confirmar) return;
+
+    try {
+      setEliminando(true);
+      const res = await fetch(`http://localhost:8080/api/clase/eliminar/${idClase}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Error al eliminar la clase");
+
+      // Eliminar localmente del estado
+      setClases((prev) => prev.filter((c) => c.idClase !== idClase));
+      setClaseSeleccionada(null);
+      setResumen(null);
+      alert("Clase eliminada correctamente.");
+    } catch (error) {
+      console.error(error);
+      alert("No se pudo eliminar la clase.");
+    } finally {
+      setEliminando(false);
     }
   };
 
@@ -73,8 +99,7 @@ function VerClasesDocente() {
               clases.map((c) => (
                 <div
                   key={c.idClase}
-                  onClick={() => verResumen(c.idClase)}
-                  className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg cursor-pointer transition-transform transform hover:-translate-y-1"
+                  className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1"
                 >
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">{c.tema}</h3>
                   <p className="text-gray-700">
@@ -84,9 +109,25 @@ function VerClasesDocente() {
                   <p className="text-gray-700">
                     <span className="font-semibold">Sección:</span> {c.curso?.seccion}
                   </p>
-                  <p className="text-gray-700">
+                  <p className="text-gray-700 mb-3">
                     <span className="font-semibold">Fecha:</span> {c.fecha}
                   </p>
+
+                  <div className="flex justify-between">
+                    <button
+                      onClick={() => verResumen(c.idClase)}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+                    >
+                      Ver asistencia
+                    </button>
+                    <button
+                      onClick={() => eliminarClase(c.idClase)}
+                      disabled={eliminando}
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
+                    >
+                      {eliminando ? "Eliminando..." : "Eliminar"}
+                    </button>
+                  </div>
                 </div>
               ))
             ) : (
@@ -100,9 +141,18 @@ function VerClasesDocente() {
               <p className="text-gray-600">Cargando resumen...</p>
             ) : resumen ? (
               <>
-                <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                  {resumen.asignatura} — {resumen.tema}
-                </h3>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-2xl font-semibold text-gray-800">
+                    {resumen.asignatura} — {resumen.tema}
+                  </h3>
+                  <button
+                    onClick={() => eliminarClase(claseSeleccionada)}
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded text-sm"
+                  >
+                    🗑 Eliminar clase
+                  </button>
+                </div>
+
                 <p className="text-gray-700 mb-6">
                   <span className="font-semibold">Fecha:</span> {resumen.fecha} |{" "}
                   <span className="font-semibold">Sección:</span> {resumen.seccion}
