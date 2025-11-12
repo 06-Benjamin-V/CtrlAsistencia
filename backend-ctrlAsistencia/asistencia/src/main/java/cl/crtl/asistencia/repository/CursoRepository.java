@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface CursoRepository extends JpaRepository<Curso, Long> {
     List<Curso> findByDocente_IdDocente(Long idDocente);
 
+    List<Curso> findByAsignatura_IdAsignatura(Long idDocente);
+
 }

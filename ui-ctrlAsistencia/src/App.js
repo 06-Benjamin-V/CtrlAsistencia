@@ -27,6 +27,8 @@ import EliminarEstudiante from "./forms/EliminarEstudiante";
 import EliminarCurso from "./forms/EliminarCurso";
 import EliminarMatricula from "./forms/EliminarMatricula";
 
+// Página de detalle de asignatura
+import AsignaturaPage from "./asignatura/AsignaturaPage";
 
 function App() {
   const [usuario, setUsuario] = useState(null);
@@ -81,6 +83,16 @@ function App() {
             } 
           />
 
+          {/* Detalle de asignatura por ID */}
+          <Route 
+            path="/asignatura/:id" 
+            element={
+              <ProtectedRoute>
+                <AsignaturaPage />
+              </ProtectedRoute>
+            } 
+          />
+
           {/* CSV */}
           <Route path="/admin/estudiantes/csv" element={<ProtectedRoute role="ADMINISTRATIVO"><SubirCsvEstudiantes /></ProtectedRoute>} />
           <Route path="/admin/docentes/csv" element={<ProtectedRoute role="ADMINISTRATIVO"><SubirCsvDocente /></ProtectedRoute>} />
@@ -105,7 +117,7 @@ function App() {
           <Route path="/admin/cursos/editar" element={<ProtectedRoute role="ADMINISTRATIVO"><EditarCurso/></ProtectedRoute>} />
           <Route path="/admin/cursos/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarCurso /></ProtectedRoute>} />
 
-          {/* Matrículas*/}
+          {/* Matrículas */}
           <Route path="/admin/matriculas/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearMatricula /></ProtectedRoute>} />
           <Route path="/admin/matriculas/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarMatricula /></ProtectedRoute>} />
 

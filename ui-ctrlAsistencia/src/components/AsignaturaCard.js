@@ -6,12 +6,19 @@ import { FaBook } from "react-icons/fa";
 function AsignaturaCard({ asignatura }) {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate(`/asignatura/${asignatura.id}`);
-  };
+const handleClick = () => {
+  // Verifica qué propiedad tiene realmente la asignatura
+  console.log("Asignatura clickeada:", asignatura); // <-- solo para verificar
+  navigate(`/asignatura/${asignatura.idAsignatura || asignatura.id}`);
+};
+
 
   return (
-    <div className="asignatura-card" onClick={handleClick} style={{ cursor: "pointer" }}>
+    <div
+      className="asignatura-card"
+      onClick={handleClick}
+      style={{ cursor: "pointer" }}
+    >
       <div className="asignatura-card-header">
         <FaBook />
       </div>

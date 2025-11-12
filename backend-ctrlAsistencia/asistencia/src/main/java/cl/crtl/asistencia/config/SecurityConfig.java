@@ -44,23 +44,32 @@ public class SecurityConfig {
                         // Endpoints de carreras accesibles para administrativos y docentes
                         .requestMatchers("/api/carrera/**").hasAnyRole("ADMINISTRATIVO", "DOCENTE")
 
-                        // Gestión de asignaturas y datos administrativos
-                        .requestMatchers("/api/asignatura/**").hasRole("ADMINISTRATIVO")
+                        // Gestión completa de asignaturas solo para administrativos
+                        .requestMatchers(HttpMethod.POST, "/api/asignatura/**").hasRole("ADMINISTRATIVO")
+                        .requestMatchers(HttpMethod.PUT, "/api/asignatura/**").hasRole("ADMINISTRATIVO")
+                        .requestMatchers(HttpMethod.DELETE, "/api/asignatura/**").hasRole("ADMINISTRATIVO")
+
+                        // Permitir consultar asignaturas a cualquier usuario autenticado
+                        .requestMatchers(HttpMethod.GET, "/api/asignatura/**")
+                        .hasAnyRole("ADMINISTRATIVO", "DOCENTE", "ESTUDIANTE")
+
+                        // Endpoints administrativos solo para administrativos
                         .requestMatchers("/api/administrativo/**").hasRole("ADMINISTRATIVO")
 
-                        // Endpoints de docentes
+                        // Endpoints de docentes accesibles para docentes y administrativos
                         .requestMatchers("/api/docente/**").hasAnyRole("DOCENTE", "ADMINISTRATIVO")
 
                         // Endpoints de estudiantes accesibles según rol
-                        .requestMatchers("/api/estudiante/**").hasAnyRole("ESTUDIANTE", "DOCENTE", "ADMINISTRATIVO")
+                        .requestMatchers("/api/estudiante/**")
+                        .hasAnyRole("ESTUDIANTE", "DOCENTE", "ADMINISTRATIVO")
 
+                        // Cualquier otro endpoint requiere autenticación
                         .anyRequest().authenticated())
-                // Configura sesiones stateless para usar JWT
+                // Configura sesiones sin estado para usar JWT
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Agrega el filtro JWT antes del filtro de autenticación estándar
+                // Agrega el filtro JWT antes del filtro estándar de autenticación
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
 }

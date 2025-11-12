@@ -26,7 +26,7 @@ public class Matricula {
     private Curso curso;
 
     @Column(name = "fecha_inscripcion", nullable = false)
-    private LocalDateTime fechaInscripcion;  // 🔥 CAMBIO a LocalDateTime
+    private LocalDateTime fechaInscripcion;
 
     @Column(nullable = false, length = 20)
     private String estado;
