@@ -1,21 +1,33 @@
-2025-11-12T00:01:37.292-03:00  INFO 10728 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : Starting AsistenciaApplication using Java 17.0.16 with PID 10728 (C:\Users\sheri\.vscode\Project\ctrlAsistencia\CtrlAsistencia\backend-ctrlAsistencia\asistencia\target\classes started by sheri in C:\Users\sheri\.vscode\Project\ctrlAsistencia\CtrlAsistencia\backend-ctrlAsistencia\asistencia)
-2025-11-12T00:01:37.313-03:00  INFO 10728 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : No active profile set, falling back to 1 default profile: "default"
-2025-11-12T00:01:43.197-03:00  INFO 10728 --- [asistencia] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-11-12T00:01:43.405-03:00  INFO 10728 --- [asistencia] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 179 ms. Found 11 JPA repository interfaces.
-2025-11-12T00:01:44.941-03:00  INFO 10728 --- [asistencia] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2025-11-12T00:01:44.981-03:00  INFO 10728 --- [asistencia] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-11-12T00:01:44.982-03:00  INFO 10728 --- [asistencia] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
-2025-11-12T00:01:45.149-03:00  INFO 10728 --- [asistencia] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-11-12T00:01:45.151-03:00  INFO 10728 --- [asistencia] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 7690 ms
-2025-11-12T00:01:45.814-03:00  INFO 10728 --- [asistencia] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-11-12T00:01:46.012-03:00  INFO 10728 --- [asistencia] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
-2025-11-12T00:01:46.124-03:00  INFO 10728 --- [asistencia] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2025-11-12T00:01:47.161-03:00  INFO 10728 --- [asistencia] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-11-12T00:01:47.263-03:00  INFO 10728 --- [asistencia] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-11-12T00:01:48.648-03:00  INFO 10728 --- [asistencia] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@48692405
-2025-11-12T00:01:48.653-03:00  INFO 10728 --- [asistencia] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-11-12T00:01:48.962-03:00  WARN 10728 --- [asistencia] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-11-12T00:01:49.036-03:00  INFO 10728 --- [asistencia] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2025-11-14T00:00:14.256-03:00  WARN 15820 --- [asistencia] [http-nio-8080-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T00:00:14.673-03:00  WARN 15820 --- [asistencia] [http-nio-8080-exec-8] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T00:00:21.640-03:00  WARN 15820 --- [asistencia] [http-nio-8080-exec-10] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T00:00:21.659-03:00  WARN 15820 --- [asistencia] [http-nio-8080-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T00:00:28.465-03:00  WARN 15820 --- [asistencia] [http-nio-8080-exec-5] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T00:00:28.495-03:00  WARN 15820 --- [asistencia] [http-nio-8080-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T00:01:46.054-03:00  WARN 15820 --- [asistencia] [http-nio-8080-exec-10] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T00:01:46.133-03:00  WARN 15820 --- [asistencia] [http-nio-8080-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T00:03:02.059-03:00  WARN 15820 --- [asistencia] [http-nio-8080-exec-8] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T00:03:02.086-03:00  WARN 15820 --- [asistencia] [http-nio-8080-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T00:05:13.786-03:00  WARN 15820 --- [asistencia] [http-nio-8080-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T00:05:13.869-03:00  WARN 15820 --- [asistencia] [http-nio-8080-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T10:46:38.478-03:00  INFO 8692 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : Starting AsistenciaApplication using Java 17.0.16 with PID 8692 (C:\Users\sheri\.vscode\Project\ctrlAsistencia\CtrlAsistencia\backend-ctrlAsistencia\asistencia\target\classes started by sheri in C:\Users\sheri\.vscode\Project\ctrlAsistencia\CtrlAsistencia\backend-ctrlAsistencia\asistencia)
+2025-11-14T10:46:38.488-03:00  INFO 8692 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-11-14T10:46:41.306-03:00  INFO 8692 --- [asistencia] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-14T10:46:42.916-03:00  INFO 8692 --- [asistencia] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1579 ms. Found 11 JPA repository interfaces.
+2025-11-14T10:46:44.906-03:00  INFO 8692 --- [asistencia] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-11-14T10:46:44.964-03:00  INFO 8692 --- [asistencia] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-14T10:46:44.977-03:00  INFO 8692 --- [asistencia] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-14T10:46:45.204-03:00  INFO 8692 --- [asistencia] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-14T10:46:45.208-03:00  INFO 8692 --- [asistencia] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6537 ms
+2025-11-14T10:46:45.917-03:00  INFO 8692 --- [asistencia] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-14T10:46:46.107-03:00  INFO 8692 --- [asistencia] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-14T10:46:46.235-03:00  INFO 8692 --- [asistencia] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-11-14T10:46:47.301-03:00  INFO 8692 --- [asistencia] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-14T10:46:47.418-03:00  INFO 8692 --- [asistencia] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-14T10:46:48.335-03:00  INFO 8692 --- [asistencia] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@846b47
+2025-11-14T10:46:48.342-03:00  INFO 8692 --- [asistencia] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-14T10:46:48.506-03:00  WARN 8692 --- [asistencia] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-14T10:46:48.567-03:00  INFO 8692 --- [asistencia] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 8.0.43
@@ -23,18 +35,64 @@
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2025-11-12T00:01:51.878-03:00  INFO 10728 --- [asistencia] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-11-12T00:01:52.544-03:00  INFO 10728 --- [asistencia] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-11-12T00:01:53.673-03:00  WARN 10728 --- [asistencia] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-11-12T00:01:54.167-03:00  WARN 10728 --- [asistencia] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+2025-11-14T10:46:50.600-03:00  INFO 8692 --- [asistencia] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-14T10:46:51.052-03:00  INFO 8692 --- [asistencia] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-14T10:46:51.163-03:00  WARN 8692 --- [asistencia] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-14T10:46:53.732-03:00  WARN 8692 --- [asistencia] [main] .s.s.UserDetailsServiceAutoConfiguration : 
 
-Using generated security password: 2ddfed13-5e8c-4e73-bd22-2f27b89d8939
+Using generated security password: aec071f0-e46b-4a2a-bba7-4d69bab4024a
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-2025-11-12T00:01:54.196-03:00  INFO 10728 --- [asistencia] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2025-11-12T00:01:54.914-03:00  INFO 10728 --- [asistencia] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2025-11-12T00:01:54.935-03:00  INFO 10728 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : Started AsistenciaApplication in 18.823 seconds (process running for 21.11)
-2025-11-12T00:13:43.405-03:00  INFO 10728 --- [asistencia] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-11-12T00:13:43.412-03:00  INFO 10728 --- [asistencia] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2025-11-12T00:13:43.431-03:00  INFO 10728 --- [asistencia] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 18 ms
+2025-11-14T10:46:53.770-03:00  INFO 8692 --- [asistencia] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-11-14T10:46:54.462-03:00  INFO 8692 --- [asistencia] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-11-14T10:46:54.535-03:00  INFO 8692 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : Started AsistenciaApplication in 17.824 seconds (process running for 19.869)
+2025-11-14T10:47:24.639-03:00  INFO 8692 --- [asistencia] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-14T10:47:24.640-03:00  INFO 8692 --- [asistencia] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-11-14T10:47:24.642-03:00  INFO 8692 --- [asistencia] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-11-14T10:52:40.833-03:00  INFO 13260 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : Starting AsistenciaApplication using Java 17.0.16 with PID 13260 (C:\Users\sheri\.vscode\Project\ctrlAsistencia\CtrlAsistencia\backend-ctrlAsistencia\asistencia\target\classes started by sheri in C:\Users\sheri\.vscode\Project\ctrlAsistencia\CtrlAsistencia\backend-ctrlAsistencia\asistencia)
+2025-11-14T10:52:40.839-03:00  INFO 13260 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-11-14T10:52:44.113-03:00  INFO 13260 --- [asistencia] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-14T10:52:44.316-03:00  INFO 13260 --- [asistencia] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 178 ms. Found 11 JPA repository interfaces.
+2025-11-14T10:52:46.150-03:00  INFO 13260 --- [asistencia] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-11-14T10:52:46.188-03:00  INFO 13260 --- [asistencia] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-14T10:52:46.189-03:00  INFO 13260 --- [asistencia] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-14T10:52:46.337-03:00  INFO 13260 --- [asistencia] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-14T10:52:46.339-03:00  INFO 13260 --- [asistencia] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5371 ms
+2025-11-14T10:52:47.216-03:00  INFO 13260 --- [asistencia] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-14T10:52:47.562-03:00  INFO 13260 --- [asistencia] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-14T10:52:47.791-03:00  INFO 13260 --- [asistencia] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-11-14T10:52:48.983-03:00  INFO 13260 --- [asistencia] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-14T10:52:49.110-03:00  INFO 13260 --- [asistencia] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-14T10:52:50.225-03:00  INFO 13260 --- [asistencia] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4f552aa2
+2025-11-14T10:52:50.230-03:00  INFO 13260 --- [asistencia] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-14T10:52:50.388-03:00  WARN 13260 --- [asistencia] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-14T10:52:50.458-03:00  INFO 13260 --- [asistencia] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.43
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-14T10:52:53.676-03:00  INFO 13260 --- [asistencia] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-14T10:52:54.123-03:00  INFO 13260 --- [asistencia] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-14T10:52:55.620-03:00  WARN 13260 --- [asistencia] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-14T10:52:56.302-03:00  WARN 13260 --- [asistencia] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: fca51376-b4d3-49ee-b7de-c9c08b3763f3
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-11-14T10:52:56.330-03:00  INFO 13260 --- [asistencia] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-11-14T10:52:57.560-03:00  INFO 13260 --- [asistencia] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-11-14T10:52:57.736-03:00  INFO 13260 --- [asistencia] [main] c.crtl.asistencia.AsistenciaApplication  : Started AsistenciaApplication in 18.321 seconds (process running for 21.02)
+2025-11-14T10:53:47.906-03:00  INFO 13260 --- [asistencia] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-14T10:53:47.907-03:00  INFO 13260 --- [asistencia] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-11-14T10:53:47.909-03:00  INFO 13260 --- [asistencia] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-11-14T10:53:50.258-03:00  WARN 13260 --- [asistencia] [http-nio-8080-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T10:53:50.298-03:00  WARN 13260 --- [asistencia] [http-nio-8080-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T10:58:22.391-03:00  WARN 13260 --- [asistencia] [http-nio-8080-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T10:58:22.435-03:00  WARN 13260 --- [asistencia] [http-nio-8080-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T10:58:56.819-03:00  WARN 13260 --- [asistencia] [http-nio-8080-exec-5] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]
+2025-11-14T10:58:56.847-03:00  WARN 13260 --- [asistencia] [http-nio-8080-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "undefined"]

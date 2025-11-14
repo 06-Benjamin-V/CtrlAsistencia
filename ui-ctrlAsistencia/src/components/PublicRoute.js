@@ -1,4 +1,3 @@
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 // Función que decodifica un token JWT y extrae su payload

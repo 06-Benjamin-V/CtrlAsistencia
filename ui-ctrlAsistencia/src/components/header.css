@@ -24,9 +24,3 @@
 .header-title {
   font-size: 30px;
 }
-
-.header-menu {
-  display: flex;
-  align-items: center;
-  height: 100%;
-}

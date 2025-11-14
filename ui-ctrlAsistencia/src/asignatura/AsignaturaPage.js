@@ -14,6 +14,7 @@ function AsignaturaPage() {
     fetch(`http://localhost:8080/api/asignatura/${id}/detalle`, {
       headers: { Authorization: `Bearer ${token}` },
     })
+
       .then((res) => {
         if (!res.ok) throw new Error("No se pudo cargar la asignatura");
         return res.json();

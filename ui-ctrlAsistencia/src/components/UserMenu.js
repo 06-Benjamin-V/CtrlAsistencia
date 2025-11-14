@@ -1,95 +1,43 @@
-import React, { useState } from "react";
 import "./UserMenu.css";
+import { useNavigate } from "react-router-dom";
 
-function UserMenu({ rol, onLogout, onSelectSection }) {
-  const [menuSeleccionado, setMenuSeleccionado] = useState(null);
-
-  const handleVolver = () => setMenuSeleccionado(null);
+function UserMenu({ rol, onLogout }) {
+  const navigate = useNavigate();
 
   const opciones = {
     ADMINISTRATIVO: [
-      { key: "asignaturas", label: "Asignaturas", crear: "/admin/asignaturas/crear" },
-      { key: "docentes", label: "Docentes", crear: "/admin/docentes/crear" },
-      { key: "estudiantes", label: "Estudiantes", crear: "/admin/estudiantes/crear" },
-      { key: "cursos", label: "Cursos", crear: "/admin/cursos/crear" },
-      { key: "matriculas", label: "Matrículas", crear: "/admin/matriculas/crear" },
+      { key: "asignaturas", label: "Asignaturas", href: "/admin/asignaturas" },
+      { key: "docentes", label: "Docentes", href: "/admin/docentes" },
+      { key: "estudiantes", label: "Estudiantes", href: "/admin/estudiantes" },
+      { key: "cursos", label: "Cursos", href: "/admin/cursos" },
+      { key: "matriculas", label: "Matrículas", href: "/admin/matriculas" },
     ],
     DOCENTE: [
-      { key: "asignaturas", label: "Mis Asignaturas" },
-      { key: "clases", label: "Clases", sub: [
-          { label: "Ver clases", href: "/docente/clases/ver" },
-          { label: "Crear clase", href: "/docente/clases/crear" },
-        ],
-      },
+      { key: "asignaturas", label: "Mis Asignaturas", href: "/docente/asignaturas" },
+      { key: "clases", label: "Clases", href: "/docente/clases" },
     ],
     ESTUDIANTE: [
-      { key: "asignaturas", label: "Mis Asignaturas" },
-      { key: "asistencia", label: "Registrar Asistencia", crear: "/estudiante/asistencia" }
-    ]
+      { key: "asignaturas", label: "Mis Asignaturas", href: "/estudiante/asignaturas" },
+      { key: "asistencia", label: "Registrar Asistencia", href: "/estudiante/asistencia" },
+    ],
   };
-
-  const opcionSeleccionada = opciones[rol]?.find((o) => o.key === menuSeleccionado);
 
   return (
     <div className="user-menu-horizontal">
-      {!menuSeleccionado ? (
-        <ul className="menu-principal">
-          {opciones[rol]?.map((item) => (
-            <li key={item.key}>
-              <button
-                onClick={() => {
-                  setMenuSeleccionado(item.key);
-                  onSelectSection(item.key);
-                }}
-              >
-                {item.label}
-              </button>
-            </li>
-          ))}
-          <li>
-            <button className="logout-btn" onClick={onLogout}>
-              Cerrar sesión
+      <ul className="menu-principal">
+        {opciones[rol]?.map((item) => (
+          <li key={item.key}>
+            <button onClick={() => navigate(item.href)}>
+              {item.label}
             </button>
           </li>
-        </ul>
-      ) : (
-        <div className="submenu-horizontal">
-          <button className="volver" onClick={handleVolver}>
-            ⬅ Volver
+        ))}
+        <li>
+          <button className="logout-btn" onClick={onLogout}>
+            Cerrar sesión
           </button>
-          <ul>
-            {/* 🔹 Submenú DOCENTE */}
-            {rol === "DOCENTE" && menuSeleccionado === "clases" && (
-              <>
-                <li><a href="/docente/clases/ver">Ver clases</a></li>
-                <li><a href="/docente/clases/crear">Crear clase</a></li>
-              </>
-            )}
-
-            {/* 🔹 Submenú ESTUDIANTE */}
-            {rol === "ESTUDIANTE" && menuSeleccionado === "asistencia" && (
-              <li><a href="/estudiante/asistencia">Registrar asistencia</a></li>
-            )}
-
-            {/* 🔹 Submenú ADMIN */}
-            {rol === "ADMINISTRATIVO" &&
-              opcionSeleccionada?.crear && (
-                <>
-                  <li><a href={opcionSeleccionada.crear}>Crear {menuSeleccionado}</a></li>
-                  {["asignaturas", "docentes", "estudiantes", "cursos"].includes(menuSeleccionado) && (
-                    <>
-                      <li><a href={`/admin/${menuSeleccionado}/editar`}>Editar {menuSeleccionado}</a></li>
-                      <li><a href={`/admin/${menuSeleccionado}/eliminar`}>Eliminar {menuSeleccionado}</a></li>
-                    </>
-                  )}
-                  {menuSeleccionado === "matriculas" && (
-                    <li><a href="/admin/matriculas/eliminar">Eliminar Matrícula</a></li>
-                  )}
-                </>
-              )}
-          </ul>
-        </div>
-      )}
+        </li>
+      </ul>
     </div>
   );
 }

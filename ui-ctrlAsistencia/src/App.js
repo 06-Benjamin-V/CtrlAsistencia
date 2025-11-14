@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Login from './logIn/login';
 import './App.css';
 import Home from './home/home';
+import UserMenu from './components/UserMenu';
 import Header from './components/header';
 import Footer from './components/footer';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -34,6 +35,19 @@ import AsignaturaPage from "./asignatura/AsignaturaPage";
 // Docente
 import VerClasesDocente from "./forms/VerClasesDocente";
 
+// Listas
+import AsignaturasList from './listas/AsignaturasList';
+import DocentesList from './listas/DocentesList';
+import EstudiantesList from './listas/EstudiantesList';
+import CursosList from './listas/CursosList';
+import MatriculasList from './listas/MatriculasList';
+import ClasesList from './listas/ClasesList';
+
+const onLogout = () => {
+  localStorage.removeItem("token");
+  window.location.href = "/login";
+};
+
 function App() {
   const [usuario, setUsuario] = useState(null);
 
@@ -59,11 +73,9 @@ function App() {
 
   return (
     <>
-      <Header 
-        usuario={usuario} 
-        onLogout={handleLogout}
-        onSelectSection={handleSelectSection}
-      />
+      <Header usuario={usuario} onSelectSection={handleSelectSection}/>
+       {usuario && (<UserMenu rol={usuario.rol} onLogout={onLogout}/>)}
+
 
       <main className="App-main">
         <Routes>
@@ -92,13 +104,22 @@ function App() {
 
           {/* Detalle de asignatura */}
           <Route 
-            path="/asignatura/:id" 
+            path="/asignatura/:id"
             element={
               <ProtectedRoute>
                 <AsignaturaPage />
               </ProtectedRoute>
             } 
           />
+
+          {/* ===== RUTAS ADMINISTRATIVO ===== */}
+
+          {/* Listas */}
+          <Route path="/admin/asignaturas" element={<ProtectedRoute role="ADMINISTRATIVO"><AsignaturasList /></ProtectedRoute>} />
+          <Route path="/admin/docentes" element={<ProtectedRoute role="ADMINISTRATIVO"><DocentesList /></ProtectedRoute>} />
+          <Route path="/admin/estudiantes" element={<ProtectedRoute role="ADMINISTRATIVO"><EstudiantesList /></ProtectedRoute>} />
+          <Route path="/admin/cursos" element={<ProtectedRoute role="ADMINISTRATIVO"><CursosList /></ProtectedRoute>} />
+          <Route path="/admin/matriculas" element={<ProtectedRoute role="ADMINISTRATIVO"><MatriculasList /></ProtectedRoute>} />
 
           {/* CSV */}
           <Route path="/admin/estudiantes/csv" element={<ProtectedRoute role="ADMINISTRATIVO"><SubirCsvEstudiantes /></ProtectedRoute>} />
@@ -128,17 +149,17 @@ function App() {
           <Route path="/admin/matriculas/crear" element={<ProtectedRoute role="ADMINISTRATIVO"><CrearMatricula /></ProtectedRoute>} />
           <Route path="/admin/matriculas/eliminar" element={<ProtectedRoute role="ADMINISTRATIVO"><EliminarMatricula /></ProtectedRoute>} />
 
-          {/* 🧑‍🏫 Docente crea clases */}
+          {/* ===== RUTAS DOCENTE ===== */}
+          <Route path="/docente/asignaturas" element={<ProtectedRoute role="DOCENTE"><AsignaturasList /></ProtectedRoute>} />
+          <Route path="/docente/clases" element={<ProtectedRoute role="DOCENTE"><ClasesList /></ProtectedRoute>} />
           <Route path="/docente/clases/crear" element={<ProtectedRoute role="DOCENTE"><CrearClase /></ProtectedRoute>} />
-
-          {/* 👀 Docente ve sus clases y asistencias */}
           <Route path="/docente/clases/ver" element={<ProtectedRoute role="DOCENTE"><VerClasesDocente /></ProtectedRoute>} />
 
-          {/* 🎓 Estudiante marca asistencia */}
+          {/* ===== RUTAS ESTUDIANTE ===== */}
+          <Route path="/estudiante/asignaturas" element={<ProtectedRoute role="ESTUDIANTE"><AsignaturasList /></ProtectedRoute>} />
           <Route path="/estudiante/asistencia" element={<ProtectedRoute role="ESTUDIANTE"><MarcarAsistencia /></ProtectedRoute>} />
         </Routes>
       </main>
-
       <Footer />
     </>
   );

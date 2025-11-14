@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Card.css";
 import { FaBook } from "react-icons/fa";
@@ -6,12 +5,10 @@ import { FaBook } from "react-icons/fa";
 function AsignaturaCard({ asignatura }) {
   const navigate = useNavigate();
 
-const handleClick = () => {
-  // Verifica qué propiedad tiene realmente la asignatura
-  console.log("Asignatura clickeada:", asignatura); // <-- solo para verificar
-  navigate(`/asignatura/${asignatura.idAsignatura || asignatura.id}`);
-};
-
+  const handleClick = () => {
+    console.log("Asignatura clickeada:", asignatura);
+    navigate(`/asignatura/${asignatura.id}`);
+  };
 
   return (
     <div
